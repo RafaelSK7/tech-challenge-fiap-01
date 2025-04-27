@@ -23,6 +23,7 @@ public class LoginController {
 
     @PostMapping
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
+        // TODO validar a resposta que é feita de um login, e se iremos usar o spring security
         User user = loginService.validateLogin(loginRequest.login(), loginRequest.password());
 
         LoginResponse loginResponse = new LoginResponse(user.getId(), user.getName(), user.getUserType());

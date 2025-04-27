@@ -1,6 +1,7 @@
 package fiap.tech.challenge.restaurant_manager.entites;
 
 import fiap.tech.challenge.restaurant_manager.entites.enums.UserType;
+import fiap.tech.challenge.restaurant_manager.entites.request.CreateUserRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,5 +29,16 @@ public class User {
     private String address;
     @Enumerated(EnumType.STRING)
     private UserType userType;
+
+
+    public User(CreateUserRequest request) {
+        this.name = request.name();
+        this.email = request.email();
+        this.login = request.login();
+        this.password = request.password();
+        this.address = request.address();
+        this.userType = request.userType();
+        this.lastUpdate = LocalDate.now();
+    }
 
 }

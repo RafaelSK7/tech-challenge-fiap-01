@@ -2,6 +2,6 @@ package fiap.tech.challenge.restaurant_manager.exceptions;
 
 public class UserNotFoundException extends RuntimeException {
     public UserNotFoundException(Long userId) {
-        super("User with ID " + userId + " not found.");
+        super("Usuário com o ID " + userId + " não encontrado.");
     }
 }

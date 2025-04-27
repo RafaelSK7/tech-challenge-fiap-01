@@ -2,6 +2,7 @@ package fiap.tech.challenge.restaurant_manager.services;
 
 import fiap.tech.challenge.restaurant_manager.entites.User;
 import fiap.tech.challenge.restaurant_manager.entites.request.CreateUserRequest;
+import fiap.tech.challenge.restaurant_manager.exceptions.LoginInvalidException;
 import fiap.tech.challenge.restaurant_manager.exceptions.UserNotFoundException;
 import fiap.tech.challenge.restaurant_manager.repositories.UserRepository;
 import org.springframework.stereotype.Service;
@@ -31,7 +32,7 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User findById(Long id){
+    public User findById(Long id) {
         // TODO: pensar no tipo de response que teremos para cada usuario, por exemplo, criar um DTO UserResponseDTO que retorna apenas email, login, nome e id
         return userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
@@ -54,5 +55,10 @@ public class UserService {
     public void deleteUser(Long id) {
         User userToDelete = findById(id);
         userRepository.delete(userToDelete);
+    }
+
+    public User findByLogin(String login) {
+        return userRepository.findByLogin(login)
+                .orElseThrow(() -> new LoginInvalidException("Login inválido"));
     }
 }

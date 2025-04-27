@@ -6,9 +6,7 @@ import fiap.tech.challenge.restaurant_manager.repositories.UserRepository;
 import fiap.tech.challenge.restaurant_manager.services.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/api/users")
@@ -26,4 +24,12 @@ public class UserController {
         // TODO: implementar a resposta created 201
         return ResponseEntity.ok(createUser);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<User> findById(@PathVariable Long id){
+        User user = userService.findById(id);
+        return ResponseEntity.ok(user);
+    }
+
+
 }

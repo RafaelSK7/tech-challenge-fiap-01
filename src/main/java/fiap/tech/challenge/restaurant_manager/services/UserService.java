@@ -59,6 +59,6 @@ public class UserService {
 
     public User findByLogin(String login) {
         return userRepository.findByLogin(login)
-                .orElseThrow(() -> new LoginInvalidException("Login inválido"));
+                .orElseThrow(LoginInvalidException::new);
     }
 }

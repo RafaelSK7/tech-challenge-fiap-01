@@ -25,7 +25,7 @@ public class User {
     private String login;
     private String password;
     private LocalDateTime lastUpdate;
-    // TODO validar se vale a pena criar uma entidade Address, com o endereço completo, rua numero bairro cidade estado cep etc
+    // TODO criar uma entidade Address, com o endereço completo, rua numero bairro cidade estado cep etc
     private String address;
     @Enumerated(EnumType.STRING)
     private UserType userType;

@@ -17,7 +17,7 @@ public class LoginService {
         User user = userService.findByLogin(login);
 
         if(!user.getPassword().equals(password)){
-            throw new LoginInvalidException("Senha inválida");
+            throw new LoginInvalidException();
         }
 
         return user;

@@ -2,7 +2,6 @@ package fiap.tech.challenge.restaurant_manager.controllers;
 
 import fiap.tech.challenge.restaurant_manager.entites.User;
 import fiap.tech.challenge.restaurant_manager.entites.request.CreateUserRequest;
-import fiap.tech.challenge.restaurant_manager.repositories.UserRepository;
 import fiap.tech.challenge.restaurant_manager.services.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -33,13 +32,17 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
-
     @GetMapping("/{id}")
     public ResponseEntity<User> findById(@PathVariable Long id){
         User user = userService.findById(id);
         return ResponseEntity.ok(user);
     }
 
-
+    @PutMapping("/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable Long id,
+                                           @RequestBody CreateUserRequest userRequest){
+        User user = userService.updateUser(id, userRequest);
+        return ResponseEntity.ok(user);
+    }
 
 }

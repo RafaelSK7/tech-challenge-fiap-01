@@ -6,6 +6,7 @@ import fiap.tech.challenge.restaurant_manager.exceptions.UserNotFoundException;
 import fiap.tech.challenge.restaurant_manager.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -36,4 +37,17 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException(id));
     }
 
+    public User updateUser(Long id, CreateUserRequest userRequest) {
+        User userToUpdate = findById(id);
+
+        userToUpdate.setName(userRequest.name());
+        userToUpdate.setEmail(userRequest.email());
+        userToUpdate.setLogin(userRequest.login());
+        userToUpdate.setPassword(userRequest.password());
+        userToUpdate.setAddress(userRequest.address());
+        userToUpdate.setUserType(userRequest.userType());
+        userToUpdate.setLastUpdate(LocalDateTime.now());
+
+        return userRepository.save(userToUpdate);
+    }
 }

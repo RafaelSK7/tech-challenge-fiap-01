@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity(name = "users")
 @Getter
@@ -24,7 +24,7 @@ public class User {
     private String email;
     private String login;
     private String password;
-    private LocalDate lastUpdate;
+    private LocalDateTime lastUpdate;
     // TODO validar se vale a pena criar uma entidade Address, com o endereço completo, rua numero bairro cidade estado cep etc
     private String address;
     @Enumerated(EnumType.STRING)
@@ -38,7 +38,7 @@ public class User {
         this.password = request.password();
         this.address = request.address();
         this.userType = request.userType();
-        this.lastUpdate = LocalDate.now();
+        this.lastUpdate = LocalDateTime.now();
     }
 
 }

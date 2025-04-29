@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  restaurant_manager:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "127.0.0.1:8080:8080"
+    env_file:
+      - .env
+    restart: unless-stopped
+    networks:
+      - internal_net
+
+networks:
+  internal_net:
+    driver: bridge

@@ -3,9 +3,12 @@ package fiap.tech.challenge.restaurant_manager.controllers;
 import fiap.tech.challenge.restaurant_manager.entites.User;
 import fiap.tech.challenge.restaurant_manager.entites.request.CreateUserRequest;
 import fiap.tech.challenge.restaurant_manager.services.UserService;
+import jakarta.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.util.List;
 
@@ -20,7 +23,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody CreateUserRequest userRequest){
+    public ResponseEntity<User> createUser(@RequestBody @Valid CreateUserRequest userRequest){
         User createUser = userService.createUser(userRequest);
         // TODO: implementar a resposta created 201
         return ResponseEntity.ok(createUser);

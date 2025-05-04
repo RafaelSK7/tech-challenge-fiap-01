@@ -2,6 +2,8 @@ package fiap.tech.challenge.restaurant_manager.services;
 
 import fiap.tech.challenge.restaurant_manager.entites.User;
 import fiap.tech.challenge.restaurant_manager.entites.request.CreateUserRequest;
+import fiap.tech.challenge.restaurant_manager.entites.response.AddressResponse;
+import fiap.tech.challenge.restaurant_manager.entites.response.UserResponse;
 import fiap.tech.challenge.restaurant_manager.exceptions.LoginInvalidException;
 import fiap.tech.challenge.restaurant_manager.exceptions.UserNotFoundException;
 import fiap.tech.challenge.restaurant_manager.repositories.UserRepository;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -19,46 +22,78 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User createUser(CreateUserRequest userRequest) {
+
+    public UserResponse createUser(CreateUserRequest userRequest) {
         // TODO: implementar a validacao de dados
         // TODO: implementar um trycatch para tratamento de exceptions
-        // TODO: pensar no tipo de response que teremos para cada usuario, por exemplo, criar um DTO UserResponseDTO que retorna apenas email, login, nome e id
         User newUser = new User(userRequest);
-        return userRepository.save(newUser);
+        return toResponse(userRepository.save(newUser));
     }
 
-    public List<User> findAll() {
-        // TODO: pensar no tipo de response que teremos para cada usuario, por exemplo, criar um DTO UserResponseDTO que retorna apenas email, login, nome e id
-        return userRepository.findAll();
+    public List<UserResponse> findAll() {
+        return userRepository.findAll().stream()
+                .map(this::toResponse)
+                .collect(Collectors.toList());
     }
 
-    public User findById(Long id) {
-        // TODO: pensar no tipo de response que teremos para cada usuario, por exemplo, criar um DTO UserResponseDTO que retorna apenas email, login, nome e id
-        return userRepository.findById(id)
+    public UserResponse findById(Long id) {
+        return toResponse(userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(id)));
+    }
+
+    public UserResponse updateUser(Long id, CreateUserRequest userRequest) {
+        User userToUpdate = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
-    }
-
-    public User updateUser(Long id, CreateUserRequest userRequest) {
-        User userToUpdate = findById(id);
 
         userToUpdate.setName(userRequest.name());
         userToUpdate.setEmail(userRequest.email());
         userToUpdate.setLogin(userRequest.login());
         userToUpdate.setPassword(userRequest.password());
-        // userToUpdate.setAddress(userRequest.address()); criar uma controller com uma service para atualizar o endereço updateAddressByUserId
+        // criar uma controller com uma service para atualizar o endereço updateAddressByUserId
         userToUpdate.setUserType(userRequest.userType());
         userToUpdate.setLastUpdate(LocalDateTime.now());
 
-        return userRepository.save(userToUpdate);
+        return toResponse(userRepository.save(userToUpdate));
+    }
+
+
+    public void updateUserPassword(User user) {
+        userRepository.save(user);
     }
 
     public void deleteUser(Long id) {
-        User userToDelete = findById(id);
+        User userToDelete = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(id));
         userRepository.delete(userToDelete);
     }
 
     public User findByLogin(String login) {
         return userRepository.findByLogin(login)
                 .orElseThrow(LoginInvalidException::new);
+    }
+
+    private UserResponse toResponse(User user) {
+        AddressResponse addressResponse = null;
+
+        if (user.getAddress() != null) {
+            addressResponse = new AddressResponse(
+                    user.getAddress().getStreet(),
+                    user.getAddress().getNumber(),
+                    user.getAddress().getNeighborhood(),
+                    user.getAddress().getCity(),
+                    user.getAddress().getState(),
+                    user.getAddress().getZipCode(),
+                    user.getAddress().getCountry()
+            );
+        }
+
+        return new UserResponse(
+                user.getId(),
+                user.getName(),
+                user.getEmail(),
+                user.getLogin(),
+                user.getUserType().name(),
+                addressResponse
+        );
     }
 }

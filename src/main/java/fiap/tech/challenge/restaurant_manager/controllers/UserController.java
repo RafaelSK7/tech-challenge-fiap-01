@@ -2,6 +2,7 @@ package fiap.tech.challenge.restaurant_manager.controllers;
 
 import fiap.tech.challenge.restaurant_manager.entites.User;
 import fiap.tech.challenge.restaurant_manager.entites.request.CreateUserRequest;
+import fiap.tech.challenge.restaurant_manager.entites.response.UserResponse;
 import fiap.tech.challenge.restaurant_manager.services.UserService;
 import jakarta.validation.Valid;
 
@@ -23,28 +24,28 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody @Valid CreateUserRequest userRequest){
-        User createUser = userService.createUser(userRequest);
+    public ResponseEntity<UserResponse> createUser(@RequestBody @Valid CreateUserRequest userRequest){
+        UserResponse createUser = userService.createUser(userRequest);
         // TODO: implementar a resposta created 201
         return ResponseEntity.ok(createUser);
     }
 
     @GetMapping
-    public ResponseEntity<List> findAll(){
-        List<User> users = userService.findAll();
+    public ResponseEntity<List<UserResponse>> findAll(){
+        List<UserResponse> users = userService.findAll();
         return ResponseEntity.ok(users);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> findById(@PathVariable Long id){
-        User user = userService.findById(id);
+    public ResponseEntity<UserResponse> findById(@PathVariable Long id){
+        UserResponse user = userService.findById(id);
         return ResponseEntity.ok(user);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id,
+    public ResponseEntity<UserResponse> updateUser(@PathVariable Long id,
                                            @RequestBody CreateUserRequest userRequest){
-        User user = userService.updateUser(id, userRequest);
+        UserResponse user = userService.updateUser(id, userRequest);
         return ResponseEntity.ok(user);
     }
 

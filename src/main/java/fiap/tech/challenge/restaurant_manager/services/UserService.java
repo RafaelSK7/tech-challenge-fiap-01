@@ -45,7 +45,7 @@ public class UserService {
         userToUpdate.setEmail(userRequest.email());
         userToUpdate.setLogin(userRequest.login());
         userToUpdate.setPassword(userRequest.password());
-        userToUpdate.setAddress(userRequest.address());
+        // userToUpdate.setAddress(userRequest.address()); criar uma controller com uma service para atualizar o endereço updateAddressByUserId
         userToUpdate.setUserType(userRequest.userType());
         userToUpdate.setLastUpdate(LocalDateTime.now());
 

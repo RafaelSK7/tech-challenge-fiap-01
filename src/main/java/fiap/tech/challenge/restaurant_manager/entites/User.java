@@ -14,8 +14,6 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-
-
 @Entity(name = "users")
 @Getter
 @Setter
@@ -27,22 +25,26 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @NotBlank
     private String name;
-    @Email (message = "Formato do e-mail inválido")
+    @Email(message = "Formato do e-mail inválido")
     @Column(unique = true, nullable = false)
     private String email;
-    @NotBlank (message = "Usuário de login é obrigatório")
+    @NotBlank(message = "Usuário de login é obrigatório")
     @Column(unique = true, nullable = false)
     private String login;
-    @NotBlank (message = "Senha de login é obrigatório")
+    @NotBlank(message = "Senha de login é obrigatório")
     @Column(nullable = false)
     private String password;
     private LocalDateTime lastUpdate;
-    // TODO criar uma entidade Address, com o endereço completo, rua numero bairro cidade estado cep etc
-    private String address;
+
     @Enumerated(EnumType.STRING)
     private UserType userType;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    private Address address;
 
 
     public User(CreateUserRequest request) {
@@ -50,7 +52,7 @@ public class User {
         this.email = request.email();
         this.login = request.login();
         this.password = request.password();
-        this.address = request.address();
+        this.address = new Address(request);
         this.userType = request.userType();
         this.lastUpdate = LocalDateTime.now();
     }

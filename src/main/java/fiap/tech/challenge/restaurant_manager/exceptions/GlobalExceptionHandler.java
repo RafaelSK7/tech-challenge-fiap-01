@@ -24,7 +24,8 @@ import jakarta.validation.ConstraintViolationException;
 public class GlobalExceptionHandler {
 
     /**
-     * Trata exceções do tipo {@link UserNotFoundException} e retorna HTTP 404 (Not Found).
+     * Trata exceções do tipo {@link UserNotFoundException} e retorna HTTP 404 (Not
+     * Found).
      */
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<String> handleUserNotFound(UserNotFoundException ex) {
@@ -32,7 +33,8 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * Trata exceções do tipo {@link LoginInvalidException} e retorna HTTP 400 (Bad Request).
+     * Trata exceções do tipo {@link LoginInvalidException} e retorna HTTP 400 (Bad
+     * Request).
      */
     @ExceptionHandler(LoginInvalidException.class)
     public ResponseEntity<String> handleInvalidLogin(LoginInvalidException ex) {
@@ -45,7 +47,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ApiErrorArray> handleDataIntegrityViolationException(DataIntegrityViolationException ex,
-                                                                               HttpServletRequest request) {
+            HttpServletRequest request) {
 
         String fieldName = getFieldNameFromException(ex);
         String errorMessage = fieldName + " já está cadastrado";
@@ -66,7 +68,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiErrorArray> handleValidationExceptions(MethodArgumentNotValidException ex,
-                                                                    HttpServletRequest request) {
+            HttpServletRequest request) {
         List<String> errors = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
@@ -89,7 +91,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ApiErrorArray> handleConstraintViolationException(ConstraintViolationException ex,
-                                                                            HttpServletRequest request) {
+            HttpServletRequest request) {
         List<String> errors = ex.getConstraintViolations()
                 .stream()
                 .map(violation -> violation.getPropertyPath() + ": " + violation.getMessage())
@@ -107,7 +109,7 @@ public class GlobalExceptionHandler {
 
     /**
      * Extrai o nome do campo envolvido em uma exceção de integridade de dados,
-     * analisando a mensagem da exceção e retornando o nome do campo 
+     * analisando a mensagem da exceção e retornando o nome do campo
      * identificado ou "Campo" caso não encontrado.
      */
     private String getFieldNameFromException(DataIntegrityViolationException ex) {

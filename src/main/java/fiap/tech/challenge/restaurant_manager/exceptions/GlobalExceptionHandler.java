@@ -15,19 +15,36 @@ import fiap.tech.challenge.restaurant_manager.controllers.exceptions.ApiErrorArr
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
 
+/**
+ * Classe responsável pelo tratamento global de exceções na aplicação.
+ * Captura e trata exceções específicas lançadas pelos controllers,
+ * retornando respostas HTTP apropriadas.
+ */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    /**
+     * Trata exceções do tipo {@link UserNotFoundException} e retorna HTTP 404 (Not
+     * Found).
+     */
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<String> handleUserNotFound(UserNotFoundException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
+    /**
+     * Trata exceções do tipo {@link LoginInvalidException} e retorna HTTP 400 (Bad
+     * Request).
+     */
     @ExceptionHandler(LoginInvalidException.class)
     public ResponseEntity<String> handleInvalidLogin(LoginInvalidException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * Trata exceções de integridade de dados, como violações de chave única,
+     * retornando HTTP 409 (Conflict).
+     */
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ApiErrorArray> handleDataIntegrityViolationException(DataIntegrityViolationException ex,
             HttpServletRequest request) {
@@ -45,6 +62,10 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(apiError);
     }
 
+    /**
+     * Trata exceções de validação de argumentos do controller (Bean Validation),
+     * retornando HTTP 400 com a lista de campos inválidos.
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiErrorArray> handleValidationExceptions(MethodArgumentNotValidException ex,
             HttpServletRequest request) {
@@ -64,6 +85,10 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
     }
 
+    /**
+     * Trata exceções de validação de constraints em nível de bean ou path,
+     * retornando HTTP 400 com a lista de erros.
+     */
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ApiErrorArray> handleConstraintViolationException(ConstraintViolationException ex,
             HttpServletRequest request) {
@@ -82,6 +107,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
     }
 
+    /**
+     * Extrai o nome do campo envolvido em uma exceção de integridade de dados,
+     * analisando a mensagem da exceção e retornando o nome do campo
+     * identificado ou "Campo" caso não encontrado.
+     */
     private String getFieldNameFromException(DataIntegrityViolationException ex) {
         String message = ex.getMessage();
         if (message != null) {

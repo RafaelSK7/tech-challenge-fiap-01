@@ -7,6 +7,8 @@ import fiap.tech.challenge.restaurant_manager.entites.response.UserResponse;
 import fiap.tech.challenge.restaurant_manager.exceptions.LoginInvalidException;
 import fiap.tech.challenge.restaurant_manager.exceptions.UserNotFoundException;
 import fiap.tech.challenge.restaurant_manager.repositories.UserRepository;
+import fiap.tech.challenge.restaurant_manager.services.validation.ValidationService;
+
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -17,15 +19,17 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final UserRepository userRepository;
+    
+    private List<ValidationService> validations;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, List<ValidationService> validations) {
         this.userRepository = userRepository;
+        this.validations = validations;
     }
 
 
     public UserResponse createUser(CreateUserRequest userRequest) {
-        // TODO: implementar a validacao de dados
-        // TODO: implementar um trycatch para tratamento de exceptions
+    	this.validations.forEach(v -> v.validate(userRequest));
         User newUser = new User(userRequest);
         return toResponse(userRepository.save(newUser));
     }

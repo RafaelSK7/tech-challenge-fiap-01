@@ -42,6 +42,25 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * Trata exceções do tipo {@link InvalidEmailException} e retorna HTTP 400 (Bad
+     * Request).
+     */
+    @ExceptionHandler(InvalidEmailException.class)
+    public ResponseEntity<String> handleInvalidEmail(InvalidEmailException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+    
+    /**
+     * Trata exceções do tipo {@link InvalidAddressException} e retorna HTTP 400 (Bad
+     * Request).
+     */
+    @ExceptionHandler(InvalidAddressException.class)
+    public ResponseEntity<String> handleInvalidAddress(InvalidAddressException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+    
+   
+    /**
      * Trata exceções de integridade de dados, como violações de chave única,
      * retornando HTTP 409 (Conflict).
      */

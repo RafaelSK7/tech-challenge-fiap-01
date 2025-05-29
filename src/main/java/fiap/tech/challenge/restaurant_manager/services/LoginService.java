@@ -14,28 +14,37 @@ public class LoginService {
         this.userService = userService;
     }
 
-    public User validateLogin(String login, String password){
-        User user = userService.findByLogin(login);
+//    public User validateLogin(String login, String password){
+//        User user = userService.findByLogin(login);
+//
+//        if(!user.getPassword().equals(password)){
+//            throw new LoginInvalidException();
+//        }
+//
+//        return user;
+//    }
+//
+//    public void updatePassword(UpdatePasswordRequest request) {
+//
+//        User user = userService.findByLogin(request.login());
+//
+//        if(!user.getPassword().equals(request.oldPassword())){
+//            throw new LoginInvalidException();
+//        }
+//
+//        user.setPassword(request.newPassword());
+//
+//        updateUserPassword(user);
+//        
+//    }
+//    
+//    public void updateUserPassword(User user) {
+//		userRepository.save(user);
+//	}
+//    
+//	public User findByLogin(String login) {
+//		return userRepository.findByLogin(login).orElseThrow(LoginInvalidException::new);
+//	}
 
-        if(!user.getPassword().equals(password)){
-            throw new LoginInvalidException();
-        }
-
-        return user;
-    }
-
-    public void updatePassword(UpdatePasswordRequest request) {
-
-        User user = userService.findByLogin(request.login());
-
-        if(!user.getPassword().equals(request.oldPassword())){
-            throw new LoginInvalidException();
-        }
-
-        user.setPassword(request.newPassword());
-
-        userService.updateUserPassword(user);
-
-    }
 
 }

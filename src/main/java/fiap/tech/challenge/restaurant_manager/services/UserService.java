@@ -1,5 +1,13 @@
 package fiap.tech.challenge.restaurant_manager.services;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
 import fiap.tech.challenge.restaurant_manager.entites.User;
 import fiap.tech.challenge.restaurant_manager.entites.request.CreateUserRequest;
 import fiap.tech.challenge.restaurant_manager.entites.response.AddressResponse;
@@ -7,97 +15,48 @@ import fiap.tech.challenge.restaurant_manager.entites.response.UserResponse;
 import fiap.tech.challenge.restaurant_manager.exceptions.LoginInvalidException;
 import fiap.tech.challenge.restaurant_manager.exceptions.UserNotFoundException;
 import fiap.tech.challenge.restaurant_manager.repositories.UserRepository;
-import fiap.tech.challenge.restaurant_manager.services.validation.ValidationService;
-
-import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
+import fiap.tech.challenge.restaurant_manager.services.usecase.CreateUserUseCase;
+import fiap.tech.challenge.restaurant_manager.services.usecase.DeleteUserUseCase;
+import fiap.tech.challenge.restaurant_manager.services.usecase.ReadUserUseCase;
+import fiap.tech.challenge.restaurant_manager.services.usecase.UpdateUserUseCase;
+import fiap.tech.challenge.restaurant_manager.services.validation.CreateUserValidationService;
+import fiap.tech.challenge.restaurant_manager.services.validation.UpdateUserValidationService;
 
 @Service
 public class UserService {
+	
+	private CreateUserUseCase createUserUseCase;
+	private UpdateUserUseCase updateUserUseCase;
+	private ReadUserUseCase readUserUseCase;
+	private DeleteUserUseCase deleteUserUseCase;
+	
+	public UserService(CreateUserUseCase createUserUseCase, UpdateUserUseCase updateUserUseCase, ReadUserUseCase readUserUseCase, DeleteUserUseCase deleteUserUseCase) {
+		this.createUserUseCase = createUserUseCase;
+		this.updateUserUseCase = updateUserUseCase;
+		this.readUserUseCase = readUserUseCase;
+		this.deleteUserUseCase = deleteUserUseCase;
+	}
 
-    private final UserRepository userRepository;
-    
-    private List<ValidationService> validations;
+	public UserResponse createUser(CreateUserRequest userRequest) {		
+		return createUserUseCase.createUser(userRequest);
+		
+	}
 
-    public UserService(UserRepository userRepository, List<ValidationService> validations) {
-        this.userRepository = userRepository;
-        this.validations = validations;
-    }
+	public Page<UserResponse> findAll(Pageable page) {
+		return readUserUseCase.findAll(page);
+	}
 
+	public UserResponse findById(Long id) {
+		return readUserUseCase.findById(id);
+	}
 
-    public UserResponse createUser(CreateUserRequest userRequest) {
-    	this.validations.forEach(v -> v.validate(userRequest));
-        User newUser = new User(userRequest);
-        return toResponse(userRepository.save(newUser));
-    }
+	public UserResponse updateUser(Long id, CreateUserRequest userRequest) {
+		
+		return updateUserUseCase.updateUser(id ,userRequest);
+	}
 
-    public List<UserResponse> findAll() {
-        return userRepository.findAll().stream()
-                .map(this::toResponse)
-                .collect(Collectors.toList());
-    }
+	public void deleteUser(Long id) {
+		deleteUserUseCase.deleteUser(id);
+	}
 
-    public UserResponse findById(Long id) {
-        return toResponse(userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException(id)));
-    }
-
-    public UserResponse updateUser(Long id, CreateUserRequest userRequest) {
-        User userToUpdate = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException(id));
-
-        userToUpdate.setName(userRequest.name());
-        userToUpdate.setEmail(userRequest.email());
-        userToUpdate.setLogin(userRequest.login());
-        userToUpdate.setPassword(userRequest.password());
-        // criar uma controller com uma service para atualizar o endereço updateAddressByUserId
-        userToUpdate.setUserType(userRequest.userType());
-        userToUpdate.setLastUpdate(LocalDateTime.now());
-
-        return toResponse(userRepository.save(userToUpdate));
-    }
-
-
-    public void updateUserPassword(User user) {
-        userRepository.save(user);
-    }
-
-    public void deleteUser(Long id) {
-        User userToDelete = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException(id));
-        userRepository.delete(userToDelete);
-    }
-
-    public User findByLogin(String login) {
-        return userRepository.findByLogin(login)
-                .orElseThrow(LoginInvalidException::new);
-    }
-
-    private UserResponse toResponse(User user) {
-        AddressResponse addressResponse = null;
-
-        if (user.getAddress() != null) {
-            addressResponse = new AddressResponse(
-                    user.getAddress().getStreet(),
-                    user.getAddress().getNumber(),
-                    user.getAddress().getNeighborhood(),
-                    user.getAddress().getCity(),
-                    user.getAddress().getState(),
-                    user.getAddress().getZipCode(),
-                    user.getAddress().getCountry()
-            );
-        }
-
-        return new UserResponse(
-                user.getId(),
-                user.getName(),
-                user.getEmail(),
-                user.getLogin(),
-                user.getUserType().name(),
-                addressResponse
-        );
-    }
 }

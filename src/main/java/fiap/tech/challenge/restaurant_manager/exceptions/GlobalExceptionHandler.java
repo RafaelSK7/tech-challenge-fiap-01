@@ -59,6 +59,15 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
     
+    /**
+     * Trata exceções do tipo {@link InvalidAddressException} e retorna HTTP 400 (Bad
+     * Request).
+     */
+    @ExceptionHandler(InvalidPasswordException.class)
+    public ResponseEntity<String> handleInvalidAddress(InvalidPasswordException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+    
    
     /**
      * Trata exceções de integridade de dados, como violações de chave única,

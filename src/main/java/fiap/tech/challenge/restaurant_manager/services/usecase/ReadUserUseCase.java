@@ -1,0 +1,55 @@
+package fiap.tech.challenge.restaurant_manager.services.usecase;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import fiap.tech.challenge.restaurant_manager.entites.User;
+import fiap.tech.challenge.restaurant_manager.entites.response.AddressResponse;
+import fiap.tech.challenge.restaurant_manager.entites.response.UserResponse;
+import fiap.tech.challenge.restaurant_manager.exceptions.UserNotFoundException;
+import fiap.tech.challenge.restaurant_manager.repositories.UserRepository;
+
+@Service
+public class ReadUserUseCase {
+
+	private UserRepository userRepository;
+
+	public ReadUserUseCase(UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
+
+	public Page<UserResponse> findAll(Pageable page) {
+		Page<User> userPages = userRepository.findAll(page);
+
+		List<User> userList = userPages.getContent();
+
+		List<UserResponse> responseList = userList.stream().map(this::toResponse).collect(Collectors.toList());
+
+		Page<UserResponse> responsePages = new PageImpl<UserResponse>(responseList, page, userPages.getTotalElements());
+
+		return responsePages;
+	}
+
+	public UserResponse findById(Long id) {
+		return toResponse(userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id)));
+	}
+
+	private UserResponse toResponse(User user) {
+		AddressResponse addressResponse = null;
+
+		if (user.getAddress() != null) {
+			addressResponse = new AddressResponse(user.getAddress().getStreet(), user.getAddress().getNumber(),
+					user.getAddress().getNeighborhood(), user.getAddress().getCity(), user.getAddress().getState(),
+					user.getAddress().getZipCode(), user.getAddress().getCountry());
+		}
+
+		return new UserResponse(user.getId(), user.getName(), user.getEmail(), user.getLogin(),
+				user.getUserType().name(), addressResponse);
+	}
+
+}

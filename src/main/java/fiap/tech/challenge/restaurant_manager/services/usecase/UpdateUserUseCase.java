@@ -5,39 +5,39 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import fiap.tech.challenge.restaurant_manager.entites.Address;
 import fiap.tech.challenge.restaurant_manager.entites.User;
 import fiap.tech.challenge.restaurant_manager.entites.request.CreateUserRequest;
 import fiap.tech.challenge.restaurant_manager.entites.response.AddressResponse;
 import fiap.tech.challenge.restaurant_manager.entites.response.UserResponse;
 import fiap.tech.challenge.restaurant_manager.exceptions.UserNotFoundException;
 import fiap.tech.challenge.restaurant_manager.repositories.UserRepository;
-import fiap.tech.challenge.restaurant_manager.services.validation.UpdateUserValidationService;
+import fiap.tech.challenge.restaurant_manager.services.validation.ValidationService;
 
 @Service
 public class UpdateUserUseCase {
 
 	private final UserRepository userRepository;
 
-	private List<UpdateUserValidationService> updateUserValidations;
+	private List<ValidationService> validationService;
 
-	public UpdateUserUseCase(UserRepository userRepository, List<UpdateUserValidationService> updateUserValidations) {
+	public UpdateUserUseCase(UserRepository userRepository, List<ValidationService> validationService) {
 		this.userRepository = userRepository;
-		this.updateUserValidations = updateUserValidations;
+		this.validationService = validationService;
 	}
 
 	public UserResponse updateUser(Long id, CreateUserRequest userRequest) {
 
 		User userToUpdate = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
 
-		this.updateUserValidations.forEach(v -> v.validate(userRequest, userToUpdate));
+		this.validationService.forEach(v -> v.validate(userRequest));
 
 		userToUpdate.setName(userRequest.name());
 		userToUpdate.setEmail(userRequest.email());
 		userToUpdate.setLogin(userRequest.login());
 		userToUpdate.setPassword(userRequest.password());
-		// criar uma controller com uma service para atualizar o endereço
-		// updateAddressByUserId
 		userToUpdate.setUserType(userRequest.userType());
+		userToUpdate.setAddress(new Address(userRequest));
 		userToUpdate.setLastUpdate(LocalDateTime.now());
 
 		return toResponse(userRepository.save(userToUpdate));

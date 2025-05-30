@@ -9,8 +9,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import fiap.tech.challenge.restaurant_manager.entites.User;
+import fiap.tech.challenge.restaurant_manager.entites.request.LoginRequest;
 import fiap.tech.challenge.restaurant_manager.entites.response.AddressResponse;
+import fiap.tech.challenge.restaurant_manager.entites.response.LoginResponse;
 import fiap.tech.challenge.restaurant_manager.entites.response.UserResponse;
+import fiap.tech.challenge.restaurant_manager.exceptions.InvalidLogonException;
 import fiap.tech.challenge.restaurant_manager.exceptions.UserNotFoundException;
 import fiap.tech.challenge.restaurant_manager.repositories.UserRepository;
 
@@ -37,6 +40,14 @@ public class ReadUserUseCase {
 
 	public UserResponse findById(Long id) {
 		return toResponse(userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id)));
+	}
+	
+	public LoginResponse findByLoginAndPassword(LoginRequest loginRequest) {
+		return toLoginResponse(userRepository.findByLoginAndPassword(loginRequest.login(), loginRequest.password()).orElseThrow(() -> new InvalidLogonException()));
+	}
+
+	private LoginResponse toLoginResponse(User user) {
+		return new LoginResponse(user.getId(), user.getName(), user.getLogin(), user.getUserType());
 	}
 
 	private UserResponse toResponse(User user) {

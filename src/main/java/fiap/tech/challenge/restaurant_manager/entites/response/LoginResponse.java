@@ -5,6 +5,7 @@ import fiap.tech.challenge.restaurant_manager.entites.enums.UserType;
 public record LoginResponse(
         Long id,
         String name,
+        String login,
         UserType userType
 ) {
 }

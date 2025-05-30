@@ -10,5 +10,5 @@ import fiap.tech.challenge.restaurant_manager.entites.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     
-	Optional<User> findByLogin(String login);
+	Optional<User> findByLoginAndPassword(String login, String Password);
 }

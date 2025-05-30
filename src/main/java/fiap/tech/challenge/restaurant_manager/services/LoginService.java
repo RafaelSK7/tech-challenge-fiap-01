@@ -1,50 +1,21 @@
 package fiap.tech.challenge.restaurant_manager.services;
 
-import fiap.tech.challenge.restaurant_manager.entites.User;
-import fiap.tech.challenge.restaurant_manager.entites.request.UpdatePasswordRequest;
-import fiap.tech.challenge.restaurant_manager.exceptions.LoginInvalidException;
 import org.springframework.stereotype.Service;
+
+import fiap.tech.challenge.restaurant_manager.entites.request.LoginRequest;
+import fiap.tech.challenge.restaurant_manager.entites.response.LoginResponse;
 
 @Service
 public class LoginService {
 
-    private final UserService userService;
+	private final UserService userService;
 
-    public LoginService(UserService userService) {
-        this.userService = userService;
-    }
+	public LoginService(UserService userService) {
+		this.userService = userService;
+	}
 
-//    public User validateLogin(String login, String password){
-//        User user = userService.findByLogin(login);
-//
-//        if(!user.getPassword().equals(password)){
-//            throw new LoginInvalidException();
-//        }
-//
-//        return user;
-//    }
-//
-//    public void updatePassword(UpdatePasswordRequest request) {
-//
-//        User user = userService.findByLogin(request.login());
-//
-//        if(!user.getPassword().equals(request.oldPassword())){
-//            throw new LoginInvalidException();
-//        }
-//
-//        user.setPassword(request.newPassword());
-//
-//        updateUserPassword(user);
-//        
-//    }
-//    
-//    public void updateUserPassword(User user) {
-//		userRepository.save(user);
-//	}
-//    
-//	public User findByLogin(String login) {
-//		return userRepository.findByLogin(login).orElseThrow(LoginInvalidException::new);
-//	}
-
+	public LoginResponse findByLogin(LoginRequest loginRequest) {
+		return userService.findByLoginAndPassword(loginRequest);
+	}
 
 }

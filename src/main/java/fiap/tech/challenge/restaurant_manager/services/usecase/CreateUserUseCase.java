@@ -9,16 +9,16 @@ import fiap.tech.challenge.restaurant_manager.entites.request.CreateUserRequest;
 import fiap.tech.challenge.restaurant_manager.entites.response.AddressResponse;
 import fiap.tech.challenge.restaurant_manager.entites.response.UserResponse;
 import fiap.tech.challenge.restaurant_manager.repositories.UserRepository;
-import fiap.tech.challenge.restaurant_manager.services.validation.CreateUserValidationService;
+import fiap.tech.challenge.restaurant_manager.services.validation.ValidationService;
 
 @Service
 public class CreateUserUseCase {
 	
 	private final UserRepository userRepository;
 	
-	private List<CreateUserValidationService> createUserValidations;
+	private List<ValidationService> createUserValidations;
 	
-	public CreateUserUseCase(UserRepository userRepository, List<CreateUserValidationService> createUserValidations) {
+	public CreateUserUseCase(UserRepository userRepository, List<ValidationService> createUserValidations) {
 		this.userRepository = userRepository;
 		this.createUserValidations = createUserValidations;
 	}

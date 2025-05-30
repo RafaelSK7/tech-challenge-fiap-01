@@ -5,12 +5,12 @@ import org.springframework.stereotype.Service;
 import fiap.tech.challenge.restaurant_manager.entites.request.CreateAddressRequest;
 import fiap.tech.challenge.restaurant_manager.entites.request.CreateUserRequest;
 import fiap.tech.challenge.restaurant_manager.exceptions.InvalidAddressException;
-import fiap.tech.challenge.restaurant_manager.services.validation.CreateUserValidationService;
+import fiap.tech.challenge.restaurant_manager.services.validation.ValidationService;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-public class AddressValidation implements CreateUserValidationService {
+public class AddressValidation implements ValidationService {
 
 	@Override
 	public void validate(CreateUserRequest request) {
@@ -38,7 +38,7 @@ public class AddressValidation implements CreateUserValidationService {
 		if ((addressRequest.street() == null) || (addressRequest.street().isEmpty())
 				|| (addressRequest.street().isBlank()) || (addressRequest.number() == null)
 				|| (addressRequest.number().isEmpty()) || (addressRequest.number().isBlank()))
-			throw new InvalidAddressException("Logradouro invalido");
+			throw new InvalidAddressException("Logradouro ou numero invalidos");
 
 	}
 

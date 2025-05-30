@@ -33,11 +33,11 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * Trata exceções do tipo {@link LoginInvalidException} e retorna HTTP 400 (Bad
+     * Trata exceções do tipo {@link InvalidLogonException} e retorna HTTP 400 (Bad
      * Request).
      */
-    @ExceptionHandler(LoginInvalidException.class)
-    public ResponseEntity<String> handleInvalidLogin(LoginInvalidException ex) {
+    @ExceptionHandler(InvalidLogonException.class)
+    public ResponseEntity<String> handleInvalidLogin(InvalidLogonException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
@@ -65,6 +65,15 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(InvalidPasswordException.class)
     public ResponseEntity<String> handleInvalidAddress(InvalidPasswordException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+    
+    /**
+     * Trata exceções do tipo {@link InvalidLoginException} e retorna HTTP 400 (Bad
+     * Request).
+     */
+    @ExceptionHandler(InvalidLoginException.class)
+    public ResponseEntity<String> handleInvalidLogin(InvalidLoginException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
     

@@ -1,8 +1,13 @@
 package fiap.tech.challenge.restaurant_manager.controllers;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import fiap.tech.challenge.restaurant_manager.entites.request.LoginRequest;
+import fiap.tech.challenge.restaurant_manager.entites.response.LoginResponse;
 import fiap.tech.challenge.restaurant_manager.services.LoginService;
 
 @RestController
@@ -15,23 +20,12 @@ public class LoginController {
 		this.loginService = loginService;
 	}
 
-//    @PostMapping
-//    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
-//        // TODO validar a resposta que é feita de um login, e se iremos usar o spring security
-//        User user = loginService.validateLogin(loginRequest.login(), loginRequest.password());
-//
-//        LoginResponse loginResponse = new LoginResponse(user.getId(), user.getName(), user.getUserType());
-//
-//        return ResponseEntity.ok(loginResponse);
-//    }
-//
-//    @PatchMapping
-//    public ResponseEntity<String> updatePassword(@RequestBody UpdatePasswordRequest request) {
-//
-//        loginService.updatePassword(request);
-//
-//        return ResponseEntity.ok("Senha atualizada com sucesso");
-//
-//    }
+    @PostMapping
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
+
+        LoginResponse loginResponse = loginService.findByLogin(loginRequest);
+
+        return ResponseEntity.ok(loginResponse);
+    }
 
 }

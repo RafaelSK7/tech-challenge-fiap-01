@@ -1,8 +1,19 @@
 package fiap.tech.challenge.restaurant_manager.entites;
 
+import java.time.LocalDateTime;
+
 import fiap.tech.challenge.restaurant_manager.entites.enums.UserType;
 import fiap.tech.challenge.restaurant_manager.entites.request.CreateUserRequest;
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -10,9 +21,6 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-
-import java.time.LocalDateTime;
 
 @Entity(name = "users")
 @Getter

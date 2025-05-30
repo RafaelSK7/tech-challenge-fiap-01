@@ -33,14 +33,51 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * Trata exceções do tipo {@link LoginInvalidException} e retorna HTTP 400 (Bad
+     * Trata exceções do tipo {@link InvalidLogonException} e retorna HTTP 400 (Bad
      * Request).
      */
-    @ExceptionHandler(LoginInvalidException.class)
-    public ResponseEntity<String> handleInvalidLogin(LoginInvalidException ex) {
+    @ExceptionHandler(InvalidLogonException.class)
+    public ResponseEntity<String> handleInvalidLogin(InvalidLogonException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * Trata exceções do tipo {@link InvalidEmailException} e retorna HTTP 400 (Bad
+     * Request).
+     */
+    @ExceptionHandler(InvalidEmailException.class)
+    public ResponseEntity<String> handleInvalidEmail(InvalidEmailException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+    
+    /**
+     * Trata exceções do tipo {@link InvalidAddressException} e retorna HTTP 400 (Bad
+     * Request).
+     */
+    @ExceptionHandler(InvalidAddressException.class)
+    public ResponseEntity<String> handleInvalidAddress(InvalidAddressException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+    
+    /**
+     * Trata exceções do tipo {@link InvalidAddressException} e retorna HTTP 400 (Bad
+     * Request).
+     */
+    @ExceptionHandler(InvalidPasswordException.class)
+    public ResponseEntity<String> handleInvalidAddress(InvalidPasswordException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+    
+    /**
+     * Trata exceções do tipo {@link InvalidLoginException} e retorna HTTP 400 (Bad
+     * Request).
+     */
+    @ExceptionHandler(InvalidLoginException.class)
+    public ResponseEntity<String> handleInvalidLogin(InvalidLoginException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+    
+   
     /**
      * Trata exceções de integridade de dados, como violações de chave única,
      * retornando HTTP 409 (Conflict).

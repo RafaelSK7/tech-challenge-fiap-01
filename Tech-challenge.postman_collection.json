@@ -1,0 +1,924 @@
+{
+	"info": {
+		"_postman_id": "74aa14fc-6766-473d-aa63-71e44a1aa0ca",
+		"name": "Tech-challenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11554107",
+		"_collection_link": "https://speeding-zodiac-339825.postman.co/workspace/FIAP~84eff53d-6c73-4d55-9161-b308a6163349/collection/11554107-74aa14fc-6766-473d-aa63-71e44a1aa0ca?action=share&source=collection_link&creator=11554107"
+	},
+	"item": [
+		{
+			"name": "Valid Requests",
+			"item": [
+				{
+					"name": "Find all users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find by id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create user admin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Jorge Admin\",\r\n    \"email\": \"jorgeAdmin@gmail.com\",\r\n    \"login\": \"admin\",\r\n    \"password\": \"admin\",\r\n    \"address\": {\r\n        \"street\": \"Rua das Flores\",\r\n        \"number\": \"123\",\r\n        \"neighborhood\": \"Centro\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"01000-000\",\r\n        \"country\": \"Brasil\"\r\n    },\r\n    \"userType\": 1\r\n    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create user client",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Jorge Cliente\",\r\n    \"email\": \"jorgeCliete@gmail.com\",\r\n    \"login\": \"cliente\",\r\n    \"password\": \"cliente\",\r\n    \"address\": {\r\n        \"street\": \"Rua das Flores\",\r\n        \"number\": \"123\",\r\n        \"neighborhood\": \"Centro\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"01000-000\",\r\n        \"country\": \"Brasil\"\r\n    },\r\n    \"userType\": 0\r\n    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update users",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Jorge Admin\",\r\n    \"email\": \"jorgeAdmin2@gmail.com\",\r\n    \"login\": \"admin2\",\r\n    \"password\": \"admin2\",\r\n    \"address\": {\r\n        \"street\": \"Rua Dos Jardins\",\r\n        \"number\": \"150\",\r\n        \"neighborhood\": \"Copacabana\",\r\n        \"city\": \"Rio de Janeiro\",\r\n        \"state\": \"RJ\",\r\n        \"zipCode\": \"21358-610\",\r\n        \"country\": \"Chile\"\r\n    },\r\n    \"userType\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete user by id",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"login\": \"admin2\",\r\n    \"password\": \"admin2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Invalid Requests",
+			"item": [
+				{
+					"name": "Create User Invalid Addresses",
+					"item": [
+						{
+							"name": "Create user admin Invalid street",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Jorge Admin\",\r\n    \"email\": \"jorgeAdmin@gmail.com\",\r\n    \"login\": \"admin\",\r\n    \"password\": \"admin\",\r\n    \"address\": {\r\n        \"street\": \"\",\r\n        \"number\": \"123\",\r\n        \"neighborhood\": \"Centro\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"01000-000\",\r\n        \"country\": \"Brasil\"\r\n    },\r\n    \"userType\": 1\r\n    \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/users",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create user admin Invalid number",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Jorge Admin\",\r\n    \"email\": \"jorgeAdmin@gmail.com\",\r\n    \"login\": \"admin\",\r\n    \"password\": \"admin\",\r\n    \"address\": {\r\n        \"street\": \"Rua das flores\",\r\n        \"number\": \"\",\r\n        \"neighborhood\": \"Centro\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"01000-000\",\r\n        \"country\": \"Brasil\"\r\n    },\r\n    \"userType\": 1\r\n    \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/users",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create user admin Invalid neiborhood",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Jorge Admin\",\r\n    \"email\": \"jorgeAdmin@gmail.com\",\r\n    \"login\": \"admin\",\r\n    \"password\": \"admin\",\r\n    \"address\": {\r\n        \"street\": \"jorgeAdmin@gmail.com\",\r\n        \"number\": \"123\",\r\n        \"neighborhood\": \"\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"01000-000\",\r\n        \"country\": \"Brasil\"\r\n    },\r\n    \"userType\": 1\r\n    \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/users",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create user admin Invalid city",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Jorge Admin\",\r\n    \"email\": \"jorgeAdmin@gmail.com\",\r\n    \"login\": \"admin\",\r\n    \"password\": \"admin\",\r\n    \"address\": {\r\n        \"street\": \"Rua das flores\",\r\n        \"number\": \"123\",\r\n        \"neighborhood\": \"Centro\",\r\n        \"city\": \"\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"01000-000\",\r\n        \"country\": \"Brasil\"\r\n    },\r\n    \"userType\": 1\r\n    \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/users",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create user admin Invalid state",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Jorge Admin\",\r\n    \"email\": \"jorgeAdmin@gmail.com\",\r\n    \"login\": \"admin\",\r\n    \"password\": \"admin\",\r\n    \"address\": {\r\n        \"street\": \"Rua das flores\",\r\n        \"number\": \"123\",\r\n        \"neighborhood\": \"Centro\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"\",\r\n        \"zipCode\": \"01000-000\",\r\n        \"country\": \"Brasil\"\r\n    },\r\n    \"userType\": 1\r\n    \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/users",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create user admin Invalid country",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Jorge Admin\",\r\n    \"email\": \"jorgeAdmin@gmail.com\",\r\n    \"login\": \"admin\",\r\n    \"password\": \"admin\",\r\n    \"address\": {\r\n        \"street\": \"Rua das flores\",\r\n        \"number\": \"123\",\r\n        \"neighborhood\": \"Centro\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"01000-000\",\r\n        \"country\": \"\"\r\n    },\r\n    \"userType\": 1\r\n    \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/users",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create user admin Invalid zip code",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Jorge Admin\",\r\n    \"email\": \"jorgeAdmin@gmail.com\",\r\n    \"login\": \"admin\",\r\n    \"password\": \"admin\",\r\n    \"address\": {\r\n        \"street\": \"Rua das flores\",\r\n        \"number\": \"123\",\r\n        \"neighborhood\": \"Centro\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"\",\r\n        \"country\": \"Brasil\"\r\n    },\r\n    \"userType\": 1\r\n    \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/users",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Update User invalid Addresses",
+					"item": [
+						{
+							"name": "Update User Invalid Street",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Jorge Admin\",\r\n    \"email\": \"jorgeAdmin@gmail.com\",\r\n    \"login\": \"admin\",\r\n    \"password\": \"admin1\",\r\n    \"address\": {\r\n        \"street\": \"\",\r\n        \"number\": \"123\",\r\n        \"neighborhood\": \"Centro\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"01000-000\",\r\n        \"country\": \"Brasil\"\r\n    },\r\n    \"userType\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/users/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"users",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update User Invalid Number",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Jorge Admin\",\r\n    \"email\": \"jorgeAdmin@gmail.com\",\r\n    \"login\": \"admin\",\r\n    \"password\": \"admin1\",\r\n    \"address\": {\r\n        \"street\": \"Rua das Flores\",\r\n        \"number\": \"\",\r\n        \"neighborhood\": \"Centro\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"01000-000\",\r\n        \"country\": \"Brasil\"\r\n    },\r\n    \"userType\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/users/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"users",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update User Invalid Neiborhood",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Jorge Admin\",\r\n    \"email\": \"jorgeAdmin@gmail.com\",\r\n    \"login\": \"admin\",\r\n    \"password\": \"admin1\",\r\n    \"address\": {\r\n        \"street\": \"Rua das Flores\",\r\n        \"number\": \"123\",\r\n        \"neighborhood\": \"\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"01000-000\",\r\n        \"country\": \"Brasil\"\r\n    },\r\n    \"userType\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/users/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"users",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update User Invalid City",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Jorge Admin\",\r\n    \"email\": \"jorgeAdmin@gmail.com\",\r\n    \"login\": \"admin\",\r\n    \"password\": \"admin1\",\r\n    \"address\": {\r\n        \"street\": \"Rua das Flores\",\r\n        \"number\": \"123\",\r\n        \"neighborhood\": \"Centro\",\r\n        \"city\": \"\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"01000-000\",\r\n        \"country\": \"Brasil\"\r\n    },\r\n    \"userType\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/users/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"users",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update User Invalid State",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Jorge Admin\",\r\n    \"email\": \"jorgeAdmin@gmail.com\",\r\n    \"login\": \"admin\",\r\n    \"password\": \"admin1\",\r\n    \"address\": {\r\n        \"street\": \"Rua das Flores\",\r\n        \"number\": \"123\",\r\n        \"neighborhood\": \"Centro\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"\",\r\n        \"zipCode\": \"01000-000\",\r\n        \"country\": \"Brasil\"\r\n    },\r\n    \"userType\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/users/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"users",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update User Invalid Zip Code",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Jorge Admin\",\r\n    \"email\": \"jorgeAdmin@gmail.com\",\r\n    \"login\": \"admin\",\r\n    \"password\": \"admin1\",\r\n    \"address\": {\r\n        \"street\": \"Rua das Flores\",\r\n        \"number\": \"123\",\r\n        \"neighborhood\": \"Centro\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"\",\r\n        \"country\": \"Brasil\"\r\n    },\r\n    \"userType\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/users/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"users",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update User Invalid Country",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Jorge Admin\",\r\n    \"email\": \"jorgeAdmin@gmail.com\",\r\n    \"login\": \"admin\",\r\n    \"password\": \"admin1\",\r\n    \"address\": {\r\n        \"street\": \"Rua das Flores\",\r\n        \"number\": \"123\",\r\n        \"neighborhood\": \"Centro\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"01000-000\",\r\n        \"country\": \"\"\r\n    },\r\n    \"userType\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/users/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"users",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Find by id user not found",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/9999",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"9999"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create user admin Invalid email",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Jorge Admin\",\r\n    \"email\": \"\",\r\n    \"login\": \"admin\",\r\n    \"password\": \"admin\",\r\n    \"address\": {\r\n        \"street\": \"Rua das Flores\",\r\n        \"number\": \"123\",\r\n        \"neighborhood\": \"Centro\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"01000-000\",\r\n        \"country\": \"Brasil\"\r\n    },\r\n    \"userType\": 1\r\n    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create user admin Invalid login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Jorge Admin\",\r\n    \"email\": \"jorgeAdmin@gmail.com\",\r\n    \"login\": \"\",\r\n    \"password\": \"admin\",\r\n    \"address\": {\r\n        \"street\": \"Rua das Flores\",\r\n        \"number\": \"123\",\r\n        \"neighborhood\": \"Centro\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"01000-000\",\r\n        \"country\": \"Brasil\"\r\n    },\r\n    \"userType\": 1\r\n    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create user admin Invalid password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Jorge Admin\",\r\n    \"email\": \"jorgeAdmin@gmail.com\",\r\n    \"login\": \"admin\",\r\n    \"password\": \"\",\r\n    \"address\": {\r\n        \"street\": \"Rua das Flores\",\r\n        \"number\": \"123\",\r\n        \"neighborhood\": \"Centro\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"01000-000\",\r\n        \"country\": \"Brasil\"\r\n    },\r\n    \"userType\": 1\r\n    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update users not found",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Jorge Admin\",\r\n    \"email\": \"jorgeAdmin@gmail.com\",\r\n    \"login\": \"admin\",\r\n    \"password\": \"admin1\",\r\n    \"address\": {\r\n        \"street\": \"Rua das Flores\",\r\n        \"number\": \"123\",\r\n        \"neighborhood\": \"Centro\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"01000-000\",\r\n        \"country\": \"Brasil\"\r\n    },\r\n    \"userType\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/9999",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"9999"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update user Invalid Email",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Jorge Admin\",\r\n    \"email\": \"\",\r\n    \"login\": \"admin\",\r\n    \"password\": \"admin1\",\r\n    \"address\": {\r\n        \"street\": \"Rua das Flores\",\r\n        \"number\": \"123\",\r\n        \"neighborhood\": \"Centro\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"01000-000\",\r\n        \"country\": \"Brasil\"\r\n    },\r\n    \"userType\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update user Invalid Login",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Jorge Admin\",\r\n    \"email\": \"jorgeAdmin@gmail.com\",\r\n    \"login\": \"\",\r\n    \"password\": \"admin1\",\r\n    \"address\": {\r\n        \"street\": \"Rua das Flores\",\r\n        \"number\": \"123\",\r\n        \"neighborhood\": \"Centro\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"01000-000\",\r\n        \"country\": \"Brasil\"\r\n    },\r\n    \"userType\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update user Invalid Password",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Jorge Admin\",\r\n    \"email\": \"jorgeAdmin@gmail.com\",\r\n    \"login\": \"admin\",\r\n    \"password\": \"\",\r\n    \"address\": {\r\n        \"street\": \"Rua das Flores\",\r\n        \"number\": \"123\",\r\n        \"neighborhood\": \"Centro\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"01000-000\",\r\n        \"country\": \"Brasil\"\r\n    },\r\n    \"userType\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete user by id Copy",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/9999",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"9999"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login Invalid Login or Password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"login\": \"admin\",\r\n    \"password\": \"admin123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

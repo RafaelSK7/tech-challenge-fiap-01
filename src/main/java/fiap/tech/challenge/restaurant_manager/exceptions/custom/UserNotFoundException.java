@@ -1,4 +1,4 @@
-package fiap.tech.challenge.restaurant_manager.exceptions;
+package fiap.tech.challenge.restaurant_manager.exceptions.custom;
 
 public class UserNotFoundException extends RuntimeException {
     

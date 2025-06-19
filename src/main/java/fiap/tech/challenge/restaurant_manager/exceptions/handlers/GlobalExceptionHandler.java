@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -23,10 +22,11 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    private static final Map<String, String> CONSTRAINT_MESSAGES = Map.of(
-        "LOGIN", "Login já está cadastrado",
-        "EMAIL", "Email já está cadastrado"
-    );
+    private final ConstraintMessageResolver constraintMessageResolver;
+
+    public GlobalExceptionHandler(ConstraintMessageResolver constraintMessageResolver) {
+        this.constraintMessageResolver = constraintMessageResolver;
+    }
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ApiErrorArray> handleConstraintViolationException(
@@ -54,21 +54,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiErrorArray> handleDataIntegrityViolation(
             DataIntegrityViolationException ex, HttpServletRequest request) {
 
-        String message = extractConstraintMessage(ex);
+        String message = constraintMessageResolver.resolveMessage(ex.getMessage());
         return ApiErrorBuilder.build(HttpStatus.CONFLICT, message, request);
-    }
-
-    private String extractConstraintMessage(DataIntegrityViolationException ex) {
-        String rawMessage = ex.getMessage();
-
-        if (rawMessage != null && rawMessage.contains("Unique index or primary key violation")) {
-            for (Map.Entry<String, String> entry : CONSTRAINT_MESSAGES.entrySet()) {
-                if (rawMessage.contains(entry.getKey())) {
-                    return entry.getValue();
-                }
-            }
-        }
-
-        return "Violação de integridade de dados";
     }
 }

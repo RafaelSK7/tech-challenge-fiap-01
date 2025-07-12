@@ -1,19 +1,13 @@
 package fiap.tech.challenge.restaurant_manager.entites;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import fiap.tech.challenge.restaurant_manager.entites.enums.UserType;
 import fiap.tech.challenge.restaurant_manager.entites.request.CreateUserRequest;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -54,13 +48,16 @@ public class User {
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
 
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Restaurant> restaurants = new ArrayList<>();
 
     public User(CreateUserRequest request) {
         this.name = request.name();
         this.email = request.email();
         this.login = request.login();
         this.password = request.password();
-        this.address = new Address(request);
+        this.address = new Address(request.address());
         this.userType = request.userType();
         this.lastUpdate = LocalDateTime.now();
     }

@@ -1,29 +1,38 @@
 package fiap.tech.challenge.restaurant_manager.services.validation.impl;
 
+import fiap.tech.challenge.restaurant_manager.entites.request.CreateRestaurantRequest;
+import fiap.tech.challenge.restaurant_manager.services.validation.ValidateRestaurantService;
 import org.springframework.stereotype.Service;
 
 import fiap.tech.challenge.restaurant_manager.entites.request.CreateAddressRequest;
 import fiap.tech.challenge.restaurant_manager.entites.request.CreateUserRequest;
 import fiap.tech.challenge.restaurant_manager.exceptions.custom.InvalidAddressException;
-import fiap.tech.challenge.restaurant_manager.services.validation.ValidationService;
+import fiap.tech.challenge.restaurant_manager.services.validation.ValidateUserService;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-public class AddressValidation implements ValidationService {
+public class AddressValidateUser implements ValidateUserService, ValidateRestaurantService {
 
 	@Override
 	public void validate(CreateUserRequest request) {
+		validateAddressFields(request.address());
+	}
 
+	@Override
+	public void validate(CreateRestaurantRequest request) {
+		validateAddressFields(request.address());
+	}
+
+	public void validateAddressFields(CreateAddressRequest addressRequest) {
 		log.info("Validando campos do endereço");
-		validateNullAddress(request.address());
-		validateStreetAndNumber(request.address());
-		validateNeighborhood(request.address());
-		validateCity(request.address());
-		validateState(request.address());
-		validateCountry(request.address());
-		validateZipCode(request.address());
-
+		validateNullAddress(addressRequest);
+		validateStreetAndNumber(addressRequest);
+		validateNeighborhood(addressRequest);
+		validateCity(addressRequest);
+		validateState(addressRequest);
+		validateCountry(addressRequest);
+		validateZipCode(addressRequest);
 	}
 
 	private void validateNullAddress(CreateAddressRequest addressRequest) {

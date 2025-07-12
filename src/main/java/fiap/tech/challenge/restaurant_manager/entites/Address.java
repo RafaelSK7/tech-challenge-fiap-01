@@ -1,5 +1,6 @@
 package fiap.tech.challenge.restaurant_manager.entites;
 
+import fiap.tech.challenge.restaurant_manager.entites.request.CreateAddressRequest;
 import fiap.tech.challenge.restaurant_manager.entites.request.CreateUserRequest;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -43,15 +44,15 @@ public class Address {
     @OneToOne(mappedBy = "address")
     private User user;
 
-    public Address(CreateUserRequest request) {
+    public Address(CreateAddressRequest request) {
 
-        this.street = request.address().street();
-        this.number = request.address().number();
-        this.neighborhood = request.address().neighborhood();
-        this.city = request.address().city();
-        this.state = request.address().state();
-        this.zipCode = request.address().zipCode();
-        this.country = request.address().country();
+        this.street = request.street();
+        this.number = request.number();
+        this.neighborhood = request.neighborhood();
+        this.city = request.city();
+        this.state = request.state();
+        this.zipCode = request.zipCode();
+        this.country = request.country();
 
     }
 }

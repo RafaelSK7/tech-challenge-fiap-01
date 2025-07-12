@@ -8,10 +8,10 @@ import fiap.tech.challenge.restaurant_manager.entites.request.CreateUserRequest;
 import fiap.tech.challenge.restaurant_manager.entites.request.LoginRequest;
 import fiap.tech.challenge.restaurant_manager.entites.response.LoginResponse;
 import fiap.tech.challenge.restaurant_manager.entites.response.UserResponse;
-import fiap.tech.challenge.restaurant_manager.services.usecase.CreateUserUseCase;
-import fiap.tech.challenge.restaurant_manager.services.usecase.DeleteUserUseCase;
-import fiap.tech.challenge.restaurant_manager.services.usecase.ReadUserUseCase;
-import fiap.tech.challenge.restaurant_manager.services.usecase.UpdateUserUseCase;
+import fiap.tech.challenge.restaurant_manager.services.usecase.user.CreateUserUseCase;
+import fiap.tech.challenge.restaurant_manager.services.usecase.user.DeleteUserUseCase;
+import fiap.tech.challenge.restaurant_manager.services.usecase.user.ReadUserUseCase;
+import fiap.tech.challenge.restaurant_manager.services.usecase.user.UpdateUserUseCase;
 
 @Service
 public class UserService {

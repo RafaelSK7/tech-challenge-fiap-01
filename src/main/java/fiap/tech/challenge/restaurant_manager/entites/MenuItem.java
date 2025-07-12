@@ -1,8 +1,20 @@
 package fiap.tech.challenge.restaurant_manager.entites;
 
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.*;
+import jakarta.persistence.*;
 
 
-public class ItemCardapio {
+@Getter
+@Setter
+@AllArgsConstructor
+@EqualsAndHashCode
+
+
+@Entity
+
+public class MenuItem {
 
     private Long id;
     private String name;
@@ -12,5 +24,7 @@ public class ItemCardapio {
     private String photoPath;
     
 }
+
+
 
 

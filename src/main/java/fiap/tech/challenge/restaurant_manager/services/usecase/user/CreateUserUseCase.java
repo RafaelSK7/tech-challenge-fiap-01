@@ -1,4 +1,4 @@
-package fiap.tech.challenge.restaurant_manager.services.usecase;
+package fiap.tech.challenge.restaurant_manager.services.usecase.user;
 
 import java.util.List;
 
@@ -9,27 +9,27 @@ import fiap.tech.challenge.restaurant_manager.entites.request.CreateUserRequest;
 import fiap.tech.challenge.restaurant_manager.entites.response.AddressResponse;
 import fiap.tech.challenge.restaurant_manager.entites.response.UserResponse;
 import fiap.tech.challenge.restaurant_manager.repositories.UserRepository;
-import fiap.tech.challenge.restaurant_manager.services.validation.ValidationService;
+import fiap.tech.challenge.restaurant_manager.services.validation.ValidateUserService;
 
 @Service
 public class CreateUserUseCase {
-	
+
 	private final UserRepository userRepository;
-	
-	private List<ValidationService> createUserValidations;
-	
-	public CreateUserUseCase(UserRepository userRepository, List<ValidationService> createUserValidations) {
+
+	private List<ValidateUserService> createUserValidations;
+
+	public CreateUserUseCase(UserRepository userRepository, List<ValidateUserService> createUserValidations) {
 		this.userRepository = userRepository;
 		this.createUserValidations = createUserValidations;
 	}
-	
-	
+
+
 	public UserResponse createUser(CreateUserRequest userRequest) {
 		this.createUserValidations.forEach(v -> v.validate(userRequest));
 		User newUser = new User(userRequest);
 		return toResponse(userRepository.save(newUser));
 	}
-	
+
 	private UserResponse toResponse(User user) {
 		AddressResponse addressResponse = null;
 
@@ -40,7 +40,7 @@ public class CreateUserUseCase {
 		}
 
 		return new UserResponse(user.getId(), user.getName(), user.getEmail(), user.getLogin(),
-				user.getUserType().name(), addressResponse);
+				user.getUserType().name(), addressResponse, user.getRestaurants());
 	}
 
 }

@@ -1,4 +1,4 @@
-package fiap.tech.challenge.restaurant_manager.services.usecase;
+package fiap.tech.challenge.restaurant_manager.services.usecase.user;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -60,7 +60,7 @@ public class ReadUserUseCase {
 		}
 
 		return new UserResponse(user.getId(), user.getName(), user.getEmail(), user.getLogin(),
-				user.getUserType().name(), addressResponse);
+				user.getUserType().name(), addressResponse, user.getRestaurants());
 	}
 
 }

@@ -17,5 +17,4 @@ public class LoginService {
 	public LoginResponse findByLogin(LoginRequest loginRequest) {
 		return userService.findByLoginAndPassword(loginRequest);
 	}
-
 }

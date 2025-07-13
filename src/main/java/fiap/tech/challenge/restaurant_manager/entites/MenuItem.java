@@ -6,32 +6,31 @@ import lombok.*;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
-
+@Entity(name = "menuItem")
 @Getter
 @Setter
 @AllArgsConstructor
 @EqualsAndHashCode
 
 
-@Entity
-
 public class MenuItem {
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name= "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name= "id") 
     private Long id;
 
-    @Column(name = "name")
-    @NotBlank(message = "Name is Required")
+
+    @Column(name = "nome")
+    @NotBlank(message = "Nome é obrigatório")
     private String name;
 
 
     @Column(name = "description")
-    @NotBlank(message = "Name is Required")
+    @NotBlank(message = "Descricao é obrigatorio")
     private String description;
 
 
     @Column(name = "price")
-    @NotBlank(message = "Name is Required")
+    @NotBlank(message = "Preço é obrigatório")
     private Double price;
 
     
@@ -39,12 +38,6 @@ public class MenuItem {
     private boolean localOnly;
 
 
-    @NotBlank(message = "Name is Required")
-    @Column("name = photoPath")
-    private String photoPath;
-    
+    @Column(name = "photoPath")
+    private String photoPath;    
 }
-
-
-
-

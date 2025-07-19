@@ -51,5 +51,20 @@ public class RestaurantController {
         return ResponseEntity.ok(response);
     }
 
+    @PutMapping("/{id}")
+    @CacheEvict(value = "restaurantsList", allEntries = true)
+    public ResponseEntity<RestaurantResponse> updateRestaurant(@PathVariable Long id,
+                                                               @RequestBody @Valid CreateRestaurantRequest restaurantRequest) {
+        RestaurantResponse restaurant = restaurantService.updateRestaurant(id, restaurantRequest);
+        return ResponseEntity.ok(restaurant);
+    }
+
+    @DeleteMapping("/{id}")
+    @CacheEvict(value = "restaurantsList", allEntries = true)
+    public ResponseEntity<Void> deleteRestaurant(@PathVariable Long id) {
+        restaurantService.deleteRestaurant(id);
+        return ResponseEntity.noContent().build();
+    }
+
 
 }

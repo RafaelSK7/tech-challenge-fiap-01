@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity(name = "restaurants")
 @Getter
 @Setter
@@ -27,6 +29,7 @@ public class Restaurant {
     private String startTime;
     @NotBlank
     private String endTime;
+    private LocalDateTime lastUpdate;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "id")

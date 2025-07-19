@@ -1,5 +1,6 @@
 package fiap.tech.challenge.restaurant_manager.services;
 
+import fiap.tech.challenge.restaurant_manager.entites.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -40,6 +41,10 @@ public class UserService {
 
 	public UserResponse findById(Long id) {
 		return readUserUseCase.findById(id);
+	}
+
+	public User findByIdEntity(Long id) {
+		return readUserUseCase.findByIdEntity(id);
 	}
 	
 	public LoginResponse findByLoginAndPassword(LoginRequest loginRequest) {

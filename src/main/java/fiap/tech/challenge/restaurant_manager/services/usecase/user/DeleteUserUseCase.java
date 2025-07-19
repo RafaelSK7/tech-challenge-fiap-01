@@ -1,4 +1,4 @@
-package fiap.tech.challenge.restaurant_manager.services.usecase;
+package fiap.tech.challenge.restaurant_manager.services.usecase.user;
 
 import org.springframework.stereotype.Service;
 

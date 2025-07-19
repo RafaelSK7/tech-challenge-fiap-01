@@ -1,4 +1,4 @@
-package fiap.tech.challenge.restaurant_manager.services.usecase;
+package fiap.tech.challenge.restaurant_manager.services.usecase.user;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -12,32 +12,33 @@ import fiap.tech.challenge.restaurant_manager.entites.response.AddressResponse;
 import fiap.tech.challenge.restaurant_manager.entites.response.UserResponse;
 import fiap.tech.challenge.restaurant_manager.exceptions.custom.UserNotFoundException;
 import fiap.tech.challenge.restaurant_manager.repositories.UserRepository;
-import fiap.tech.challenge.restaurant_manager.services.validation.ValidationService;
+import fiap.tech.challenge.restaurant_manager.services.validation.ValidateUserService;
 
 @Service
 public class UpdateUserUseCase {
 
 	private final UserRepository userRepository;
 
-	private List<ValidationService> validationService;
+	private List<ValidateUserService> validateUserService;
 
-	public UpdateUserUseCase(UserRepository userRepository, List<ValidationService> validationService) {
+	public UpdateUserUseCase(UserRepository userRepository, List<ValidateUserService> validateUserService) {
 		this.userRepository = userRepository;
-		this.validationService = validationService;
+		this.validateUserService = validateUserService;
 	}
 
 	public UserResponse updateUser(Long id, CreateUserRequest userRequest) {
 
-		User userToUpdate = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+		User userToUpdate = userRepository.findById(id)
+				.orElseThrow(() -> new UserNotFoundException(id));
 
-		this.validationService.forEach(v -> v.validate(userRequest));
+		this.validateUserService.forEach(v -> v.validate(userRequest));
 
 		userToUpdate.setName(userRequest.name());
 		userToUpdate.setEmail(userRequest.email());
 		userToUpdate.setLogin(userRequest.login());
 		userToUpdate.setPassword(userRequest.password());
 		userToUpdate.setUserType(userRequest.userType());
-		userToUpdate.setAddress(new Address(userRequest));
+		userToUpdate.setAddress(new Address(userRequest.address()));
 		userToUpdate.setLastUpdate(LocalDateTime.now());
 
 		return toResponse(userRepository.save(userToUpdate));
@@ -53,6 +54,6 @@ public class UpdateUserUseCase {
 		}
 
 		return new UserResponse(user.getId(), user.getName(), user.getEmail(), user.getLogin(),
-				user.getUserType().name(), addressResponse);
+				user.getUserType().name(), addressResponse, user.getRestaurants());
 	}
 }

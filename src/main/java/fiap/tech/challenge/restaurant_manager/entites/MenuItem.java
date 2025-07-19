@@ -14,6 +14,7 @@ import jakarta.validation.constraints.NotBlank;
 
 
 public class MenuItem {
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name= "id") 
     private Long id;

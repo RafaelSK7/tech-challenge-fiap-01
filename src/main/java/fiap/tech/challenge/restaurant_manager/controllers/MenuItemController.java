@@ -1,6 +1,7 @@
 package fiap.tech.challenge.restaurant_manager.controllers;
 
-import fiap.tech.challenge.restaurant_manager.entities.MenuItem;
+
+import fiap.tech.challenge.restaurant_manager.entites.MenuItem;
 import fiap.tech.challenge.restaurant_manager.services.MenuItemService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/menu-items")
+@RequestMapping("/menu-items")
 public class MenuItemController {
 
     @Autowired

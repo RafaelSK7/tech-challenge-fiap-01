@@ -1,6 +1,7 @@
 package fiap.tech.challenge.restaurant_manager.services;
 
-import fiap.tech.challenge.restaurant_manager.entities.MenuItem;
+
+import fiap.tech.challenge.restaurant_manager.entites.MenuItem;
 import fiap.tech.challenge.restaurant_manager.repositories.MenuItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,8 +12,8 @@ import java.util.Optional;
 @Service
 public class MenuItemService {
 
-    private final MenuItemRepository repository;
-    public MenuItemController(MenuItemRepository repository) {
+    private MenuItemRepository repository;
+    public MenuItemService(MenuItemRepository repository) {
         this.repository = repository;
     }
 

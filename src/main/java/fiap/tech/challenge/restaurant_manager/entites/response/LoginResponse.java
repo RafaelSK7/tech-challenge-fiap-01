@@ -1,11 +1,12 @@
 package fiap.tech.challenge.restaurant_manager.entites.response;
 
-import fiap.tech.challenge.restaurant_manager.entites.enums.UserType;
+
+import fiap.tech.challenge.restaurant_manager.entites.UserType;
 
 public record LoginResponse(
         Long id,
         String name,
         String login,
-        UserType userType
+        Long userTypeId
 ) {
 }

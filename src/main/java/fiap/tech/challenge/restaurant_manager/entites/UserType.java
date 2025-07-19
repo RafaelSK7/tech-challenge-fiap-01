@@ -1,10 +1,7 @@
 package fiap.tech.challenge.restaurant_manager.entites;
 
 import fiap.tech.challenge.restaurant_manager.entites.request.CreateUserTypeRequest;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
@@ -23,12 +20,13 @@ public class UserType {
     private Long userTypeId;
 
     @NotBlank
+    @Column(unique = true, nullable = false)
     private String userTypeName;
 
     private LocalDateTime lastUpdate;
 
     public UserType(CreateUserTypeRequest request) {
-        this.userTypeName = request.userTypeName();
+        this.userTypeName = request.userTypeName().trim().toUpperCase();
         this.lastUpdate = LocalDateTime.now();
     }
 

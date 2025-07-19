@@ -30,7 +30,7 @@ public class UpdateUserTypeUseCase {
 
         this.validationUserTypeServiceList.forEach(v -> v.validate(userTypeRequest));
 
-        userTypeToUpdate.setUserTypeName(userTypeRequest.userTypeName());
+        userTypeToUpdate.setUserTypeName(userTypeRequest.userTypeName().trim().toUpperCase());
         userTypeToUpdate.setLastUpdate(LocalDateTime.now());
 
         return toResponse(userTypeRepository.save(userTypeToUpdate));

@@ -1,20 +1,15 @@
 package fiap.tech.challenge.restaurant_manager.entites;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import fiap.tech.challenge.restaurant_manager.entites.enums.UserType;
 import fiap.tech.challenge.restaurant_manager.entites.request.CreateUserRequest;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity(name = "users")
 @Getter
@@ -41,7 +36,8 @@ public class User {
     private String password;
     private LocalDateTime lastUpdate;
 
-    @Enumerated(EnumType.STRING)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "userType_userTypeId", referencedColumnName = "userTypeId")
     private UserType userType;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -58,7 +54,7 @@ public class User {
         this.login = request.login();
         this.password = request.password();
         this.address = new Address(request.address());
-        this.userType = request.userType();
+        this.userType = new UserType(request.userTypeId(), "CLIENT", LocalDateTime.now());
         this.lastUpdate = LocalDateTime.now();
     }
 

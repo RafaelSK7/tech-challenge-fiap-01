@@ -1,6 +1,5 @@
 package fiap.tech.challenge.restaurant_manager.entites.request;
 
-import fiap.tech.challenge.restaurant_manager.entites.enums.UserType;
 
 public record CreateUserRequest(
         String name,
@@ -8,6 +7,6 @@ public record CreateUserRequest(
         String login,
         String password,
         CreateAddressRequest address,
-        UserType userType
+        Long userTypeId
 ) {
 }

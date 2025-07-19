@@ -18,7 +18,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/userType")
+@RequestMapping("/userTypes")
 public class UserTypeController {
 
 
@@ -34,14 +34,14 @@ public class UserTypeController {
     public ResponseEntity<UserTypeResponse> createUserType(@RequestBody @Valid CreateUserTypeRequest userTypeRequest,
                                                            UriComponentsBuilder uriBuilder) {
         UserTypeResponse createUserType = userTypeService.createUserType(userTypeRequest);
-        URI uri = uriBuilder.path("/userType/{id}").buildAndExpand(createUserType.id()).toUri();
+        URI uri = uriBuilder.path("/userTypes/{id}").buildAndExpand(createUserType.id()).toUri();
         return ResponseEntity.created(uri).body(createUserType);
     }
 
     @GetMapping
     @Cacheable(value = "userTypeList")
     public Page<UserTypeResponse> findAll(
-            @PageableDefault(page = 0, size = 10, direction = Sort.Direction.ASC, sort = "id") Pageable page) {
+            @PageableDefault(page = 0, size = 10, direction = Sort.Direction.ASC, sort = "userTypeId") Pageable page) {
         Page<UserTypeResponse> userTypes = userTypeService.findAll(page);
         return userTypes;
     }

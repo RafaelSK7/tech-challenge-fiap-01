@@ -40,7 +40,7 @@ public class CreateUserUseCase {
 		}
 
 		return new UserResponse(user.getId(), user.getName(), user.getEmail(), user.getLogin(),
-				user.getUserType().name(), addressResponse, user.getRestaurants());
+				user.getUserType().getUserTypeId(), addressResponse, user.getRestaurants());
 	}
 
 }

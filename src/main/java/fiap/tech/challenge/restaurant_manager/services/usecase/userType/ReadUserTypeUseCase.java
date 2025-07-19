@@ -42,8 +42,12 @@ public class ReadUserTypeUseCase {
         return toResponse(userTypeRepository.findById(id).orElseThrow(() -> new UserTypeNotFoundException(id)));
     }
 
+    public Optional<UserType> findUserTypeById(Long id){
+        return userTypeRepository.findByUserTypeId(id);
+    }
+
     public Optional<UserType> findDuplicateUserType(String userTypeName) {
-        return userTypeRepository.findByUserTypeName(userTypeName);
+        return userTypeRepository.findByUserTypeName(userTypeName.trim().toUpperCase());
     }
 
     private UserTypeResponse toResponse(UserType userType) {

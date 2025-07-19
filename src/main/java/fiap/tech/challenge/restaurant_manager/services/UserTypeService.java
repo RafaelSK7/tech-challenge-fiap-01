@@ -43,8 +43,8 @@ public class UserTypeService {
         return readUserTypeUseCase.findById(id);
     }
 
-    public Optional<UserType> findDuplicateUserTypeByName(String userTypeName) {
-        return readUserTypeUseCase.findDuplicateUserType(userTypeName);
+    public Optional<UserType> findByUserTypeId(Long id) {
+        return readUserTypeUseCase.findUserTypeById(id);
     }
 
     public UserTypeResponse updateUser(Long id, CreateUserTypeRequest userTypeRequest) {

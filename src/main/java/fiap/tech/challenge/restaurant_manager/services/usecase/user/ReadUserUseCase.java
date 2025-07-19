@@ -47,7 +47,7 @@ public class ReadUserUseCase {
 	}
 
 	private LoginResponse toLoginResponse(User user) {
-		return new LoginResponse(user.getId(), user.getName(), user.getLogin(), user.getUserType());
+		return new LoginResponse(user.getId(), user.getName(), user.getLogin(), user.getUserType().getUserTypeId());
 	}
 
 	private UserResponse toResponse(User user) {
@@ -60,7 +60,7 @@ public class ReadUserUseCase {
 		}
 
 		return new UserResponse(user.getId(), user.getName(), user.getEmail(), user.getLogin(),
-				user.getUserType().name(), addressResponse, user.getRestaurants());
+				user.getUserType().getUserTypeId(), addressResponse, user.getRestaurants());
 	}
 
 }

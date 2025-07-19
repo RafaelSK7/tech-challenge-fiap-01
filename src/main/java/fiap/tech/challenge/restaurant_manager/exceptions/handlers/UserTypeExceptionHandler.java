@@ -3,7 +3,6 @@ package fiap.tech.challenge.restaurant_manager.exceptions.handlers;
 import fiap.tech.challenge.restaurant_manager.controllers.exceptions.ApiErrorArray;
 import fiap.tech.challenge.restaurant_manager.exceptions.custom.DuplicateUserTypeException;
 import fiap.tech.challenge.restaurant_manager.exceptions.custom.InvalidUserTypeException;
-import fiap.tech.challenge.restaurant_manager.exceptions.custom.UserNotFoundException;
 import fiap.tech.challenge.restaurant_manager.exceptions.custom.UserTypeNotFoundException;
 import fiap.tech.challenge.restaurant_manager.utils.ApiErrorBuilder;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,8 +21,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class UserTypeExceptionHandler {
 
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ApiErrorArray> handleUserNotFound(UserTypeNotFoundException ex, HttpServletRequest request) {
+    @ExceptionHandler(UserTypeNotFoundException.class)
+    public ResponseEntity<ApiErrorArray> handleUserTypeNotFound(UserTypeNotFoundException ex, HttpServletRequest request) {
         return buildErrorResponse(HttpStatus.NOT_FOUND, ex, request);
     }
 

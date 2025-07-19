@@ -9,7 +9,7 @@ public record UserResponse(
         String name,
         String email,
         String login,
-        String userType,
+        Long userTypeId,
         AddressResponse address,
         List<Restaurant> restaurants) {
 }

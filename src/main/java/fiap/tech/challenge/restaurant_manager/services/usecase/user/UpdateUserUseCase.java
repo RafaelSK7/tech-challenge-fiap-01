@@ -2,7 +2,10 @@ package fiap.tech.challenge.restaurant_manager.services.usecase.user;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
+import fiap.tech.challenge.restaurant_manager.entites.UserType;
+import fiap.tech.challenge.restaurant_manager.services.UserTypeService;
 import org.springframework.stereotype.Service;
 
 import fiap.tech.challenge.restaurant_manager.entites.Address;
@@ -21,9 +24,12 @@ public class UpdateUserUseCase {
 
 	private List<ValidateUserService> validateUserService;
 
-	public UpdateUserUseCase(UserRepository userRepository, List<ValidateUserService> validateUserService) {
+	private UserTypeService userTypeService;
+
+	public UpdateUserUseCase(UserRepository userRepository, List<ValidateUserService> validateUserService, UserTypeService userTypeService) {
 		this.userRepository = userRepository;
 		this.validateUserService = validateUserService;
+		this.userTypeService = userTypeService;
 	}
 
 	public UserResponse updateUser(Long id, CreateUserRequest userRequest) {
@@ -36,9 +42,11 @@ public class UpdateUserUseCase {
 		userToUpdate.setEmail(userRequest.email());
 		userToUpdate.setLogin(userRequest.login());
 		userToUpdate.setPassword(userRequest.password());
-		userToUpdate.setUserType(userRequest.userType());
 		userToUpdate.setAddress(new Address(userRequest.address()));
 		userToUpdate.setLastUpdate(LocalDateTime.now());
+
+		Optional<UserType> optionalUserType = userTypeService.findByUserTypeId(userRequest.userTypeId());
+		optionalUserType.ifPresent(userToUpdate::setUserType);
 
 		return toResponse(userRepository.save(userToUpdate));
 	}
@@ -53,6 +61,6 @@ public class UpdateUserUseCase {
 		}
 
 		return new UserResponse(user.getId(), user.getName(), user.getEmail(), user.getLogin(),
-				user.getUserType().name(), addressResponse, user.getRestaurants());
+				user.getUserType().getUserTypeId(), addressResponse, user.getRestaurants());
 	}
 }

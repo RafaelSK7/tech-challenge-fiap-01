@@ -8,6 +8,4 @@ public record CreateMenuItemRequest(
     String photoPath
 ) {
 
-
-
 }

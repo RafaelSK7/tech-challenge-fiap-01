@@ -1,46 +1,50 @@
 package fiap.tech.challenge.restaurant_manager.services;
 
-
-import fiap.tech.challenge.restaurant_manager.entites.MenuItem;
-import fiap.tech.challenge.restaurant_manager.repositories.MenuItemRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import fiap.tech.challenge.restaurant_manager.entites.request.CreateMenuItemRequest;
+import fiap.tech.challenge.restaurant_manager.entites.response.MenuItemResponse;
+import fiap.tech.challenge.restaurant_manager.services.usecase.menuItem.CreateMenuItemUseCase;
+import fiap.tech.challenge.restaurant_manager.services.usecase.menuItem.DeleteMenuItemUseCase;
+import fiap.tech.challenge.restaurant_manager.services.usecase.menuItem.ReadMenuItemUseCase;
+import fiap.tech.challenge.restaurant_manager.services.usecase.menuItem.UpdateMenuItemUseCase;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class MenuItemService {
 
-    private MenuItemRepository repository;
-    public MenuItemService(MenuItemRepository repository) {
-        this.repository = repository;
+    private final CreateMenuItemUseCase createMenuItemUseCase;
+    private final ReadMenuItemUseCase readMenuItemUseCase;
+    private final UpdateMenuItemUseCase updateMenuItemUseCase;
+    private final DeleteMenuItemUseCase deleteMenuItemUseCase;
+
+    public MenuItemService(CreateMenuItemUseCase createMenuItemUseCase,
+                           ReadMenuItemUseCase readMenuItemUseCase,
+                           UpdateMenuItemUseCase updateMenuItemUseCase,
+                           DeleteMenuItemUseCase deleteMenuItemUseCase) {
+        this.createMenuItemUseCase = createMenuItemUseCase;
+        this.readMenuItemUseCase = readMenuItemUseCase;
+        this.updateMenuItemUseCase = updateMenuItemUseCase;
+        this.deleteMenuItemUseCase = deleteMenuItemUseCase;
     }
 
-    public List<MenuItem> findAll() {
-        return repository.findAll();
+    public MenuItemResponse createMenuItem(CreateMenuItemRequest request) {
+        return createMenuItemUseCase.createMenuItem(request);
     }
 
-    public Optional<MenuItem> findById(Long id) {
-        return repository.findById(id);
+    public Page<MenuItemResponse> findAll(Pageable page) {
+        return readMenuItemUseCase.findAll(page);
     }
 
-    public MenuItem save(MenuItem item) {
-        return repository.save(item);
+    public MenuItemResponse findById(Long id) {
+        return readMenuItemUseCase.findById(id);
     }
 
-    public MenuItem update(Long id, MenuItem updatedItem) {
-        return repository.findById(id).map(item -> {
-            item.setName(updatedItem.getName());
-            item.setDescription(updatedItem.getDescription());
-            item.setPrice(updatedItem.getPrice());
-            item.setLocalOnly(updatedItem.isLocalOnly());
-            item.setPhotoPath(updatedItem.getPhotoPath());
-            return repository.save(item);
-        }).orElseThrow(() -> new RuntimeException("Item não encontrado"));
+    public MenuItemResponse updateMenuItem(Long id, CreateMenuItemRequest request) {
+        return updateMenuItemUseCase.updateMenuItem(id, request);
     }
 
-    public void delete(Long id) {
-        repository.deleteById(id);
+    public void deleteMenuItem(Long id) {
+        deleteMenuItemUseCase.deleteMenuItem(id);
     }
 }

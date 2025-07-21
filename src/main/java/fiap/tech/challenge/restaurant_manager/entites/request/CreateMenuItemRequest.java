@@ -5,7 +5,8 @@ public record CreateMenuItemRequest(
     String description,
     Double price,
     Boolean localOnly,
-    String photoPath
+    String photoPath,
+    Long restaurantId
 ) {
 
 }

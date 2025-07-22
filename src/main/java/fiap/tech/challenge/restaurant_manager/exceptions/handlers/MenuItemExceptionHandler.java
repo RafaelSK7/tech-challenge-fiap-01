@@ -1,5 +1,6 @@
 package fiap.tech.challenge.restaurant_manager.exceptions.handlers;
 
+import fiap.tech.challenge.restaurant_manager.exceptions.custom.CardapioException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -22,10 +23,16 @@ public class MenuItemExceptionHandler {
 
     // Para cada nova classe de exceção personalizada, adicione ela aqui - Jonathan
     @ExceptionHandler({
-        InvalidMenuItemException.class
+            CardapioException.class
     })
     public ResponseEntity<ApiErrorArray> handleBadRequestExceptions(RuntimeException ex, HttpServletRequest request) {
         return buildErrorResponse(HttpStatus.BAD_REQUEST, ex, request);
+    }
+    @ExceptionHandler({
+            InvalidMenuItemException.class
+    })
+    public ResponseEntity<ApiErrorArray> handleNotFoundExceptions(RuntimeException ex, HttpServletRequest request) {
+        return buildErrorResponse(HttpStatus.NOT_FOUND, ex, request);
     }
 
     private ResponseEntity<ApiErrorArray> buildErrorResponse(HttpStatus status, Exception ex, HttpServletRequest request) {

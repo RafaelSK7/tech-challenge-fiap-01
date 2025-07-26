@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import fiap.tech.challenge.restaurant_manager.entites.UserType;
+import fiap.tech.challenge.restaurant_manager.exceptions.custom.UserTypeNotFoundException;
 import fiap.tech.challenge.restaurant_manager.services.UserTypeService;
 import org.springframework.stereotype.Service;
 
@@ -46,7 +47,13 @@ public class UpdateUserUseCase {
 		userToUpdate.setLastUpdate(LocalDateTime.now());
 
 		Optional<UserType> optionalUserType = userTypeService.findByUserTypeId(userRequest.userTypeId());
-		optionalUserType.ifPresent(userToUpdate::setUserType);
+
+		optionalUserType.ifPresentOrElse(
+				userToUpdate::setUserType,
+				() -> {
+					throw new UserTypeNotFoundException(userRequest.userTypeId());
+				}
+		);
 
 		return toResponse(userRepository.save(userToUpdate));
 	}

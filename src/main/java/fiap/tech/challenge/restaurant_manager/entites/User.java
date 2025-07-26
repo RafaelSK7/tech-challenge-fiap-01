@@ -36,7 +36,7 @@ public class User {
     private String password;
     private LocalDateTime lastUpdate;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     @JoinColumn(name = "userType_userTypeId", referencedColumnName = "userTypeId")
     private UserType userType;
 
@@ -48,13 +48,13 @@ public class User {
     @JsonManagedReference
     private List<Restaurant> restaurants = new ArrayList<>();
 
-    public User(CreateUserRequest request) {
+    public User(CreateUserRequest request, UserType userType) {
         this.name = request.name();
         this.email = request.email();
         this.login = request.login();
         this.password = request.password();
         this.address = new Address(request.address());
-        this.userType = new UserType(request.userTypeId(), "CLIENT", LocalDateTime.now());
+        this.userType = userType;
         this.lastUpdate = LocalDateTime.now();
     }
 

@@ -43,7 +43,7 @@ public class ReadUserUseCase {
 	}
 	
 	public LoginResponse findByLoginAndPassword(LoginRequest loginRequest) {
-		return toLoginResponse(userRepository.findByLoginAndPassword(loginRequest.login(), loginRequest.password()).orElseThrow(() -> new InvalidLogonException()));
+		return toLoginResponse(userRepository.findByLoginAndPassword(loginRequest.login(), loginRequest.password()).orElseThrow(InvalidLogonException::new));
 	}
 
 	private LoginResponse toLoginResponse(User user) {

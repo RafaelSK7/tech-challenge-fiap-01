@@ -26,7 +26,8 @@ public class UserExceptionHandler {
 
     @ExceptionHandler({
         InvalidEmailException.class,
-        InvalidAddressException.class
+        InvalidAddressException.class,
+        InvalidUserTypeException.class
     })
     public ResponseEntity<ApiErrorArray> handleBadRequestExceptions(RuntimeException ex, HttpServletRequest request) {
         return buildErrorResponse(HttpStatus.BAD_REQUEST, ex, request);

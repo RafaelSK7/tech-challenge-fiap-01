@@ -1,7 +1,6 @@
 package fiap.tech.challenge.restaurant_manager.entites;
 
-import fiap.tech.challenge.restaurant_manager.entites.request.CreateAddressRequest;
-import fiap.tech.challenge.restaurant_manager.entites.request.CreateUserRequest;
+import fiap.tech.challenge.restaurant_manager.DTOs.request.address.CreateAddressRequest;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

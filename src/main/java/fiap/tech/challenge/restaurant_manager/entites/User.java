@@ -1,7 +1,7 @@
 package fiap.tech.challenge.restaurant_manager.entites;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import fiap.tech.challenge.restaurant_manager.entites.request.CreateUserRequest;
+import fiap.tech.challenge.restaurant_manager.DTOs.request.users.CreateUserRequest;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

@@ -1,6 +1,6 @@
 package fiap.tech.challenge.restaurant_manager.entites;
 
-import fiap.tech.challenge.restaurant_manager.entites.request.CreateUserTypeRequest;
+import fiap.tech.challenge.restaurant_manager.DTOs.request.userTypes.CreateUserTypeRequest;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;

@@ -1,7 +1,7 @@
 package fiap.tech.challenge.restaurant_manager.entites;
 
 import lombok.*;
-import fiap.tech.challenge.restaurant_manager.entites.request.CreateMenuItemRequest;
+import fiap.tech.challenge.restaurant_manager.DTOs.request.menuItens.CreateMenuItemRequest;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

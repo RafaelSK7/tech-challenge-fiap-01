@@ -46,14 +46,7 @@ public class UpdateUserUseCase {
 		userToUpdate.setAddress(new Address(userRequest.address()));
 		userToUpdate.setLastUpdate(LocalDateTime.now());
 
-		Optional<UserType> optionalUserType = userTypeService.findByUserTypeId(userRequest.userTypeId());
-
-		optionalUserType.ifPresentOrElse(
-				userToUpdate::setUserType,
-				() -> {
-					throw new UserTypeNotFoundException(userRequest.userTypeId());
-				}
-		);
+		userToUpdate.setUserType(userTypeService.findByUserTypeId(userRequest.userTypeId()));
 
 		return toResponse(userRepository.save(userToUpdate));
 	}

@@ -32,11 +32,7 @@ public class CreateUserUseCase {
 
     public UserResponse createUser(CreateUserRequest userRequest) {
         this.createUserValidations.forEach(v -> v.validate(userRequest));
-        Optional<UserType> optionalUserType = userTypeService.findByUserTypeId(userRequest.userTypeId());
-
-        UserType userType = optionalUserType.orElseThrow(() ->
-                new UserTypeNotFoundException(userRequest.userTypeId())
-        );
+        UserType userType = userTypeService.findByUserTypeId(userRequest.userTypeId());
         User newUser = new User(userRequest, userType);
         return toResponse(userRepository.save(newUser));
     }

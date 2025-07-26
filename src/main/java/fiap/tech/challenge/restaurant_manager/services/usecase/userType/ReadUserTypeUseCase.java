@@ -31,9 +31,8 @@ public class ReadUserTypeUseCase {
 
         List<UserTypeResponse> responseList = userList.stream().map(this::toResponse).collect(Collectors.toList());
 
-        Page<UserTypeResponse> responsePages = new PageImpl<UserTypeResponse>(responseList, page, userPages.getTotalElements());
+        return new PageImpl<>(responseList, page, userPages.getTotalElements());
 
-        return responsePages;
     }
 
 
@@ -42,8 +41,10 @@ public class ReadUserTypeUseCase {
         return toResponse(userTypeRepository.findById(id).orElseThrow(() -> new UserTypeNotFoundException(id)));
     }
 
-    public Optional<UserType> findUserTypeById(Long id){
-        return userTypeRepository.findByUserTypeId(id);
+    public UserType findUserTypeById(Long id){
+
+        return userTypeRepository.findByUserTypeId(id)
+                .orElseThrow(() -> new UserTypeNotFoundException(id));
     }
 
     public Optional<UserType> findDuplicateUserType(String userTypeName) {

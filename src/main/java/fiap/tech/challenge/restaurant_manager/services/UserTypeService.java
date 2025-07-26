@@ -43,7 +43,7 @@ public class UserTypeService {
         return readUserTypeUseCase.findById(id);
     }
 
-    public Optional<UserType> findByUserTypeId(Long id) {
+    public UserType findByUserTypeId(Long id) {
         return readUserTypeUseCase.findUserTypeById(id);
     }
 

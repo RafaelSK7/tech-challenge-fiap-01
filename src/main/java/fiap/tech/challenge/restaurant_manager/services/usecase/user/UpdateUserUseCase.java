@@ -35,7 +35,8 @@ public class UpdateUserUseCase {
 
 	public UserResponse updateUser(Long id, CreateUserRequest userRequest) {
 
-		User userToUpdate = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+		User userToUpdate = userRepository.findById(id)
+				.orElseThrow(() -> new UserNotFoundException(id));
 
 		this.validateUserService.forEach(v -> v.validate(userRequest));
 

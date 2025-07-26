@@ -1,13 +1,12 @@
 package fiap.tech.challenge.restaurant_manager.services.usecase.restaurant;
 
+import fiap.tech.challenge.restaurant_manager.entites.Address;
 import fiap.tech.challenge.restaurant_manager.entites.Restaurant;
-import fiap.tech.challenge.restaurant_manager.entites.User;
 import fiap.tech.challenge.restaurant_manager.entites.request.CreateRestaurantRequest;
 import fiap.tech.challenge.restaurant_manager.entites.response.AddressResponse;
 import fiap.tech.challenge.restaurant_manager.entites.response.RestaurantResponse;
-import fiap.tech.challenge.restaurant_manager.exceptions.custom.UserNotFoundException;
+import fiap.tech.challenge.restaurant_manager.exceptions.custom.RestaurantNotFoundException;
 import fiap.tech.challenge.restaurant_manager.repositories.RestaurantRepository;
-import fiap.tech.challenge.restaurant_manager.repositories.UserRepository;
 import fiap.tech.challenge.restaurant_manager.services.UserService;
 import fiap.tech.challenge.restaurant_manager.services.validation.ValidateRestaurantService;
 import org.springframework.stereotype.Service;
@@ -16,30 +15,37 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class CreateRestaurantUseCase {
+public class UpdateRestaurantUseCase {
 
     private final RestaurantRepository restaurantRepository;
     private final UserService userService;
-    private final List<ValidateRestaurantService> createRestaurantValidations;
+    private List<ValidateRestaurantService> updateRestaurantValidations;
 
-    public CreateRestaurantUseCase(RestaurantRepository restaurantRepository,
-                                   UserService userService,
-                                   List<ValidateRestaurantService> createRestaurantValidations) {
+    public UpdateRestaurantUseCase(RestaurantRepository restaurantRepository,
+                                   List<ValidateRestaurantService> updateRestaurantValidations,
+                                   UserService userService) {
         this.restaurantRepository = restaurantRepository;
         this.userService = userService;
-        this.createRestaurantValidations = createRestaurantValidations;
+        this.updateRestaurantValidations = updateRestaurantValidations;
     }
 
-    public RestaurantResponse createRestaurant(CreateRestaurantRequest restaurantRequest) {
-        this.createRestaurantValidations.forEach(v -> v.validate(restaurantRequest));
+    public RestaurantResponse updateRestaurant(Long id, CreateRestaurantRequest request) {
 
-        User owner = userService.findByIdEntity(restaurantRequest.ownerId());
+        Restaurant restaurantToUpdate = restaurantRepository.findById(id)
+                .orElseThrow(() -> new RestaurantNotFoundException(id));
 
-        Restaurant newRestaurant = new Restaurant(restaurantRequest, owner);
-        newRestaurant.setLastUpdate(LocalDateTime.now());
+        this.updateRestaurantValidations.forEach(v -> v.validate(request));
 
-        Restaurant saved = restaurantRepository.save(newRestaurant);
-        return toResponse(saved);
+        restaurantToUpdate.setName(request.name());
+        restaurantToUpdate.setCuisineType(request.cuisineType().name());
+        restaurantToUpdate.setStartTime(request.startTime());
+        restaurantToUpdate.setEndTime(request.endTime());
+        restaurantToUpdate.setAddress(new Address(request.address()));
+        restaurantToUpdate.setLastUpdate(LocalDateTime.now());
+
+        restaurantToUpdate.setOwner(userService.findByIdEntity(request.ownerId()));
+
+        return toResponse(restaurantRepository.save(restaurantToUpdate));
     }
 
     private RestaurantResponse toResponse(Restaurant restaurant) {

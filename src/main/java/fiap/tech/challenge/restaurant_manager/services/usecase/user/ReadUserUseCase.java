@@ -41,6 +41,10 @@ public class ReadUserUseCase {
 	public UserResponse findById(Long id) {
 		return toResponse(userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id)));
 	}
+
+	public User findByIdEntity(Long id) {
+		return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+	}
 	
 	public LoginResponse findByLoginAndPassword(LoginRequest loginRequest) {
 		return toLoginResponse(userRepository.findByLoginAndPassword(loginRequest.login(), loginRequest.password()).orElseThrow(InvalidLogonException::new));

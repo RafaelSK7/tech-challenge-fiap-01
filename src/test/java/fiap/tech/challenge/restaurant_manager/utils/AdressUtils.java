@@ -2,6 +2,7 @@ package fiap.tech.challenge.restaurant_manager.utils;
 
 import fiap.tech.challenge.restaurant_manager.entites.Address;
 import fiap.tech.challenge.restaurant_manager.entites.request.CreateAddressRequest;
+import fiap.tech.challenge.restaurant_manager.entites.response.AddressResponse;
 
 public class AdressUtils {
 
@@ -28,6 +29,18 @@ public class AdressUtils {
                 "00000-000",     // zipCode
                 "País Exemplo",   // country
                 null
+        );
+    }
+
+    public static AddressResponse getValidAddressResponse() {
+        return new AddressResponse(
+                "Rua Exemplo",   // street
+                "123",           // number
+                "Bairro Exemplo",// neighborhood
+                "Cidade Exemplo",// city
+                "Estado Exemplo",// state
+                "00000-000",     // zipCode
+                "País Exemplo"   // country
         );
     }
 }

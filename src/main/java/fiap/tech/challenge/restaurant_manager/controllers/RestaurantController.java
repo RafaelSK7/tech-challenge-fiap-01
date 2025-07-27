@@ -35,6 +35,7 @@ public class RestaurantController {
         return ResponseEntity.created(uri).body(createdRestaurant);
     }
 
+    // TODO implement units tests for this endpoint
     @GetMapping
     @Cacheable(value = "restaurantsList")
     public Page<RestaurantResponse> findAll(

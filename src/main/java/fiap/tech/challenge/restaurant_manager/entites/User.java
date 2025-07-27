@@ -1,20 +1,16 @@
 package fiap.tech.challenge.restaurant_manager.entites;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import fiap.tech.challenge.restaurant_manager.entites.enums.UserType;
 import fiap.tech.challenge.restaurant_manager.entites.request.CreateUserRequest;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity(name = "users")
 @Getter

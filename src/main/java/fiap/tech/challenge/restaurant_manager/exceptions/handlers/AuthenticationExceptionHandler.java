@@ -1,7 +1,9 @@
 package fiap.tech.challenge.restaurant_manager.exceptions.handlers;
 
 import fiap.tech.challenge.restaurant_manager.controllers.exceptions.ApiErrorArray;
-import fiap.tech.challenge.restaurant_manager.exceptions.custom.*;
+import fiap.tech.challenge.restaurant_manager.exceptions.custom.InvalidLoginException;
+import fiap.tech.challenge.restaurant_manager.exceptions.custom.InvalidLogonException;
+import fiap.tech.challenge.restaurant_manager.exceptions.custom.InvalidPasswordException;
 import fiap.tech.challenge.restaurant_manager.utils.ApiErrorBuilder;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;

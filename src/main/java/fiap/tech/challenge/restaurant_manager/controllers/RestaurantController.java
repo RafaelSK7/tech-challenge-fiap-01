@@ -1,11 +1,8 @@
 package fiap.tech.challenge.restaurant_manager.controllers;
 
 import fiap.tech.challenge.restaurant_manager.entites.request.CreateRestaurantRequest;
-import fiap.tech.challenge.restaurant_manager.entites.request.CreateUserRequest;
 import fiap.tech.challenge.restaurant_manager.entites.response.RestaurantResponse;
-import fiap.tech.challenge.restaurant_manager.entites.response.UserResponse;
 import fiap.tech.challenge.restaurant_manager.services.RestaurantService;
-import fiap.tech.challenge.restaurant_manager.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;

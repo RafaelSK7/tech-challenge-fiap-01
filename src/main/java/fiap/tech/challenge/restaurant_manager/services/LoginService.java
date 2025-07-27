@@ -1,9 +1,8 @@
 package fiap.tech.challenge.restaurant_manager.services;
 
-import org.springframework.stereotype.Service;
-
 import fiap.tech.challenge.restaurant_manager.entites.request.LoginRequest;
 import fiap.tech.challenge.restaurant_manager.entites.response.LoginResponse;
+import org.springframework.stereotype.Service;
 
 @Service
 public class LoginService {

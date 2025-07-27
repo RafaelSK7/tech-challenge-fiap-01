@@ -1,13 +1,5 @@
 package fiap.tech.challenge.restaurant_manager.services.usecase.user;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
 import fiap.tech.challenge.restaurant_manager.entites.User;
 import fiap.tech.challenge.restaurant_manager.entites.request.LoginRequest;
 import fiap.tech.challenge.restaurant_manager.entites.response.AddressResponse;
@@ -16,6 +8,13 @@ import fiap.tech.challenge.restaurant_manager.entites.response.UserResponse;
 import fiap.tech.challenge.restaurant_manager.exceptions.custom.InvalidLogonException;
 import fiap.tech.challenge.restaurant_manager.exceptions.custom.UserNotFoundException;
 import fiap.tech.challenge.restaurant_manager.repositories.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ReadUserUseCase {

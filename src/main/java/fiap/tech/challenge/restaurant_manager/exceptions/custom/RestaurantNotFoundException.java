@@ -1,5 +1,8 @@
 package fiap.tech.challenge.restaurant_manager.exceptions.custom;
 
+import lombok.Getter;
+
+@Getter
 public class RestaurantNotFoundException extends RuntimeException {
     private final Long restaurantId;
 
@@ -8,7 +11,4 @@ public class RestaurantNotFoundException extends RuntimeException {
         this.restaurantId = restaurantId;
     }
 
-    public Long getRestaurantId() {
-        return restaurantId;
-    }
 }

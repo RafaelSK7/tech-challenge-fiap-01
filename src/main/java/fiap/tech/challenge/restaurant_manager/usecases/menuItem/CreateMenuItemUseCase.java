@@ -31,7 +31,7 @@ public class CreateMenuItemUseCase {
     public MenuItemResponse createMenuItem(CreateMenuItemRequest menuItemRequest) {
         log.info("Entrou no use case de criacao do cardapio");
         this.createMenuItemValidations.forEach(v -> v.validate(menuItemRequest));
-        log.info("obtém o restaurante.");
+        log.info("Obtém o restaurante.");
         var restaurant = restaurantRepository.findById(menuItemRequest.restaurantId())
                 .orElseThrow(() -> new RestaurantNotFoundException(menuItemRequest.restaurantId()));
 

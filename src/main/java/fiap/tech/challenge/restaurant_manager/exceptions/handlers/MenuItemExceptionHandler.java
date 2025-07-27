@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import fiap.tech.challenge.restaurant_manager.controllers.exceptions.ApiErrorArray;
+import fiap.tech.challenge.restaurant_manager.exceptions.ApiErrorArray;
 import fiap.tech.challenge.restaurant_manager.exceptions.custom.InvalidMenuItemException;
 import fiap.tech.challenge.restaurant_manager.exceptions.custom.UserNotFoundException;
 import fiap.tech.challenge.restaurant_manager.utils.ApiErrorBuilder;

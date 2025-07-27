@@ -1,4 +1,4 @@
-package fiap.tech.challenge.restaurant_manager.controllers.exceptions;
+package fiap.tech.challenge.restaurant_manager.exceptions;
 
 import java.time.LocalDateTime;
 import java.util.List;

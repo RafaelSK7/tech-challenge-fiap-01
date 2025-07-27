@@ -23,6 +23,6 @@ public class DeleteMenuItemUseCase {
                 .orElseThrow(() -> new InvalidMenuItemException(id));
         log.info("Cardapio encontrado.");
         menuItemRepository.delete(menuItemToDelete);
-        log.info("cardapio removido com sucesso.");
+        log.info("Cardapio removido com sucesso.");
     }
 }

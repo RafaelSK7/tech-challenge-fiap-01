@@ -9,12 +9,14 @@ import fiap.tech.challenge.restaurant_manager.exceptions.custom.RestaurantNotFou
 import fiap.tech.challenge.restaurant_manager.repositories.RestaurantRepository;
 import fiap.tech.challenge.restaurant_manager.services.users.UserService;
 import fiap.tech.challenge.restaurant_manager.validations.ValidateRestaurantService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@Slf4j
 public class UpdateRestaurantUseCase {
 
     private final RestaurantRepository restaurantRepository;
@@ -31,11 +33,14 @@ public class UpdateRestaurantUseCase {
 
     public RestaurantResponse updateRestaurant(Long id, CreateRestaurantRequest request) {
 
+        log.info("Entrou no use case de atualizacao do restaurante.");
+        log.info("Buscando restaurante a ser atualizado.");
         Restaurant restaurantToUpdate = restaurantRepository.findById(id)
                 .orElseThrow(() -> new RestaurantNotFoundException(id));
 
         this.updateRestaurantValidations.forEach(v -> v.validate(request));
 
+        log.info("Populando os campos do restaurante.");
         restaurantToUpdate.setName(request.name());
         restaurantToUpdate.setCuisineType(request.cuisineType().name());
         restaurantToUpdate.setStartTime(request.startTime());
@@ -43,12 +48,15 @@ public class UpdateRestaurantUseCase {
         restaurantToUpdate.setAddress(new Address(request.address()));
         restaurantToUpdate.setLastUpdate(LocalDateTime.now());
 
+        log.info("Buscando o owner do restaurante.");
         restaurantToUpdate.setOwner(userService.findByIdEntity(request.ownerId()));
-
+        log.info("Restaurante populado.");
         return toResponse(restaurantRepository.save(restaurantToUpdate));
     }
 
     private RestaurantResponse toResponse(Restaurant restaurant) {
+
+        log.info("Montando DTO de retorno do restaurante.");
         AddressResponse addressResponse = null;
 
         if (restaurant.getAddress() != null) {

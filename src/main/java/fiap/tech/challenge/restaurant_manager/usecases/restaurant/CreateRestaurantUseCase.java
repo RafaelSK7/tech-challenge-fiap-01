@@ -8,12 +8,14 @@ import fiap.tech.challenge.restaurant_manager.DTOs.response.restaurants.Restaura
 import fiap.tech.challenge.restaurant_manager.repositories.RestaurantRepository;
 import fiap.tech.challenge.restaurant_manager.services.users.UserService;
 import fiap.tech.challenge.restaurant_manager.validations.ValidateRestaurantService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@Slf4j
 public class CreateRestaurantUseCase {
 
     private final RestaurantRepository restaurantRepository;
@@ -29,18 +31,23 @@ public class CreateRestaurantUseCase {
     }
 
     public RestaurantResponse createRestaurant(CreateRestaurantRequest restaurantRequest) {
+        log.info("Entrou no use case de criacao do cardapio");
         this.createRestaurantValidations.forEach(v -> v.validate(restaurantRequest));
-
+        log.info("Obtem o dono do restaurante.");
         User owner = userService.findByIdEntity(restaurantRequest.ownerId());
 
         Restaurant newRestaurant = new Restaurant(restaurantRequest, owner);
         newRestaurant.setLastUpdate(LocalDateTime.now());
 
+        log.info("Cria o restaurante.");
         Restaurant saved = restaurantRepository.save(newRestaurant);
+        log.info("Restaurante criade com sucesso.");
         return toResponse(saved);
     }
 
     private RestaurantResponse toResponse(Restaurant restaurant) {
+
+        log.info("Montando o DTO de retorno.");
         AddressResponse addressResponse = null;
 
         if (restaurant.getAddress() != null) {

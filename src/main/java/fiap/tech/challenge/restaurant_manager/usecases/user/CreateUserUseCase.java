@@ -8,11 +8,13 @@ import fiap.tech.challenge.restaurant_manager.DTOs.response.users.UserResponse;
 import fiap.tech.challenge.restaurant_manager.repositories.UserRepository;
 import fiap.tech.challenge.restaurant_manager.services.userTypes.UserTypeService;
 import fiap.tech.challenge.restaurant_manager.validations.ValidateUserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Slf4j
 public class CreateUserUseCase {
 
     private final UserRepository userRepository;
@@ -29,13 +31,17 @@ public class CreateUserUseCase {
 
 
     public UserResponse createUser(CreateUserRequest userRequest) {
+        log.info("Entrou no use case de criacao do usuario");
         this.createUserValidations.forEach(v -> v.validate(userRequest));
+        log.info("Obtém o tipo de usuario.");
         UserType userType = userTypeService.findByIdEntity(userRequest.userTypeId());
         User newUser = new User(userRequest, userType);
+        log.info("Criou o usuario.");
         return toResponse(userRepository.save(newUser));
     }
 
     private UserResponse toResponse(User user) {
+        log.info("monta o DTO de retorno.");
         AddressResponse addressResponse = null;
 
         if (user.getAddress() != null) {

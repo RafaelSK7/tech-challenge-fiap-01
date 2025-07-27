@@ -1,12 +1,11 @@
 package fiap.tech.challenge.restaurant_manager.utils;
 
-import fiap.tech.challenge.restaurant_manager.entites.Restaurant;
 import fiap.tech.challenge.restaurant_manager.entites.User;
 import fiap.tech.challenge.restaurant_manager.entites.enums.UserType;
 import fiap.tech.challenge.restaurant_manager.entites.response.AddressResponse;
 import fiap.tech.challenge.restaurant_manager.entites.response.UserResponse;
 
-import java.util.List;
+import static fiap.tech.challenge.restaurant_manager.utils.AdressUtils.getValidAddress;
 
 public class UserUtils {
 
@@ -17,6 +16,7 @@ public class UserUtils {
         user.setEmail("usuario@example.com");
         user.setUserType(UserType.CLIENT);
         user.setLogin("usuario123");
+        user.setAddress(getValidAddress());
         // adicione outros atributos necessários se houver
         return user;
     }

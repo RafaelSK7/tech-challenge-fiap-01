@@ -20,7 +20,6 @@ import java.util.Optional;
 
 import static fiap.tech.challenge.restaurant_manager.utils.AdressUtils.getValidCreateAddressRequest;
 import static fiap.tech.challenge.restaurant_manager.utils.UserUtils.getValidUser;
-import static fiap.tech.challenge.restaurant_manager.utils.UserUtils.getValidUserResponse;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;

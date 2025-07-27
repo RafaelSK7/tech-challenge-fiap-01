@@ -11,203 +11,652 @@
 			"name": "Valid Requests",
 			"item": [
 				{
-					"name": "Find all users",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/users",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"users"
-							]
+					"name": "UserTypes",
+					"item": [
+						{
+							"name": "Find All UserTypes",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/userTypes",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"userTypes"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find by userTypeId",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/userTypes/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"userTypes",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create userType",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"userTypeName\": \"Client Gold\"    \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/userTypes",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"userTypes"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update userType",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"userTypeName\": \"Client Platinum\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/userTypes/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"userTypes",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete userType",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/userTypes/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"userTypes",
+										"1"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
 				},
 				{
-					"name": "Find by id",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
+					"name": "Users",
+					"item": [
+						{
+							"name": "Find all users",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/users",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"users"
+									]
 								}
-							}
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "http://localhost:8080/users/1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"users",
-								"1"
-							]
+						{
+							"name": "Find by id",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/users/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"users",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create user admin",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Jorge Admin\",\r\n    \"email\": \"jorgeAdmin@gmail.com\",\r\n    \"login\": \"admin\",\r\n    \"password\": \"admin\",\r\n    \"address\": {\r\n        \"street\": \"Rua das Flores\",\r\n        \"number\": \"123\",\r\n        \"neighborhood\": \"Centro\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"01000-000\",\r\n        \"country\": \"Brasil\"\r\n    },\r\n    \"userType\": 1\r\n    \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/users",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create user client",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Jorge Cliente\",\r\n    \"email\": \"jorgeCliete@gmail.com\",\r\n    \"login\": \"cliente\",\r\n    \"password\": \"cliente\",\r\n    \"address\": {\r\n        \"street\": \"Rua das Flores\",\r\n        \"number\": \"123\",\r\n        \"neighborhood\": \"Centro\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"01000-000\",\r\n        \"country\": \"Brasil\"\r\n    },\r\n    \"userTypeId\": 1\r\n    \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/users",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update users",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Jorge Admin\",\r\n    \"email\": \"jorgeAdmin2@gmail.com\",\r\n    \"login\": \"admin2\",\r\n    \"password\": \"admin2\",\r\n    \"address\": {\r\n        \"street\": \"Rua Dos Jardins\",\r\n        \"number\": \"150\",\r\n        \"neighborhood\": \"Copacabana\",\r\n        \"city\": \"Rio de Janeiro\",\r\n        \"state\": \"RJ\",\r\n        \"zipCode\": \"21358-610\",\r\n        \"country\": \"Chile\"\r\n    },\r\n    \"userType\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/users/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"users",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete user by id",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/users/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"users",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"login\": \"admin2\",\r\n    \"password\": \"admin2\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"login"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
 				},
 				{
-					"name": "Create user admin",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Jorge Admin\",\r\n    \"email\": \"jorgeAdmin@gmail.com\",\r\n    \"login\": \"admin\",\r\n    \"password\": \"admin\",\r\n    \"address\": {\r\n        \"street\": \"Rua das Flores\",\r\n        \"number\": \"123\",\r\n        \"neighborhood\": \"Centro\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"01000-000\",\r\n        \"country\": \"Brasil\"\r\n    },\r\n    \"userType\": 1\r\n    \r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+					"name": "Restaurants",
+					"item": [
+						{
+							"name": "Find all restaurants",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/restaurants",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"restaurants"
+									]
 								}
-							}
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "http://localhost:8080/users",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"users"
-							]
+						{
+							"name": "Find by restaurantId",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/restaurants/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"restaurants",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create restaurant",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Coqueiro IX\",\r\n    \"cuisineType\": \"BRAZILIAN\",\r\n    \"startTime\": \"12:00h\",\r\n    \"endTime\": \"22:00h\",\r\n    \"address\": {\r\n        \"street\": \"Rua das Flores\",\r\n        \"number\": \"123\",\r\n        \"neighborhood\": \"Centro\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"01000-000\",\r\n        \"country\": \"Brasil\"\r\n    },\r\n    \"ownerId\": 1\r\n    \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/restaurants",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"restaurants"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update restaurant",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Coqueiro x\",\r\n    \"cuisineType\": \"OTHER\",\r\n    \"startTime\": \"11:00h\",\r\n    \"endTime\": \"19:00h\",\r\n    \"address\": {\r\n        \"street\": \"Rua das Jasmins\",\r\n        \"number\": \"124\",\r\n        \"neighborhood\": \"Santa Cruz\",\r\n        \"city\": \"Rio de Janeiro\",\r\n        \"state\": \"RJ\",\r\n        \"zipCode\": \"01001-300\",\r\n        \"country\": \"Brasil\"\r\n    },\r\n    \"ownerId\": 1\r\n    \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/restaurants/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"restaurants",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete restaurant by id",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/restaurants/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"restaurants",
+										"1"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
 				},
 				{
-					"name": "Create user client",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Jorge Cliente\",\r\n    \"email\": \"jorgeCliete@gmail.com\",\r\n    \"login\": \"cliente\",\r\n    \"password\": \"cliente\",\r\n    \"address\": {\r\n        \"street\": \"Rua das Flores\",\r\n        \"number\": \"123\",\r\n        \"neighborhood\": \"Centro\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"01000-000\",\r\n        \"country\": \"Brasil\"\r\n    },\r\n    \"userType\": 0\r\n    \r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+					"name": "MenuItens",
+					"item": [
+						{
+							"name": "Find all Menu itens",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/menu-items",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"menu-items"
+									]
 								}
-							}
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "http://localhost:8080/users",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"users"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update users",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Jorge Admin\",\r\n    \"email\": \"jorgeAdmin2@gmail.com\",\r\n    \"login\": \"admin2\",\r\n    \"password\": \"admin2\",\r\n    \"address\": {\r\n        \"street\": \"Rua Dos Jardins\",\r\n        \"number\": \"150\",\r\n        \"neighborhood\": \"Copacabana\",\r\n        \"city\": \"Rio de Janeiro\",\r\n        \"state\": \"RJ\",\r\n        \"zipCode\": \"21358-610\",\r\n        \"country\": \"Chile\"\r\n    },\r\n    \"userType\": 1\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+						{
+							"name": "Find Menu Item by id",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/menu-items/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"menu-items",
+										"1"
+									]
 								}
-							}
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "http://localhost:8080/users/1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"users",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete user by id",
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "",
-								"value": "",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
+						{
+							"name": "Create menu item",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Virado a paulista\",\r\n    \"description\": \"arroz, tutu de feijao, ovo, bisteca, couve, torresmo, linguica, farofa, banana frita\",\r\n    \"price\": 28.99,\r\n    \"localOnly\": false,\r\n    \"photopath\": \"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHnLyxhwrSgk_zTFXONQ2v3cAcDIW8AeUC-A&s\",\r\n    \"restaurantId\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/menu-items",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"menu-items"
+									]
 								}
-							}
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "http://localhost:8080/users/1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"users",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Login",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"login\": \"admin2\",\r\n    \"password\": \"admin2\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+						{
+							"name": "Update menu item",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Virado a paulista completao\",\r\n    \"description\": \"arroz, tutu de feijao, ovo, bisteca, couve, torresmo, linguica, farofa, banana frita, pimenta\",\r\n    \"price\": 32.99,\r\n    \"localOnly\": true,\r\n    \"photopath\": \"https://s2-receitas.glbimg.com/lzX0WxfA1BGhlFwNmCx9kb-9ALU=/0x0:3636x2003/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_1f540e0b94d8437dbbc39d567a1dee68/internal_photos/bs/2023/N/y/ayoNa0QTu7CKAkOjn4sw/virado-a-paulista-mais-voce.jpeg\",\r\n    \"restaurantId\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/menu-items/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"menu-items",
+										"1"
+									]
 								}
-							}
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "http://localhost:8080/login",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"login"
-							]
+						{
+							"name": "Delete menu item",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/menu-items/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"menu-items",
+										"1"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
 				}
 			]
 		},

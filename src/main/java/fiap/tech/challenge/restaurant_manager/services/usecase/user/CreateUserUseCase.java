@@ -1,15 +1,14 @@
 package fiap.tech.challenge.restaurant_manager.services.usecase.user;
 
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-
 import fiap.tech.challenge.restaurant_manager.entites.User;
 import fiap.tech.challenge.restaurant_manager.entites.request.CreateUserRequest;
 import fiap.tech.challenge.restaurant_manager.entites.response.AddressResponse;
 import fiap.tech.challenge.restaurant_manager.entites.response.UserResponse;
 import fiap.tech.challenge.restaurant_manager.repositories.UserRepository;
 import fiap.tech.challenge.restaurant_manager.services.validation.ValidateUserService;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class CreateUserUseCase {

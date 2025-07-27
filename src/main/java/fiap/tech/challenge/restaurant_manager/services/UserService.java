@@ -1,10 +1,6 @@
 package fiap.tech.challenge.restaurant_manager.services;
 
 import fiap.tech.challenge.restaurant_manager.entites.User;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
 import fiap.tech.challenge.restaurant_manager.entites.request.CreateUserRequest;
 import fiap.tech.challenge.restaurant_manager.entites.request.LoginRequest;
 import fiap.tech.challenge.restaurant_manager.entites.response.LoginResponse;
@@ -13,6 +9,9 @@ import fiap.tech.challenge.restaurant_manager.services.usecase.user.CreateUserUs
 import fiap.tech.challenge.restaurant_manager.services.usecase.user.DeleteUserUseCase;
 import fiap.tech.challenge.restaurant_manager.services.usecase.user.ReadUserUseCase;
 import fiap.tech.challenge.restaurant_manager.services.usecase.user.UpdateUserUseCase;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {

@@ -1,9 +1,10 @@
 package fiap.tech.challenge.restaurant_manager.exceptions.handlers;
 
 import fiap.tech.challenge.restaurant_manager.controllers.exceptions.ApiErrorArray;
-import fiap.tech.challenge.restaurant_manager.exceptions.custom.*;
+import fiap.tech.challenge.restaurant_manager.exceptions.custom.InvalidAddressException;
+import fiap.tech.challenge.restaurant_manager.exceptions.custom.InvalidEmailException;
+import fiap.tech.challenge.restaurant_manager.exceptions.custom.UserNotFoundException;
 import fiap.tech.challenge.restaurant_manager.utils.ApiErrorBuilder;
-
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

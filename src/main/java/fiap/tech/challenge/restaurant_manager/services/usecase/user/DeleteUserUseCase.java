@@ -1,10 +1,9 @@
 package fiap.tech.challenge.restaurant_manager.services.usecase.user;
 
-import org.springframework.stereotype.Service;
-
 import fiap.tech.challenge.restaurant_manager.entites.User;
 import fiap.tech.challenge.restaurant_manager.exceptions.custom.UserNotFoundException;
 import fiap.tech.challenge.restaurant_manager.repositories.UserRepository;
+import org.springframework.stereotype.Service;
 
 @Service
 public class DeleteUserUseCase {

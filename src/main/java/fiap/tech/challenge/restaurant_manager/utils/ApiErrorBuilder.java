@@ -1,6 +1,6 @@
 package fiap.tech.challenge.restaurant_manager.utils;
 
-import fiap.tech.challenge.restaurant_manager.controllers.exceptions.ApiErrorArray;
+import fiap.tech.challenge.restaurant_manager.exceptions.ApiErrorArray;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

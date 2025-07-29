@@ -1,10 +1,9 @@
 package fiap.tech.challenge.restaurant_manager.exceptions.handlers;
 
-import fiap.tech.challenge.restaurant_manager.controllers.exceptions.ApiErrorArray;
-import fiap.tech.challenge.restaurant_manager.exceptions.custom.InvalidAddressException;
-import fiap.tech.challenge.restaurant_manager.exceptions.custom.InvalidEmailException;
-import fiap.tech.challenge.restaurant_manager.exceptions.custom.UserNotFoundException;
+import fiap.tech.challenge.restaurant_manager.exceptions.ApiErrorArray;
+import fiap.tech.challenge.restaurant_manager.exceptions.custom.*;
 import fiap.tech.challenge.restaurant_manager.utils.ApiErrorBuilder;
+
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +26,8 @@ public class UserExceptionHandler {
 
     @ExceptionHandler({
         InvalidEmailException.class,
-        InvalidAddressException.class
+        InvalidAddressException.class,
+        InvalidUserTypeException.class
     })
     public ResponseEntity<ApiErrorArray> handleBadRequestExceptions(RuntimeException ex, HttpServletRequest request) {
         return buildErrorResponse(HttpStatus.BAD_REQUEST, ex, request);

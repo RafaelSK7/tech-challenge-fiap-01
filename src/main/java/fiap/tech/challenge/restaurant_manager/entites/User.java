@@ -1,8 +1,7 @@
 package fiap.tech.challenge.restaurant_manager.entites;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import fiap.tech.challenge.restaurant_manager.entites.enums.UserType;
-import fiap.tech.challenge.restaurant_manager.entites.request.CreateUserRequest;
+import fiap.tech.challenge.restaurant_manager.DTOs.request.users.CreateUserRequest;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -37,7 +36,8 @@ public class User {
     private String password;
     private LocalDateTime lastUpdate;
 
-    @Enumerated(EnumType.STRING)
+    @ManyToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @JoinColumn(name = "userType_userTypeId", referencedColumnName = "userTypeId")
     private UserType userType;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -48,13 +48,13 @@ public class User {
     @JsonManagedReference
     private List<Restaurant> restaurants = new ArrayList<>();
 
-    public User(CreateUserRequest request) {
+    public User(CreateUserRequest request, UserType userType) {
         this.name = request.name();
         this.email = request.email();
         this.login = request.login();
         this.password = request.password();
         this.address = new Address(request.address());
-        this.userType = request.userType();
+        this.userType = userType;
         this.lastUpdate = LocalDateTime.now();
     }
 

@@ -1,8 +1,8 @@
 package fiap.tech.challenge.restaurant_manager.utils;
 
 import fiap.tech.challenge.restaurant_manager.entites.Address;
-import fiap.tech.challenge.restaurant_manager.entites.request.CreateAddressRequest;
-import fiap.tech.challenge.restaurant_manager.entites.response.AddressResponse;
+import fiap.tech.challenge.restaurant_manager.DTOs.request.address.CreateAddressRequest;
+import fiap.tech.challenge.restaurant_manager.DTOs.response.address.AddressResponse;
 
 public class AdressUtils {
 

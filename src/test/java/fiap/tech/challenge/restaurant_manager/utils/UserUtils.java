@@ -1,9 +1,11 @@
 package fiap.tech.challenge.restaurant_manager.utils;
 
+import fiap.tech.challenge.restaurant_manager.DTOs.response.address.AddressResponse;
+import fiap.tech.challenge.restaurant_manager.DTOs.response.users.UserResponse;
 import fiap.tech.challenge.restaurant_manager.entites.User;
-import fiap.tech.challenge.restaurant_manager.entites.enums.UserType;
-import fiap.tech.challenge.restaurant_manager.entites.response.AddressResponse;
-import fiap.tech.challenge.restaurant_manager.entites.response.UserResponse;
+import fiap.tech.challenge.restaurant_manager.entites.UserType;
+
+import java.time.LocalDateTime;
 
 import static fiap.tech.challenge.restaurant_manager.utils.AdressUtils.getValidAddress;
 
@@ -14,7 +16,7 @@ public class UserUtils {
         user.setId(1L);
         user.setName("Nome do Usuário");
         user.setEmail("usuario@example.com");
-        user.setUserType(UserType.CLIENT);
+        user.setUserType(new UserType(1L, "CLIENT", LocalDateTime.now()));
         user.setLogin("usuario123");
         user.setAddress(getValidAddress());
         // adicione outros atributos necessários se houver
@@ -28,9 +30,9 @@ public class UserUtils {
                 user.getName(),
                 user.getEmail(),
                 user.getLogin(),
-                user.getUserType().name(),
+                user.getUserType().getUserTypeId(),
                 new AddressResponse("Rua Exemplo", "123", "Bairro Exemplo", "Cidade Exemplo", "Estado Exemplo", "12345-678", "País Exemplo"),
-        null   );
+                null);
     }
 
 }

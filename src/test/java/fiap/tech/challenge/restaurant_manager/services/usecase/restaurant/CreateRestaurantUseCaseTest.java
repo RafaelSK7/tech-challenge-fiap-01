@@ -1,13 +1,14 @@
 package fiap.tech.challenge.restaurant_manager.services.usecase.restaurant;
 
+import fiap.tech.challenge.restaurant_manager.DTOs.request.restaurants.CreateRestaurantRequest;
+import fiap.tech.challenge.restaurant_manager.DTOs.response.restaurants.RestaurantResponse;
 import fiap.tech.challenge.restaurant_manager.entites.Restaurant;
 import fiap.tech.challenge.restaurant_manager.entites.User;
 import fiap.tech.challenge.restaurant_manager.entites.enums.CuisineType;
-import fiap.tech.challenge.restaurant_manager.entites.request.CreateRestaurantRequest;
-import fiap.tech.challenge.restaurant_manager.entites.response.RestaurantResponse;
 import fiap.tech.challenge.restaurant_manager.repositories.RestaurantRepository;
-import fiap.tech.challenge.restaurant_manager.services.UserService;
-import fiap.tech.challenge.restaurant_manager.services.validation.ValidateRestaurantService;
+import fiap.tech.challenge.restaurant_manager.services.users.UserService;
+import fiap.tech.challenge.restaurant_manager.usecases.restaurant.CreateRestaurantUseCase;
+import fiap.tech.challenge.restaurant_manager.validations.ValidateRestaurantService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -82,7 +83,6 @@ class CreateRestaurantUseCaseTest {
         assertEquals(request.name(), response.name());
         assertEquals(ownerId, response.ownerId());
     }
-
 
 
 }

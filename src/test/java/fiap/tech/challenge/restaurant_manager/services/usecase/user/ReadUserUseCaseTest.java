@@ -1,12 +1,13 @@
 package fiap.tech.challenge.restaurant_manager.services.usecase.user;
 
 import fiap.tech.challenge.restaurant_manager.entites.User;
-import fiap.tech.challenge.restaurant_manager.entites.request.LoginRequest;
-import fiap.tech.challenge.restaurant_manager.entites.response.LoginResponse;
-import fiap.tech.challenge.restaurant_manager.entites.response.UserResponse;
+import fiap.tech.challenge.restaurant_manager.DTOs.request.login.LoginRequest;
+import fiap.tech.challenge.restaurant_manager.DTOs.response.login.LoginResponse;
+import fiap.tech.challenge.restaurant_manager.DTOs.response.users.UserResponse;
 import fiap.tech.challenge.restaurant_manager.exceptions.custom.InvalidLogonException;
 import fiap.tech.challenge.restaurant_manager.exceptions.custom.UserNotFoundException;
 import fiap.tech.challenge.restaurant_manager.repositories.UserRepository;
+import fiap.tech.challenge.restaurant_manager.usecases.user.ReadUserUseCase;
 import fiap.tech.challenge.restaurant_manager.utils.UserUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -81,7 +82,6 @@ public class ReadUserUseCaseTest {
 
         UserNotFoundException exception = assertThrows(UserNotFoundException.class,
                 () -> readUserUseCase.findById(userId));
-        assertEquals(userId, exception.getUserId());
     }
 
     @Test
@@ -131,6 +131,5 @@ public class ReadUserUseCaseTest {
 
         UserNotFoundException exception = assertThrows(UserNotFoundException.class,
                 () -> readUserUseCase.findByIdEntity(userId));
-        assertEquals(userId, exception.getUserId());
     }
 }

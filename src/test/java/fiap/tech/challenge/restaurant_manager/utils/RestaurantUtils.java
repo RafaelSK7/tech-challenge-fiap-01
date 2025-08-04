@@ -1,8 +1,8 @@
 package fiap.tech.challenge.restaurant_manager.utils;
 
 import fiap.tech.challenge.restaurant_manager.entites.enums.CuisineType;
-import fiap.tech.challenge.restaurant_manager.entites.request.CreateRestaurantRequest;
-import fiap.tech.challenge.restaurant_manager.entites.response.RestaurantResponse;
+import fiap.tech.challenge.restaurant_manager.DTOs.request.restaurants.CreateRestaurantRequest;
+import fiap.tech.challenge.restaurant_manager.DTOs.response.restaurants.RestaurantResponse;
 
 import static fiap.tech.challenge.restaurant_manager.utils.AdressUtils.getValidAddressResponse;
 import static fiap.tech.challenge.restaurant_manager.utils.AdressUtils.getValidCreateAddressRequest;

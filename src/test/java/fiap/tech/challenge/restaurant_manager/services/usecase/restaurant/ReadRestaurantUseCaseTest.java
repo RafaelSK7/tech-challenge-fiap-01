@@ -2,9 +2,11 @@ package fiap.tech.challenge.restaurant_manager.services.usecase.restaurant;
 
 import fiap.tech.challenge.restaurant_manager.entites.Restaurant;
 import fiap.tech.challenge.restaurant_manager.entites.User;
-import fiap.tech.challenge.restaurant_manager.entites.response.RestaurantResponse;
+import fiap.tech.challenge.restaurant_manager.DTOs.response.restaurants.RestaurantResponse;
 import fiap.tech.challenge.restaurant_manager.exceptions.custom.RestaurantNotFoundException;
 import fiap.tech.challenge.restaurant_manager.repositories.RestaurantRepository;
+import fiap.tech.challenge.restaurant_manager.usecases.restaurant.ReadRestaurantUseCase;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -65,7 +67,7 @@ public class ReadRestaurantUseCaseTest {
 
         RestaurantNotFoundException exception = assertThrows(RestaurantNotFoundException.class,
                 () -> readRestaurantUseCase.findById(restaurantId));
-        assertEquals(restaurantId, exception.getRestaurantId());
+        assertEquals(restaurantId, exception.getMessage());
     }
 
     @Test

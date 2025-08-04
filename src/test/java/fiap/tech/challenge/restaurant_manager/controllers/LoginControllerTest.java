@@ -1,9 +1,11 @@
 package fiap.tech.challenge.restaurant_manager.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fiap.tech.challenge.restaurant_manager.entites.request.LoginRequest;
-import fiap.tech.challenge.restaurant_manager.entites.response.LoginResponse;
-import fiap.tech.challenge.restaurant_manager.services.LoginService;
+
+import fiap.tech.challenge.restaurant_manager.controllers.login.LoginController;
+import fiap.tech.challenge.restaurant_manager.DTOs.request.login.LoginRequest;
+import fiap.tech.challenge.restaurant_manager.DTOs.response.login.LoginResponse;
+import fiap.tech.challenge.restaurant_manager.services.login.LoginService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,11 +16,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)

@@ -1,13 +1,16 @@
 package fiap.tech.challenge.restaurant_manager.services.usecase.user;
 
 import fiap.tech.challenge.restaurant_manager.entites.User;
-import fiap.tech.challenge.restaurant_manager.entites.enums.UserType;
-import fiap.tech.challenge.restaurant_manager.entites.request.CreateUserRequest;
-import fiap.tech.challenge.restaurant_manager.entites.response.UserResponse;
+import fiap.tech.challenge.restaurant_manager.entites.UserType;
+import fiap.tech.challenge.restaurant_manager.DTOs.request.users.CreateUserRequest;
+import fiap.tech.challenge.restaurant_manager.DTOs.response.users.UserResponse;
 import fiap.tech.challenge.restaurant_manager.exceptions.custom.UserNotFoundException;
 import fiap.tech.challenge.restaurant_manager.repositories.UserRepository;
-import fiap.tech.challenge.restaurant_manager.services.validation.ValidateUserService;
+import fiap.tech.challenge.restaurant_manager.services.userTypes.UserTypeService;
+import fiap.tech.challenge.restaurant_manager.usecases.user.UpdateUserUseCase;
+import fiap.tech.challenge.restaurant_manager.validations.ValidateUserService;
 import fiap.tech.challenge.restaurant_manager.utils.AdressUtils;
+import fiap.tech.challenge.restaurant_manager.utils.UserTypeUtils;
 import fiap.tech.challenge.restaurant_manager.utils.UserUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,13 +34,16 @@ public class UpdateUserUseCaseTest {
     @Mock
     private ValidateUserService validateUserService;
 
+    @Mock
+    private UserTypeService userTypeService;
+
     @InjectMocks
     private UpdateUserUseCase updateUserUseCase;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        updateUserUseCase = new UpdateUserUseCase(userRepository, List.of(validateUserService));
+        updateUserUseCase = new UpdateUserUseCase(userRepository, List.of(validateUserService), userTypeService);
     }
 
     @Test
@@ -50,7 +56,7 @@ public class UpdateUserUseCaseTest {
                 "novologin",
                 "novasenha",
                 AdressUtils.getValidCreateAddressRequest(),
-                UserType.CLIENT
+                UserTypeUtils.getValidUserType().getUserTypeId()
         );
 
         doNothing().when(validateUserService).validate(any(CreateUserRequest.class));
@@ -85,6 +91,6 @@ public class UpdateUserUseCaseTest {
 
         UserNotFoundException exception = assertThrows(UserNotFoundException.class,
                 () -> updateUserUseCase.updateUser(userId, request));
-        assertEquals(userId, exception.getUserId());
+        assertEquals(userId, exception.getMessage());
     }
 }

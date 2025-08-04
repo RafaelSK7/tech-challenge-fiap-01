@@ -1,8 +1,9 @@
 package fiap.tech.challenge.restaurant_manager.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fiap.tech.challenge.restaurant_manager.entites.request.CreateRestaurantRequest;
-import fiap.tech.challenge.restaurant_manager.entites.response.RestaurantResponse;
-import fiap.tech.challenge.restaurant_manager.services.RestaurantService;
+import fiap.tech.challenge.restaurant_manager.DTOs.request.restaurants.CreateRestaurantRequest;
+import fiap.tech.challenge.restaurant_manager.DTOs.response.restaurants.RestaurantResponse;
+import fiap.tech.challenge.restaurant_manager.controllers.restaurants.RestaurantController;
+import fiap.tech.challenge.restaurant_manager.services.restaurants.RestaurantService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

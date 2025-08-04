@@ -1,14 +1,14 @@
 package fiap.tech.challenge.restaurant_manager.services.usecase.user;
 
-import fiap.tech.challenge.restaurant_manager.entites.User;
-import fiap.tech.challenge.restaurant_manager.DTOs.request.users.CreateUserRequest;
-import fiap.tech.challenge.restaurant_manager.DTOs.response.users.UserResponse;
-import fiap.tech.challenge.restaurant_manager.entites.UserType;
-import fiap.tech.challenge.restaurant_manager.exceptions.custom.UserNotFoundException;
-import fiap.tech.challenge.restaurant_manager.repositories.UserRepository;
-import fiap.tech.challenge.restaurant_manager.services.userTypes.UserTypeService;
-import fiap.tech.challenge.restaurant_manager.usecases.user.UpdateUserUseCase;
-import fiap.tech.challenge.restaurant_manager.validations.ValidateUserService;
+import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.UsersEntity;
+import fiap.tech.challenge.restaurant_manager.application.DTOs.request.users.CreateUserRequest;
+import fiap.tech.challenge.restaurant_manager.application.DTOs.response.users.UserResponse;
+import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.UserTypesEntity;
+import fiap.tech.challenge.restaurant_manager.application.exceptions.custom.UserNotFoundException;
+import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.repositories.UserRepository;
+import fiap.tech.challenge.restaurant_manager.application.controllers.userTypes.UserTypeController;
+import fiap.tech.challenge.restaurant_manager.domain.usecases.user.UpdateUserUseCase;
+import fiap.tech.challenge.restaurant_manager.application.validations.ValidateUserService;
 import fiap.tech.challenge.restaurant_manager.utils.AdressUtils;
 import fiap.tech.challenge.restaurant_manager.utils.UserUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,7 +38,7 @@ public class UpdateUserUseCaseTest {
     private UpdateUserUseCase updateUserUseCase;
 
     @Mock
-    private UserTypeService userTypeService;
+    private UserTypeController userTypeService;
 
     @BeforeEach
     void setUp() {
@@ -61,12 +61,12 @@ public class UpdateUserUseCaseTest {
 
         doNothing().when(validateUserService).validate(any(CreateUserRequest.class));
 
-        User existingUser = UserUtils.getValidUser();
+        UsersEntity existingUser = UserUtils.getValidUser();
         existingUser.setId(userId);
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(existingUser));
         when(userRepository.save(existingUser)).thenReturn(existingUser);
-        when(userTypeService.findByIdEntity(request.userTypeId())).thenReturn(new UserType(1L, "CLIENT", LocalDateTime.now()));
+        when(userTypeService.findByIdEntity(request.userTypeId())).thenReturn(new UserTypesEntity(1L, "CLIENT", LocalDateTime.now()));
 
         UserResponse response = updateUserUseCase.updateUser(userId, request);
 

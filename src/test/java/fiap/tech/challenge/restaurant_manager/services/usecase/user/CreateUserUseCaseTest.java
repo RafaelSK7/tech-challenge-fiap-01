@@ -1,12 +1,12 @@
 package fiap.tech.challenge.restaurant_manager.services.usecase.user;
 
-import fiap.tech.challenge.restaurant_manager.entites.User;
-import fiap.tech.challenge.restaurant_manager.DTOs.request.users.CreateUserRequest;
-import fiap.tech.challenge.restaurant_manager.DTOs.response.users.UserResponse;
-import fiap.tech.challenge.restaurant_manager.repositories.UserRepository;
-import fiap.tech.challenge.restaurant_manager.services.userTypes.UserTypeService;
-import fiap.tech.challenge.restaurant_manager.usecases.user.CreateUserUseCase;
-import fiap.tech.challenge.restaurant_manager.validations.ValidateUserService;
+import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.UsersEntity;
+import fiap.tech.challenge.restaurant_manager.application.DTOs.request.users.CreateUserRequest;
+import fiap.tech.challenge.restaurant_manager.application.DTOs.response.users.UserResponse;
+import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.repositories.UserRepository;
+import fiap.tech.challenge.restaurant_manager.application.controllers.userTypes.UserTypeController;
+import fiap.tech.challenge.restaurant_manager.domain.usecases.user.CreateUserUseCase;
+import fiap.tech.challenge.restaurant_manager.application.validations.ValidateUserService;
 import fiap.tech.challenge.restaurant_manager.utils.UserUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,7 +35,7 @@ public class CreateUserUseCaseTest {
     private CreateUserUseCase createUserUseCase;
 
     @Mock
-    private UserTypeService userTypeService;
+    private UserTypeController userTypeService;
 
     @BeforeEach
     void setUp() {
@@ -56,10 +56,10 @@ public class CreateUserUseCaseTest {
         );
         doNothing().when(validateUserService).validate(any(CreateUserRequest.class));
 
-        ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
+        ArgumentCaptor<UsersEntity> userCaptor = ArgumentCaptor.forClass(UsersEntity.class);
 
-        User savedUser = UserUtils.getValidUser();
-        when(userRepository.save(any(User.class))).thenReturn(savedUser);
+        UsersEntity savedUser = UserUtils.getValidUser();
+        when(userRepository.save(any(UsersEntity.class))).thenReturn(savedUser);
 
         // Act
         UserResponse response = createUserUseCase.createUser(request);
@@ -67,7 +67,7 @@ public class CreateUserUseCaseTest {
         // Assert
         verify(validateUserService, times(1)).validate(request);
         verify(userRepository, times(1)).save(userCaptor.capture());
-        User capturedUser = userCaptor.getValue();
+        UsersEntity capturedUser = userCaptor.getValue();
 
         assertEquals(request.name(), capturedUser.getName());
         assertEquals(request.email(), capturedUser.getEmail());

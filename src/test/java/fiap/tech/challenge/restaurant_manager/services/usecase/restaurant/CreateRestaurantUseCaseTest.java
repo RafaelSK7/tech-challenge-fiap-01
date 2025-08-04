@@ -1,14 +1,14 @@
 package fiap.tech.challenge.restaurant_manager.services.usecase.restaurant;
 
-import fiap.tech.challenge.restaurant_manager.DTOs.request.restaurants.CreateRestaurantRequest;
-import fiap.tech.challenge.restaurant_manager.DTOs.response.restaurants.RestaurantResponse;
-import fiap.tech.challenge.restaurant_manager.entites.Restaurant;
-import fiap.tech.challenge.restaurant_manager.entites.User;
-import fiap.tech.challenge.restaurant_manager.entites.enums.CuisineType;
-import fiap.tech.challenge.restaurant_manager.repositories.RestaurantRepository;
-import fiap.tech.challenge.restaurant_manager.services.users.UserService;
-import fiap.tech.challenge.restaurant_manager.usecases.restaurant.CreateRestaurantUseCase;
-import fiap.tech.challenge.restaurant_manager.validations.ValidateRestaurantService;
+import fiap.tech.challenge.restaurant_manager.application.DTOs.request.restaurants.CreateRestaurantRequest;
+import fiap.tech.challenge.restaurant_manager.application.DTOs.response.restaurants.RestaurantResponse;
+import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.RestaurantEntity;
+import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.UsersEntity;
+import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.enums.CuisineType;
+import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.repositories.RestaurantRepository;
+import fiap.tech.challenge.restaurant_manager.application.controllers.users.UserService;
+import fiap.tech.challenge.restaurant_manager.domain.usecases.restaurant.CreateRestaurantUseCase;
+import fiap.tech.challenge.restaurant_manager.application.validations.ValidateRestaurantService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -57,17 +57,17 @@ class CreateRestaurantUseCaseTest {
                 ownerId
         );
 
-        User mockOwner = new User();
+        UsersEntity mockOwner = new UsersEntity();
         mockOwner.setId(ownerId);
 
         when(userService.findByIdEntity(ownerId)).thenReturn(mockOwner);
 
         // Captura o restaurante salvo para validação
-        ArgumentCaptor<Restaurant> restaurantCaptor = ArgumentCaptor.forClass(Restaurant.class);
+        ArgumentCaptor<RestaurantEntity> restaurantCaptor = ArgumentCaptor.forClass(RestaurantEntity.class);
 
-        Restaurant savedRestaurant = new Restaurant(request, mockOwner);
+        RestaurantEntity savedRestaurant = new RestaurantEntity(request, mockOwner);
         savedRestaurant.setId(100L);
-        when(restaurantRepository.save(any(Restaurant.class))).thenReturn(savedRestaurant);
+        when(restaurantRepository.save(any(RestaurantEntity.class))).thenReturn(savedRestaurant);
 
         // Act
         RestaurantResponse response = createRestaurantUseCase.createRestaurant(request);
@@ -76,7 +76,7 @@ class CreateRestaurantUseCaseTest {
         verify(validateRestaurantService, times(1)).validate(request);
         verify(userService, times(1)).findByIdEntity(ownerId);
         verify(restaurantRepository, times(1)).save(restaurantCaptor.capture());
-        Restaurant capturedRestaurant = restaurantCaptor.getValue();
+        RestaurantEntity capturedRestaurant = restaurantCaptor.getValue();
 
         assertEquals(request.name(), capturedRestaurant.getName());
         assertEquals(100L, response.id());

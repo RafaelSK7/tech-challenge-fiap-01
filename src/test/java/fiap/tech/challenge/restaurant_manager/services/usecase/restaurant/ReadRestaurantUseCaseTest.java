@@ -1,11 +1,11 @@
 package fiap.tech.challenge.restaurant_manager.services.usecase.restaurant;
 
-import fiap.tech.challenge.restaurant_manager.entites.Restaurant;
-import fiap.tech.challenge.restaurant_manager.entites.User;
-import fiap.tech.challenge.restaurant_manager.DTOs.response.restaurants.RestaurantResponse;
-import fiap.tech.challenge.restaurant_manager.exceptions.custom.RestaurantNotFoundException;
-import fiap.tech.challenge.restaurant_manager.repositories.RestaurantRepository;
-import fiap.tech.challenge.restaurant_manager.usecases.restaurant.ReadRestaurantUseCase;
+import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.RestaurantEntity;
+import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.UsersEntity;
+import fiap.tech.challenge.restaurant_manager.application.DTOs.response.restaurants.RestaurantResponse;
+import fiap.tech.challenge.restaurant_manager.application.exceptions.custom.RestaurantNotFoundException;
+import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.repositories.RestaurantRepository;
+import fiap.tech.challenge.restaurant_manager.domain.usecases.restaurant.ReadRestaurantUseCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -40,12 +40,12 @@ public class ReadRestaurantUseCaseTest {
     @Test
     void testReadRestaurantSuccess() {
         Long restaurantId = 1L;
-        Restaurant restaurant = new Restaurant();
+        RestaurantEntity restaurant = new RestaurantEntity();
         restaurant.setId(restaurantId);
         restaurant.setName("Test Restaurant");
         restaurant.setAddress(getValidAddress());
 
-        User owner = new User();
+        UsersEntity owner = new UsersEntity();
         owner.setId(2L);
         restaurant.setOwner(owner);
 
@@ -71,16 +71,16 @@ public class ReadRestaurantUseCaseTest {
     @Test
     void testFindAllRestaurantsSuccess() {
         Pageable pageable = PageRequest.of(0, 10);
-        Restaurant restaurant = new Restaurant();
+        RestaurantEntity restaurant = new RestaurantEntity();
         restaurant.setId(1L);
         restaurant.setName("Test Restaurant");
 
-        User owner = new User();
+        UsersEntity owner = new UsersEntity();
         owner.setId(2L);
         restaurant.setOwner(owner);
 
-        List<Restaurant> restaurants = List.of(restaurant);
-        Page<Restaurant> restaurantPage = new PageImpl<>(restaurants, pageable, restaurants.size());
+        List<RestaurantEntity> restaurants = List.of(restaurant);
+        Page<RestaurantEntity> restaurantPage = new PageImpl<>(restaurants, pageable, restaurants.size());
 
         when(restaurantRepository.findAll(pageable)).thenReturn(restaurantPage);
 

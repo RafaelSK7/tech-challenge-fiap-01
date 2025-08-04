@@ -1,9 +1,9 @@
 package fiap.tech.challenge.restaurant_manager.utils;
 
-import fiap.tech.challenge.restaurant_manager.DTOs.response.address.AddressResponse;
-import fiap.tech.challenge.restaurant_manager.DTOs.response.users.UserResponse;
-import fiap.tech.challenge.restaurant_manager.entites.User;
-import fiap.tech.challenge.restaurant_manager.entites.UserType;
+import fiap.tech.challenge.restaurant_manager.application.DTOs.response.address.AddressResponse;
+import fiap.tech.challenge.restaurant_manager.application.DTOs.response.users.UserResponse;
+import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.UsersEntity;
+import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.UserTypesEntity;
 
 import java.time.LocalDateTime;
 
@@ -11,12 +11,12 @@ import static fiap.tech.challenge.restaurant_manager.utils.AdressUtils.getValidA
 
 public class UserUtils {
 
-    public static User getValidUser() {
-        User user = new User();
+    public static UsersEntity getValidUser() {
+        UsersEntity user = new UsersEntity();
         user.setId(1L);
         user.setName("Nome do Usuário");
         user.setEmail("usuario@example.com");
-        user.setUserType(new UserType(1L, "CLIENT", LocalDateTime.now()));
+        user.setUserType(new UserTypesEntity(1L, "CLIENT", LocalDateTime.now()));
         user.setLogin("usuario123");
         user.setAddress(getValidAddress());
         // adicione outros atributos necessários se houver
@@ -24,7 +24,7 @@ public class UserUtils {
     }
 
     public static UserResponse getValidUserResponse() {
-        User user = getValidUser();
+        UsersEntity user = getValidUser();
         return new UserResponse(
                 user.getId(),
                 user.getName(),

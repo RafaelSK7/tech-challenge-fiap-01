@@ -1,9 +1,9 @@
 package fiap.tech.challenge.restaurant_manager.services.usecase.restaurant;
 
-import fiap.tech.challenge.restaurant_manager.entites.Restaurant;
-import fiap.tech.challenge.restaurant_manager.exceptions.custom.RestaurantNotFoundException;
-import fiap.tech.challenge.restaurant_manager.repositories.RestaurantRepository;
-import fiap.tech.challenge.restaurant_manager.usecases.restaurant.DeleteRestaurantUseCase;
+import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.RestaurantEntity;
+import fiap.tech.challenge.restaurant_manager.application.exceptions.custom.RestaurantNotFoundException;
+import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.repositories.RestaurantRepository;
+import fiap.tech.challenge.restaurant_manager.domain.usecases.restaurant.DeleteRestaurantUseCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -32,7 +32,7 @@ public class DeleteRestaurantUseCaseTest {
     @Test
     void testDeleteRestaurantSuccess() {
         Long restaurantId = 1L;
-        Restaurant restaurant = new Restaurant();
+        RestaurantEntity restaurant = new RestaurantEntity();
         restaurant.setId(restaurantId);
 
         when(restaurantRepository.findById(restaurantId)).thenReturn(Optional.of(restaurant));
@@ -49,7 +49,7 @@ public class DeleteRestaurantUseCaseTest {
         when(restaurantRepository.findById(restaurantId)).thenReturn(Optional.empty());
 
         assertThrows(RestaurantNotFoundException.class, () -> deleteRestaurantUseCase.deleteRestaurant(restaurantId));
-        verify(restaurantRepository, never()).delete(any(Restaurant.class));
+        verify(restaurantRepository, never()).delete(any(RestaurantEntity.class));
     }
 
 }

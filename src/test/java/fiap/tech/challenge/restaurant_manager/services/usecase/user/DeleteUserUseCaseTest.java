@@ -1,9 +1,9 @@
 package fiap.tech.challenge.restaurant_manager.services.usecase.user;
 
-import fiap.tech.challenge.restaurant_manager.entites.User;
-import fiap.tech.challenge.restaurant_manager.exceptions.custom.UserNotFoundException;
-import fiap.tech.challenge.restaurant_manager.repositories.UserRepository;
-import fiap.tech.challenge.restaurant_manager.usecases.user.DeleteUserUseCase;
+import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.UsersEntity;
+import fiap.tech.challenge.restaurant_manager.application.exceptions.custom.UserNotFoundException;
+import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.repositories.UserRepository;
+import fiap.tech.challenge.restaurant_manager.domain.usecases.user.DeleteUserUseCase;
 import fiap.tech.challenge.restaurant_manager.utils.UserUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,7 +34,7 @@ public class DeleteUserUseCaseTest {
     @Test
     void testDeleteUserSuccess() {
         Long userId = 1L;
-        User user = UserUtils.getValidUser();
+        UsersEntity user = UserUtils.getValidUser();
         user.setId(userId);
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));

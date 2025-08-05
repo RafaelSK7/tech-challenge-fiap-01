@@ -20,14 +20,14 @@ public class Restaurant {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "O nome do restaurante deve estar preenchido.")
     @Column(unique = true, nullable = false)
     private String name;
-    @NotBlank
+    @NotBlank(message = "O tipo de cozinha deve estar preenchido")
     private String cuisineType;
-    @NotBlank
+    @NotBlank(message = "O horario de abertura deve estar preenchido")
     private String startTime;
-    @NotBlank
+    @NotBlank(message = "O horario de fechamento deve estar preenchido")
     private String endTime;
     private LocalDateTime lastUpdate;
 

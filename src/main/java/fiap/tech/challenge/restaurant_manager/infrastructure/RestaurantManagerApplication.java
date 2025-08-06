@@ -9,10 +9,9 @@ import org.springframework.data.web.config.EnableSpringDataWebSupport;
 @SpringBootApplication
 @EnableCaching
 @EnableSpringDataWebSupport
-@ComponentScan(basePackages = {"fiap.tech.challenge.restaurant_manager.infrastructure.resources"
-							 , "fiap.tech.challenge.restaurant_manager.application.controllers"
-							 , "fiap.tech.challenge.restaurant_manager.application.gateway"
-							 , "fiap.tech.challenge.restaurant_manager.domain.usecases"})
+@ComponentScan(basePackages = {"fiap.tech.challenge.restaurant_manager.infrastructure.*"
+							 , "fiap.tech.challenge.restaurant_manager.application.*"
+							 , "fiap.tech.challenge.restaurant_manager.domain.*"})
 public class RestaurantManagerApplication {
 
 	public static void main(String[] args) {

@@ -1,11 +1,12 @@
 package fiap.tech.challenge.restaurant_manager.services.usecase.user;
 
 import fiap.tech.challenge.restaurant_manager.entites.User;
-import fiap.tech.challenge.restaurant_manager.entites.enums.UserType;
-import fiap.tech.challenge.restaurant_manager.entites.request.CreateUserRequest;
-import fiap.tech.challenge.restaurant_manager.entites.response.UserResponse;
+import fiap.tech.challenge.restaurant_manager.DTOs.request.users.CreateUserRequest;
+import fiap.tech.challenge.restaurant_manager.DTOs.response.users.UserResponse;
 import fiap.tech.challenge.restaurant_manager.repositories.UserRepository;
-import fiap.tech.challenge.restaurant_manager.services.validation.ValidateUserService;
+import fiap.tech.challenge.restaurant_manager.services.userTypes.UserTypeService;
+import fiap.tech.challenge.restaurant_manager.usecases.user.CreateUserUseCase;
+import fiap.tech.challenge.restaurant_manager.validations.ValidateUserService;
 import fiap.tech.challenge.restaurant_manager.utils.UserUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,10 +34,13 @@ public class CreateUserUseCaseTest {
     @InjectMocks
     private CreateUserUseCase createUserUseCase;
 
+    @Mock
+    private UserTypeService userTypeService;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        createUserUseCase = new CreateUserUseCase(userRepository, List.of(validateUserService));
+        createUserUseCase = new CreateUserUseCase(userRepository, List.of(validateUserService), userTypeService);
     }
 
     @Test
@@ -48,7 +52,7 @@ public class CreateUserUseCaseTest {
                 "usuario_login",
                 "USER",
                 getValidCreateAddressRequest(),
-                UserType.CLIENT
+                1L
         );
         doNothing().when(validateUserService).validate(any(CreateUserRequest.class));
 
@@ -83,7 +87,7 @@ public class CreateUserUseCaseTest {
                 "usuario_login",
                 "USER",
                 getValidCreateAddressRequest(),
-                UserType.CLIENT
+                1L
         );
         doThrow(new IllegalArgumentException("Validação falhou")).when(validateUserService).validate(any(CreateUserRequest.class));
 

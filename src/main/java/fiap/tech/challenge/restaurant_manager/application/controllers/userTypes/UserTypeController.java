@@ -45,7 +45,7 @@ public class UserTypeController {
 
     public UserTypeResponse findById(Long id) {
         log.info("Entrou no servico de busca do tipo de usuario.");
-        return readUserTypeUseCase.findById(id);
+        return UserTypePresenter.toResponse(readUserTypeUseCase.findByUserTypeId(id));
     }
 
     public UserTypesEntity findByIdEntity(Long id) {

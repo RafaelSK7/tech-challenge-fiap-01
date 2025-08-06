@@ -19,7 +19,7 @@ public class UserTypesEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userTypeId;
 
-    @NotBlank
+    @NotBlank(message = "O nome e obrigatorio")
     @Column(unique = true, nullable = false)
     private String userTypeName;
 

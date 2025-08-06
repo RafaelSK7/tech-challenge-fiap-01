@@ -2,6 +2,8 @@ package fiap.tech.challenge.restaurant_manager.application.interfaces;
 
 import fiap.tech.challenge.restaurant_manager.application.DTOs.request.userTypes.CreateUserTypeRequest;
 import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.UserTypesEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,10 +12,13 @@ public interface UserTypesInterface {
 
     UserTypesEntity save(CreateUserTypeRequest dto);
 
-    List<UserTypesEntity> findAll();
+    Page<UserTypesEntity> findAll(Pageable page);
 
-    Optional<UserTypesEntity> findById();
+    Optional<UserTypesEntity> findByUserTypeId(Long id);
 
-    void delete(Long id);
+    void delete(UserTypesEntity userType);
 
+    Optional<UserTypesEntity> findByUserTypeName(String upperCase);
+
+    UserTypesEntity update(UserTypesEntity userTypeToUpdate);
 }

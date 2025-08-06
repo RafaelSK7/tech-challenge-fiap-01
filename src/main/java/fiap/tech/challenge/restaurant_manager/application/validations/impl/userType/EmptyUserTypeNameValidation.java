@@ -4,11 +4,13 @@ import fiap.tech.challenge.restaurant_manager.application.DTOs.request.userTypes
 import fiap.tech.challenge.restaurant_manager.application.exceptions.custom.InvalidUserTypeException;
 import fiap.tech.challenge.restaurant_manager.application.validations.ValidationUserTypeService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 @Slf4j
-@Service
-public class EmptyUserTypeNameValidation implements ValidationUserTypeService {
+@Component
+public class
+EmptyUserTypeNameValidation implements ValidationUserTypeService {
 
     @Override
     public void validate(CreateUserTypeRequest request) {

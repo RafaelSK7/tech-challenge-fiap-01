@@ -4,9 +4,9 @@ import fiap.tech.challenge.restaurant_manager.application.DTOs.request.users.Cre
 import fiap.tech.challenge.restaurant_manager.application.exceptions.custom.InvalidUserTypeException;
 import fiap.tech.challenge.restaurant_manager.application.validations.ValidateUserService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 @Slf4j
 public class UserTypeValidateUser implements ValidateUserService {
 

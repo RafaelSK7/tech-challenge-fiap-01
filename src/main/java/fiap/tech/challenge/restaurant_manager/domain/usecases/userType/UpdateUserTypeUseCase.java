@@ -1,12 +1,12 @@
 package fiap.tech.challenge.restaurant_manager.domain.usecases.userType;
 
 
-import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.UserTypesEntity;
 import fiap.tech.challenge.restaurant_manager.application.DTOs.request.userTypes.CreateUserTypeRequest;
 import fiap.tech.challenge.restaurant_manager.application.DTOs.response.userTypes.UserTypeResponse;
 import fiap.tech.challenge.restaurant_manager.application.exceptions.custom.UserTypeNotFoundException;
-import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.repositories.UserTypeRepository;
+import fiap.tech.challenge.restaurant_manager.application.gateway.userTypes.UserTypesGateway;
 import fiap.tech.challenge.restaurant_manager.application.validations.ValidationUserTypeService;
+import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.UserTypesEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -17,27 +17,26 @@ import java.util.List;
 @Slf4j
 public class UpdateUserTypeUseCase {
 
-    private UserTypeRepository userTypeRepository;
+    private UserTypesGateway userTypesGateway;
 
     private List<ValidationUserTypeService> validationUserTypeServiceList;
 
-    public UpdateUserTypeUseCase(UserTypeRepository userTypeRepository, List<ValidationUserTypeService> validationUserTypeServiceList) {
-        this.userTypeRepository = userTypeRepository;
+    public UpdateUserTypeUseCase(UserTypesGateway userTypesGateway, List<ValidationUserTypeService> validationUserTypeServiceList) {
+        this.userTypesGateway = userTypesGateway;
         this.validationUserTypeServiceList = validationUserTypeServiceList;
     }
 
     public UserTypeResponse updateUserType(Long id, CreateUserTypeRequest userTypeRequest) {
         log.info("Entrou no use case de atualizacao do tipo de usuario.");
         log.info("Buscando tipo de usuario a ser atualizado.");
-        UserTypesEntity userTypeToUpdate = userTypeRepository.findById(id).orElseThrow(() -> new UserTypeNotFoundException(id));
+        UserTypesEntity userTypeToUpdate = userTypesGateway.findByUserTypeId(id).orElseThrow(() -> new UserTypeNotFoundException(id));
 
         this.validationUserTypeServiceList.forEach(v -> v.validate(userTypeRequest));
         log.info("Populando os campos do tipo de usuario.");
         userTypeToUpdate.setUserTypeName(userTypeRequest.userTypeName().trim().toUpperCase());
         userTypeToUpdate.setLastUpdate(LocalDateTime.now());
         log.info("tipo de usuario populado.");
-        return toResponse(userTypeRepository.save(userTypeToUpdate));
-
+        return toResponse(userTypesGateway.update(userTypeToUpdate));
     }
 
     private UserTypeResponse toResponse(UserTypesEntity userType) {

@@ -1,21 +1,19 @@
 package fiap.tech.challenge.restaurant_manager.domain.usecases.user;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
-import fiap.tech.challenge.restaurant_manager.application.controllers.userTypes.UserTypeController;
-import fiap.tech.challenge.restaurant_manager.application.gateway.users.UsersGateway;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-
-import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.AddressEntity;
-import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.UsersEntity;
 import fiap.tech.challenge.restaurant_manager.application.DTOs.request.users.CreateUserRequest;
 import fiap.tech.challenge.restaurant_manager.application.DTOs.response.address.AddressResponse;
 import fiap.tech.challenge.restaurant_manager.application.DTOs.response.users.UserResponse;
+import fiap.tech.challenge.restaurant_manager.application.controllers.userTypes.UserTypeController;
 import fiap.tech.challenge.restaurant_manager.application.exceptions.custom.UserNotFoundException;
-import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.repositories.UserRepository;
+import fiap.tech.challenge.restaurant_manager.application.gateway.users.UsersGateway;
 import fiap.tech.challenge.restaurant_manager.application.validations.ValidateUserService;
+import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.AddressEntity;
+import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.UsersEntity;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @Slf4j

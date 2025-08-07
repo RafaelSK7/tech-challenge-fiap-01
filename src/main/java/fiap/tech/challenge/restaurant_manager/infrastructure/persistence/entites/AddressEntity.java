@@ -1,17 +1,9 @@
 package fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites;
 
 import fiap.tech.challenge.restaurant_manager.application.DTOs.request.address.CreateAddressRequest;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity(name = "address")
 @Getter
@@ -19,25 +11,26 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@EqualsAndHashCode
 public class AddressEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "O logradouro e obrigatorio.")
     private String street;
-    @NotBlank
+    @NotBlank(message = "O numero e obrigatorio.")
     private String number;
-    @NotBlank
+    @NotBlank(message = "O bairro e obrigatorio.")
     private String neighborhood;
-    @NotBlank
+    @NotBlank(message = "A cidade e obrigatoria.")
     private String city;
-    @NotBlank
+    @NotBlank(message = "O Estado e obrigatorio.")
     private String state;
-    @NotBlank
+    @NotBlank(message = "O CEP e obrigatorio")
     private String zipCode;
-    @NotBlank
+    @NotBlank(message = "O pais e obrigatorio.")
     private String country;
 
     @OneToOne(mappedBy = "address")

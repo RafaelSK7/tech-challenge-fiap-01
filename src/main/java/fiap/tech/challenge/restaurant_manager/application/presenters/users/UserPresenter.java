@@ -1,9 +1,7 @@
 package fiap.tech.challenge.restaurant_manager.application.presenters.users;
 
-import fiap.tech.challenge.restaurant_manager.application.DTOs.response.userTypes.UserTypeResponse;
 import fiap.tech.challenge.restaurant_manager.application.DTOs.response.users.UserResponse;
 import fiap.tech.challenge.restaurant_manager.application.presenters.address.AddressPresenter;
-import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.UserTypesEntity;
 import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.UsersEntity;
 import lombok.extern.slf4j.Slf4j;
 

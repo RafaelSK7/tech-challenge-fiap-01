@@ -12,7 +12,6 @@ public class UserTypes {
     @NotNull(message = "O id e obrigatorio")
     private Long userTypeId;
 
-    @NotNull(message = "O nome e obrigatorio")
     @NotBlank(message = "O nome e obrigatorio")
     private String userTypeName;
 

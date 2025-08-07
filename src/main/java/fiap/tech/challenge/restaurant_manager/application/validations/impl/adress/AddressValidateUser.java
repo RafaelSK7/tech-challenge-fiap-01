@@ -1,14 +1,13 @@
 package fiap.tech.challenge.restaurant_manager.application.validations.impl.adress;
 
-import fiap.tech.challenge.restaurant_manager.application.DTOs.request.restaurants.CreateRestaurantRequest;
-import fiap.tech.challenge.restaurant_manager.application.validations.ValidateRestaurantService;
-import org.springframework.stereotype.Service;
-
 import fiap.tech.challenge.restaurant_manager.application.DTOs.request.address.CreateAddressRequest;
+import fiap.tech.challenge.restaurant_manager.application.DTOs.request.restaurants.CreateRestaurantRequest;
 import fiap.tech.challenge.restaurant_manager.application.DTOs.request.users.CreateUserRequest;
 import fiap.tech.challenge.restaurant_manager.application.exceptions.custom.InvalidAddressException;
+import fiap.tech.challenge.restaurant_manager.application.validations.ValidateRestaurantService;
 import fiap.tech.challenge.restaurant_manager.application.validations.ValidateUserService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service

@@ -1,10 +1,10 @@
 package fiap.tech.challenge.restaurant_manager.domain.usecases.restaurant;
 
-import fiap.tech.challenge.restaurant_manager.application.gateway.restaurants.RestaurantsGateway;
-import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.RestaurantEntity;
 import fiap.tech.challenge.restaurant_manager.application.DTOs.response.address.AddressResponse;
 import fiap.tech.challenge.restaurant_manager.application.DTOs.response.restaurants.RestaurantResponse;
 import fiap.tech.challenge.restaurant_manager.application.exceptions.custom.RestaurantNotFoundException;
+import fiap.tech.challenge.restaurant_manager.application.gateway.restaurants.RestaurantsGateway;
+import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.RestaurantEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;

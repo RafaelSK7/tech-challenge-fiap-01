@@ -7,7 +7,6 @@ import fiap.tech.challenge.restaurant_manager.application.exceptions.custom.Inva
 import fiap.tech.challenge.restaurant_manager.application.exceptions.custom.UserNotFoundException;
 import fiap.tech.challenge.restaurant_manager.application.gateway.users.UsersGateway;
 import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.UsersEntity;
-import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.repositories.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;

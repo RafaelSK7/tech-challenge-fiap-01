@@ -1,8 +1,8 @@
 package fiap.tech.challenge.restaurant_manager.domain.usecases.restaurant;
 
+import fiap.tech.challenge.restaurant_manager.application.exceptions.custom.RestaurantNotFoundException;
 import fiap.tech.challenge.restaurant_manager.application.gateway.restaurants.RestaurantsGateway;
 import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.RestaurantEntity;
-import fiap.tech.challenge.restaurant_manager.application.exceptions.custom.RestaurantNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

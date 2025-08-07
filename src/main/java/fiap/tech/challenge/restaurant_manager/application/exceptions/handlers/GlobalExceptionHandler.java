@@ -2,7 +2,6 @@ package fiap.tech.challenge.restaurant_manager.application.exceptions.handlers;
 
 import fiap.tech.challenge.restaurant_manager.application.exceptions.ApiErrorArray;
 import fiap.tech.challenge.restaurant_manager.application.utils.ApiErrorBuilder;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;

@@ -14,20 +14,21 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@EqualsAndHashCode
 public class RestaurantEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     @Column(unique = true, nullable = false)
+    @NotBlank(message = "O nome e obrigatorio.")
     private String name;
-    @NotBlank
+    @NotBlank(message = "O tipo de cozinha e obrigatoria.")
     private String cuisineType;
-    @NotBlank
+    @NotBlank(message = "O horario de abertura e obrigatorio.")
     private String startTime;
-    @NotBlank
+    @NotBlank(message = "O horario de fechamento e obrigatorio.")
     private String endTime;
     private LocalDateTime lastUpdate;
 

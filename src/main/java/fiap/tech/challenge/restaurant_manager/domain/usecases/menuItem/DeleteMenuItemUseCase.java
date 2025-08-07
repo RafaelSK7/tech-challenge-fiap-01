@@ -1,7 +1,7 @@
 package fiap.tech.challenge.restaurant_manager.domain.usecases.menuItem;
 
-import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.MenuItemEntity;
 import fiap.tech.challenge.restaurant_manager.application.exceptions.custom.InvalidMenuItemException;
+import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.MenuItemEntity;
 import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.repositories.MenuItemRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

@@ -17,15 +17,17 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@EqualsAndHashCode
 public class UsersEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "O nome e obrigatorio.")
     private String name;
-    @Email(message = "Formato do e-mail inválido")
+    @NotBlank(message = "O email e obrigatorio.")
+    @Email(message = "Formato do e-mail inválido.")
     @Column(unique = true, nullable = false)
     private String email;
     @NotBlank(message = "Usuário de login é obrigatório")

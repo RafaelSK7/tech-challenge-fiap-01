@@ -5,7 +5,6 @@ import fiap.tech.challenge.restaurant_manager.application.exceptions.custom.Inva
 import fiap.tech.challenge.restaurant_manager.application.validations.ValidationUserTypeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 @Slf4j
 @Component

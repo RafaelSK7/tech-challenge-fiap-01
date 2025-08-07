@@ -13,11 +13,9 @@ public class MenuItems {
     @NotNull(message = "O id e obrigatorio")
     private Long id;
 
-    @NotNull
     @NotBlank(message = "O nome e obrigatorio")
     private String name;
 
-    @NotNull
     @NotBlank(message = "A descricao e obrigatorio")
     private String description;
 
@@ -25,9 +23,9 @@ public class MenuItems {
     private Double price;
 
     @NotNull(message = "O indicativo de consumo local e obrigatorio")
-    private boolean localOnly;
+    private Boolean localOnly;
 
-    @NotNull(message = "O caminho da foto e obrigatoria")
+    @NotBlank(message = "O caminho da foto e obrigatoria")
     private String photoPath;
 
     @NotNull(message = "O restaurante e obrigatorio")

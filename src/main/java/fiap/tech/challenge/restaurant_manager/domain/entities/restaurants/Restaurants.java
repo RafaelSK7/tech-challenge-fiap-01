@@ -13,16 +13,12 @@ public class Restaurants {
 
     @NotNull(message = "O id e obrigatorio")
     private Long id;
-    @NotNull(message = "O nome e obrigatorio")
     @NotBlank(message = "O nome e obrigatorio")
     private String name;
-    @NotNull(message = "O tipo de cozinha e obrigatorio")
     @NotBlank(message = "O tipo de cozinha e obrigatorio")
     private String cuisineType;
-    @NotNull(message = "O horario de abertura e obrigatorio")
     @NotBlank(message = "O horario de abertura e obrigatorio")
     private String startTime;
-    @NotNull(message = "O horario de fechamento e obrigatorio")
     @NotBlank(message = "O horario de fechamento e obrigatorio")
     private String endTime;
 

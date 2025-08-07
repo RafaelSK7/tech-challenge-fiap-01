@@ -1,9 +1,9 @@
 package fiap.tech.challenge.restaurant_manager.domain.usecases.userType;
 
-import fiap.tech.challenge.restaurant_manager.application.gateway.userTypes.UserTypesGateway;
-import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.UserTypesEntity;
 import fiap.tech.challenge.restaurant_manager.application.DTOs.response.userTypes.UserTypeResponse;
 import fiap.tech.challenge.restaurant_manager.application.exceptions.custom.UserTypeNotFoundException;
+import fiap.tech.challenge.restaurant_manager.application.gateway.userTypes.UserTypesGateway;
+import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.UserTypesEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;

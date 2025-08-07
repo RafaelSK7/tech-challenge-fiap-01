@@ -33,21 +33,25 @@ public class RestaurantsGateway implements RestaurantsInterface {
 
     @Override
     public Page<RestaurantEntity> findAll(Pageable page) {
+        log.info("Buscando todos os restaurantes.");
         return restaurantRepository.findAll(page);
     }
 
     @Override
     public Optional<RestaurantEntity> findById(Long id) {
+        log.info(String.format("Buscando o restaurante com ID %d.", id));
         return restaurantRepository.findById(id);
     }
 
     @Override
     public void delete(RestaurantEntity restaurant) {
+        log.info("Deletando o restaurante.");
         restaurantRepository.delete(restaurant);
     }
 
     @Override
     public RestaurantEntity update(RestaurantEntity restaurant) {
+        log.info("Atualizando o restaurante.");
         return restaurantRepository.save(restaurant);
     }
 }

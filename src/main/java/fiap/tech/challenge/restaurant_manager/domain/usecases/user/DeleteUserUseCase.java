@@ -1,12 +1,10 @@
 package fiap.tech.challenge.restaurant_manager.domain.usecases.user;
 
+import fiap.tech.challenge.restaurant_manager.application.exceptions.custom.UserNotFoundException;
 import fiap.tech.challenge.restaurant_manager.application.gateway.users.UsersGateway;
+import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.UsersEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.UsersEntity;
-import fiap.tech.challenge.restaurant_manager.application.exceptions.custom.UserNotFoundException;
-import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.repositories.UserRepository;
 
 @Service
 @Slf4j

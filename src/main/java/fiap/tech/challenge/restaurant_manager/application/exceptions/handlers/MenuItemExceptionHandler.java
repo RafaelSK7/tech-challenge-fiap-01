@@ -1,16 +1,15 @@
 package fiap.tech.challenge.restaurant_manager.application.exceptions.handlers;
 
-import fiap.tech.challenge.restaurant_manager.application.exceptions.custom.CardapioException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
-
 import fiap.tech.challenge.restaurant_manager.application.exceptions.ApiErrorArray;
+import fiap.tech.challenge.restaurant_manager.application.exceptions.custom.CardapioException;
 import fiap.tech.challenge.restaurant_manager.application.exceptions.custom.InvalidMenuItemException;
 import fiap.tech.challenge.restaurant_manager.application.exceptions.custom.UserNotFoundException;
 import fiap.tech.challenge.restaurant_manager.application.utils.ApiErrorBuilder;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 
 @RestControllerAdvice

@@ -25,31 +25,37 @@ public class UsersGateway implements UsersInterface {
     @Override
     public UsersEntity save(CreateUserRequest dto, UserTypesEntity userTypesEntity) {
         UsersEntity newUser = new UsersEntity(dto, userTypesEntity);
+        log.info("Gravando o usuario");
         return userRepository.save(newUser);
     }
 
     @Override
     public Page<UsersEntity> findAll(Pageable page) {
+        log.info("Buscando todos os usuarios");
         return userRepository.findAll(page);
     }
 
     @Override
     public Optional<UsersEntity> findById(Long id) {
+        log.info(String.format("Buscando o usuario com id %s", id));
         return userRepository.findById(id);
     }
 
     @Override
     public void delete(UsersEntity user) {
+        log.info("Deletando o usuario");
         userRepository.delete(user);
     }
 
     @Override
     public Optional<UsersEntity> findByLoginAndPassword(String login, String password) {
+        log.info("Efetuando login");
         return userRepository.findByLoginAndPassword(login, password);
     }
 
     @Override
     public UsersEntity update(UsersEntity userToUpdate) {
+        log.info("Atualizando o usuario");
         return userRepository.save(userToUpdate);
     }
 }

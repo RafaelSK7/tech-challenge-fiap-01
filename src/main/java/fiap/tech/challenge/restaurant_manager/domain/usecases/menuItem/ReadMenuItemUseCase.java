@@ -2,8 +2,8 @@ package fiap.tech.challenge.restaurant_manager.domain.usecases.menuItem;
 
 import fiap.tech.challenge.restaurant_manager.application.DTOs.response.menuItens.MenuItemResponse;
 import fiap.tech.challenge.restaurant_manager.application.exceptions.custom.InvalidMenuItemException;
+import fiap.tech.challenge.restaurant_manager.application.gateway.menuItems.MenuItemsGateway;
 import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.MenuItemEntity;
-import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.repositories.MenuItemRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -17,16 +17,16 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ReadMenuItemUseCase {
 
-    private final MenuItemRepository menuItemRepository;
+    private final MenuItemsGateway menuItemsGateway;
 
-    public ReadMenuItemUseCase(MenuItemRepository menuItemRepository) {
-        this.menuItemRepository = menuItemRepository;
+    public ReadMenuItemUseCase(MenuItemsGateway menuItemsGateway) {
+        this.menuItemsGateway = menuItemsGateway;
     }
 
     public Page<MenuItemResponse> findAll(Pageable pageable) {
         log.info("Entrou no use case de busca de cardapios.");
         log.info("Buscando cardapios.");
-        Page<MenuItemEntity> menuItemPage = menuItemRepository.findAll(pageable);
+        Page<MenuItemEntity> menuItemPage = menuItemsGateway.findAll(pageable);
         log.info("Montando DTO da lista de cardapios.");
         List<MenuItemResponse> responseList = menuItemPage.getContent().stream()
                 .map(this::toResponse)
@@ -35,13 +35,13 @@ public class ReadMenuItemUseCase {
         return new PageImpl<>(responseList, pageable, menuItemPage.getTotalElements());
     }
 
-    public MenuItemResponse findById(Long id) {
+    public MenuItemEntity findById(Long id) {
         log.info("Entrou no use case de busca de cardapios");
         log.info("Buscando cardapio informado.");
-        MenuItemEntity menuItem = menuItemRepository.findById(id)
+        MenuItemEntity menuItem = menuItemsGateway.findById(id)
                 .orElseThrow(() -> new InvalidMenuItemException(id));
         log.info("Cardapio localizado.");
-        return toResponse(menuItem);
+        return menuItem;
     }
 
     private MenuItemResponse toResponse(MenuItemEntity menuItem) {
@@ -51,7 +51,7 @@ public class ReadMenuItemUseCase {
                 menuItem.getName(),
                 menuItem.getDescription(),
                 menuItem.getPrice(),
-                menuItem.isLocalOnly(),
+                menuItem.getLocalOnly(),
                 menuItem.getPhotoPath(),
                 menuItem.getRestaurant().getId());
     }

@@ -10,13 +10,13 @@ import java.util.Optional;
 
 public interface RestaurantsInterface {
 
-    RestaurantEntity save(CreateRestaurantRequest dto, UsersEntity owner);
+    RestaurantEntity save(CreateRestaurantRequest restaurantRequest, UsersEntity owner);
 
     Page<RestaurantEntity> findAll(Pageable page);
 
     Optional<RestaurantEntity> findById(Long id);
 
-    void delete(RestaurantEntity user);
+    void delete(RestaurantEntity restaurant);
 
-    RestaurantEntity update(RestaurantEntity userToUpdate);
+    RestaurantEntity update(RestaurantEntity restaurant);
 }

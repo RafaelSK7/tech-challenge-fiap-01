@@ -16,14 +16,14 @@ import java.util.List;
 public class CreateRestaurantUseCase {
 
     private final RestaurantsGateway restaurantsGateway;
-    private final UserController userService;
+    private final UserController userController;
     private final List<ValidateRestaurantService> createRestaurantValidations;
 
     public CreateRestaurantUseCase(RestaurantsGateway restaurantsGateway,
                                    UserController userController,
                                    List<ValidateRestaurantService> createRestaurantValidations) {
         this.restaurantsGateway = restaurantsGateway;
-        this.userService = userController;
+        this.userController = userController;
         this.createRestaurantValidations = createRestaurantValidations;
     }
 
@@ -31,7 +31,7 @@ public class CreateRestaurantUseCase {
         log.info("Entrou no use case de criacao do cardapio");
         this.createRestaurantValidations.forEach(v -> v.validate(restaurantRequest));
         log.info("Obtem o dono do restaurante.");
-        UsersEntity owner = userService.findByIdEntity(restaurantRequest.ownerId());
+        UsersEntity owner = userController.findByIdEntity(restaurantRequest.ownerId());
         log.info("Cria o restaurante.");
         RestaurantEntity restaurant = restaurantsGateway.save(restaurantRequest, owner);
         log.info("Restaurante criado com sucesso.");

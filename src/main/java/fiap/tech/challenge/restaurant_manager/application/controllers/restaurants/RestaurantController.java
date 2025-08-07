@@ -7,6 +7,7 @@ import fiap.tech.challenge.restaurant_manager.domain.usecases.restaurant.CreateR
 import fiap.tech.challenge.restaurant_manager.domain.usecases.restaurant.DeleteRestaurantUseCase;
 import fiap.tech.challenge.restaurant_manager.domain.usecases.restaurant.ReadRestaurantUseCase;
 import fiap.tech.challenge.restaurant_manager.domain.usecases.restaurant.UpdateRestaurantUseCase;
+import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.RestaurantEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -45,6 +46,11 @@ public class RestaurantController {
     public RestaurantResponse findById(Long id) {
         log.info("Entrou no servico de busca do restaurante.");
         return RestaurantPresenter.toResponse(readRestaurantUseCase.findById(id));
+    }
+
+    public RestaurantEntity findByIdEntity(Long id) {
+        log.info("Entrou no servico de busca do restaurante.");
+        return readRestaurantUseCase.findById(id);
     }
 
 

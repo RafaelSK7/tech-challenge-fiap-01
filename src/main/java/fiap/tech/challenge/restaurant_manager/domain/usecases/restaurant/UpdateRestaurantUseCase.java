@@ -7,7 +7,7 @@ import fiap.tech.challenge.restaurant_manager.application.DTOs.response.address.
 import fiap.tech.challenge.restaurant_manager.application.DTOs.response.restaurants.RestaurantResponse;
 import fiap.tech.challenge.restaurant_manager.application.exceptions.custom.RestaurantNotFoundException;
 import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.repositories.RestaurantRepository;
-import fiap.tech.challenge.restaurant_manager.application.controllers.users.UserService;
+import fiap.tech.challenge.restaurant_manager.application.controllers.users.UserController;
 import fiap.tech.challenge.restaurant_manager.application.validations.ValidateRestaurantService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,12 +20,12 @@ import java.util.List;
 public class UpdateRestaurantUseCase {
 
     private final RestaurantRepository restaurantRepository;
-    private final UserService userService;
+    private final UserController userService;
     private List<ValidateRestaurantService> updateRestaurantValidations;
 
     public UpdateRestaurantUseCase(RestaurantRepository restaurantRepository,
                                    List<ValidateRestaurantService> updateRestaurantValidations,
-                                   UserService userService) {
+                                   UserController userService) {
         this.restaurantRepository = restaurantRepository;
         this.userService = userService;
         this.updateRestaurantValidations = updateRestaurantValidations;

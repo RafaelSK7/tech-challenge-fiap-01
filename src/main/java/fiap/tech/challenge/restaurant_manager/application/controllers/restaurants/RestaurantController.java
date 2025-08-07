@@ -2,6 +2,7 @@ package fiap.tech.challenge.restaurant_manager.application.controllers.restauran
 
 import fiap.tech.challenge.restaurant_manager.application.DTOs.request.restaurants.CreateRestaurantRequest;
 import fiap.tech.challenge.restaurant_manager.application.DTOs.response.restaurants.RestaurantResponse;
+import fiap.tech.challenge.restaurant_manager.application.presenters.restaurants.RestaurantPresenter;
 import fiap.tech.challenge.restaurant_manager.domain.usecases.restaurant.CreateRestaurantUseCase;
 import fiap.tech.challenge.restaurant_manager.domain.usecases.restaurant.DeleteRestaurantUseCase;
 import fiap.tech.challenge.restaurant_manager.domain.usecases.restaurant.ReadRestaurantUseCase;
@@ -9,11 +10,11 @@ import fiap.tech.challenge.restaurant_manager.domain.usecases.restaurant.UpdateR
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 @Slf4j
-public class RestaurantService {
+public class RestaurantController {
 
     private CreateRestaurantUseCase createRestaurantUseCase;
     private ReadRestaurantUseCase readRestaurantUseCase;
@@ -21,10 +22,10 @@ public class RestaurantService {
     private DeleteRestaurantUseCase deleteRestaurantUseCase;
 
 
-    public RestaurantService(CreateRestaurantUseCase createRestaurantUseCase,
-                             ReadRestaurantUseCase readRestaurantUseCase,
-                             UpdateRestaurantUseCase updateRestaurantUseCase,
-                             DeleteRestaurantUseCase deleteRestaurantUseCase) {
+    public RestaurantController(CreateRestaurantUseCase createRestaurantUseCase,
+                                ReadRestaurantUseCase readRestaurantUseCase,
+                                UpdateRestaurantUseCase updateRestaurantUseCase,
+                                DeleteRestaurantUseCase deleteRestaurantUseCase) {
         this.createRestaurantUseCase = createRestaurantUseCase;
         this.readRestaurantUseCase = readRestaurantUseCase;
         this.updateRestaurantUseCase = updateRestaurantUseCase;
@@ -33,7 +34,7 @@ public class RestaurantService {
 
     public RestaurantResponse createRestaurant(CreateRestaurantRequest request) {
         log.info("Entrou no servico de cadastro do restaurante.");
-        return createRestaurantUseCase.createRestaurant(request);
+        return RestaurantPresenter.toResponse(createRestaurantUseCase.createRestaurant(request));
     }
 
     public Page<RestaurantResponse> findAll(Pageable page) {
@@ -43,13 +44,13 @@ public class RestaurantService {
 
     public RestaurantResponse findById(Long id) {
         log.info("Entrou no servico de busca do restaurante.");
-        return readRestaurantUseCase.findById(id);
+        return RestaurantPresenter.toResponse(readRestaurantUseCase.findById(id));
     }
 
 
     public RestaurantResponse updateRestaurant(Long id, CreateRestaurantRequest restaurantRequest) {
         log.info("Entrou no servico de atualizacao do restaurante.");
-        return updateRestaurantUseCase.updateRestaurant(id, restaurantRequest);
+        return RestaurantPresenter.toResponse(updateRestaurantUseCase.updateRestaurant(id, restaurantRequest));
     }
 
     public void deleteRestaurant(Long id) {

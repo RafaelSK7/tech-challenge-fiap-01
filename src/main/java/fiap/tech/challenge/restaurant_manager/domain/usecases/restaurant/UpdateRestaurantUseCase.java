@@ -1,14 +1,12 @@
 package fiap.tech.challenge.restaurant_manager.domain.usecases.restaurant;
 
+import fiap.tech.challenge.restaurant_manager.application.DTOs.request.restaurants.CreateRestaurantRequest;
+import fiap.tech.challenge.restaurant_manager.application.controllers.users.UserController;
+import fiap.tech.challenge.restaurant_manager.application.exceptions.custom.RestaurantNotFoundException;
+import fiap.tech.challenge.restaurant_manager.application.gateway.restaurants.RestaurantsGateway;
+import fiap.tech.challenge.restaurant_manager.application.validations.ValidateRestaurantService;
 import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.AddressEntity;
 import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.RestaurantEntity;
-import fiap.tech.challenge.restaurant_manager.application.DTOs.request.restaurants.CreateRestaurantRequest;
-import fiap.tech.challenge.restaurant_manager.application.DTOs.response.address.AddressResponse;
-import fiap.tech.challenge.restaurant_manager.application.DTOs.response.restaurants.RestaurantResponse;
-import fiap.tech.challenge.restaurant_manager.application.exceptions.custom.RestaurantNotFoundException;
-import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.repositories.RestaurantRepository;
-import fiap.tech.challenge.restaurant_manager.application.controllers.users.UserController;
-import fiap.tech.challenge.restaurant_manager.application.validations.ValidateRestaurantService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -19,26 +17,27 @@ import java.util.List;
 @Slf4j
 public class UpdateRestaurantUseCase {
 
-    private final RestaurantRepository restaurantRepository;
-    private final UserController userService;
+    private final RestaurantsGateway restaurantsGateway;
+    private final UserController userController;
     private List<ValidateRestaurantService> updateRestaurantValidations;
 
-    public UpdateRestaurantUseCase(RestaurantRepository restaurantRepository,
+    public UpdateRestaurantUseCase(RestaurantsGateway restaurantsGateway,
                                    List<ValidateRestaurantService> updateRestaurantValidations,
-                                   UserController userService) {
-        this.restaurantRepository = restaurantRepository;
-        this.userService = userService;
+                                   UserController userController) {
+        this.restaurantsGateway = restaurantsGateway;
+        this.userController = userController;
         this.updateRestaurantValidations = updateRestaurantValidations;
     }
 
-    public RestaurantResponse updateRestaurant(Long id, CreateRestaurantRequest request) {
+    public RestaurantEntity updateRestaurant(Long id, CreateRestaurantRequest request) {
 
         log.info("Entrou no use case de atualizacao do restaurante.");
-        log.info("Buscando restaurante a ser atualizado.");
-        RestaurantEntity restaurantToUpdate = restaurantRepository.findById(id)
-                .orElseThrow(() -> new RestaurantNotFoundException(id));
 
         this.updateRestaurantValidations.forEach(v -> v.validate(request));
+
+        log.info("Buscando restaurante a ser atualizado.");
+        RestaurantEntity restaurantToUpdate = restaurantsGateway.findById(id)
+                .orElseThrow(() -> new RestaurantNotFoundException(id));
 
         log.info("Populando os campos do restaurante.");
         restaurantToUpdate.setName(request.name());
@@ -49,37 +48,10 @@ public class UpdateRestaurantUseCase {
         restaurantToUpdate.setLastUpdate(LocalDateTime.now());
 
         log.info("Buscando o owner do restaurante.");
-        restaurantToUpdate.setOwner(userService.findByIdEntity(request.ownerId()));
+        restaurantToUpdate.setOwner(userController.findByIdEntity(request.ownerId()));
         log.info("Restaurante populado.");
-        return toResponse(restaurantRepository.save(restaurantToUpdate));
-    }
 
-    private RestaurantResponse toResponse(RestaurantEntity restaurant) {
-
-        log.info("Montando DTO de retorno do restaurante.");
-        AddressResponse addressResponse = null;
-
-        if (restaurant.getAddress() != null) {
-            addressResponse = new AddressResponse(
-                    restaurant.getAddress().getStreet(),
-                    restaurant.getAddress().getNumber(),
-                    restaurant.getAddress().getNeighborhood(),
-                    restaurant.getAddress().getCity(),
-                    restaurant.getAddress().getState(),
-                    restaurant.getAddress().getZipCode(),
-                    restaurant.getAddress().getCountry()
-            );
-        }
-
-        return new RestaurantResponse(
-                restaurant.getId(),
-                restaurant.getName(),
-                addressResponse,
-                restaurant.getCuisineType(),
-                restaurant.getStartTime(),
-                restaurant.getEndTime(),
-                restaurant.getOwner().getId()
-        );
+        return restaurantsGateway.update(restaurantToUpdate);
     }
 
 }

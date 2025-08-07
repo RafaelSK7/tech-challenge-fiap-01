@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import fiap.tech.challenge.restaurant_manager.infrastructure.resources.restaurants.RestaurantResource;
 import fiap.tech.challenge.restaurant_manager.application.DTOs.request.restaurants.CreateRestaurantRequest;
 import fiap.tech.challenge.restaurant_manager.application.DTOs.response.restaurants.RestaurantResponse;
-import fiap.tech.challenge.restaurant_manager.application.controllers.restaurants.RestaurantService;
+import fiap.tech.challenge.restaurant_manager.application.controllers.restaurants.RestaurantController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,7 +34,7 @@ public class RestaurantResourceTest {
     private RestaurantResource restaurantResource;
 
     @Mock
-    private RestaurantService restaurantService;
+    private RestaurantController restaurantService;
 
     private MockMvc mockMvc;
     private ObjectMapper objectMapper = new ObjectMapper();

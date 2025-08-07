@@ -1,10 +1,10 @@
 package fiap.tech.challenge.restaurant_manager.domain.usecases.restaurant;
 
+import fiap.tech.challenge.restaurant_manager.application.gateway.restaurants.RestaurantsGateway;
 import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.RestaurantEntity;
 import fiap.tech.challenge.restaurant_manager.application.DTOs.response.address.AddressResponse;
 import fiap.tech.challenge.restaurant_manager.application.DTOs.response.restaurants.RestaurantResponse;
 import fiap.tech.challenge.restaurant_manager.application.exceptions.custom.RestaurantNotFoundException;
-import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.repositories.RestaurantRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -18,16 +18,16 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ReadRestaurantUseCase {
 
-    private RestaurantRepository restaurantRepository;
+    private RestaurantsGateway restaurantsGateway;
 
-    public ReadRestaurantUseCase(RestaurantRepository restaurantRepository) {
-        this.restaurantRepository = restaurantRepository;
+    public ReadRestaurantUseCase(RestaurantsGateway restaurantsGateway) {
+        this.restaurantsGateway = restaurantsGateway;
     }
 
     public Page<RestaurantResponse> findAll(Pageable pageable) {
         log.info("Entrou no use case de busca de todos os restaurantes.");
         log.info("Buscando restaurantes.");
-        Page<RestaurantEntity> restaurantPage = restaurantRepository.findAll(pageable);
+        Page<RestaurantEntity> restaurantPage = restaurantsGateway.findAll(pageable);
         log.info("Montando DTO da lista de restaurantes.");
         List<RestaurantResponse> responseList = restaurantPage.getContent().stream()
                 .map(this::toResponse)
@@ -36,13 +36,11 @@ public class ReadRestaurantUseCase {
         return new PageImpl<>(responseList, pageable, restaurantPage.getTotalElements());
     }
 
-    public RestaurantResponse findById(Long id) {
+    public RestaurantEntity findById(Long id) {
         log.info("Entrou no use case de busca de restaurante.");
         log.info("Buscando restaurante informado.");
-        RestaurantEntity restaurant = restaurantRepository.findById(id)
+        return restaurantsGateway.findById(id)
                 .orElseThrow(() -> new RestaurantNotFoundException(id));
-        log.info("Restaurante localizado.");
-        return toResponse(restaurant);
     }
 
     private RestaurantResponse toResponse(RestaurantEntity restaurant) {

@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import fiap.tech.challenge.restaurant_manager.application.controllers.userTypes.UserTypeController;
+import fiap.tech.challenge.restaurant_manager.application.gateway.users.UsersGateway;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -20,22 +21,22 @@ import fiap.tech.challenge.restaurant_manager.application.validations.ValidateUs
 @Slf4j
 public class UpdateUserUseCase {
 
-	private final UserRepository userRepository;
+	private final UsersGateway usersGateway;
 
 	private List<ValidateUserService> validateUserService;
 
-	private UserTypeController userTypeService;
+	private UserTypeController userTypeController;
 
-	public UpdateUserUseCase(UserRepository userRepository, List<ValidateUserService> validateUserService, UserTypeController userTypeService) {
-		this.userRepository = userRepository;
+	public UpdateUserUseCase(UsersGateway usersGateway, List<ValidateUserService> validateUserService, UserTypeController userTypeController) {
+		this.usersGateway = usersGateway;
 		this.validateUserService = validateUserService;
-		this.userTypeService = userTypeService;
+		this.userTypeController = userTypeController;
 	}
 
 	public UserResponse updateUser(Long id, CreateUserRequest userRequest) {
 		log.info("Entrou no use case de atualizacao do usuario.");
 		log.info("Buscando usuario a ser atualizado.");
-		UsersEntity userToUpdate = userRepository.findById(id)
+		UsersEntity userToUpdate = usersGateway.findById(id)
 				.orElseThrow(() -> new UserNotFoundException(id));
 
 		this.validateUserService.forEach(v -> v.validate(userRequest));
@@ -47,9 +48,9 @@ public class UpdateUserUseCase {
 		userToUpdate.setAddress(new AddressEntity(userRequest.address()));
 		userToUpdate.setLastUpdate(LocalDateTime.now());
 		log.info("Buscando restaurante ao qual pertence o usuario.");
-		userToUpdate.setUserType(userTypeService.findByIdEntity(userRequest.userTypeId()));
+		userToUpdate.setUserType(userTypeController.findByIdEntity(userRequest.userTypeId()));
 		log.info("Usuario populado.");
-		return toResponse(userRepository.save(userToUpdate));
+		return toResponse(usersGateway.update(userToUpdate));
 	}
 
 	private UserResponse toResponse(UsersEntity user) {

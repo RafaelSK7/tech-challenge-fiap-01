@@ -11,6 +11,4 @@ public class UserTypePresenter {
         log.info("monta o DTO de retorno.");
         return new UserTypeResponse(entity.getUserTypeId(), entity.getUserTypeName());
     }
-
-    ;
 }

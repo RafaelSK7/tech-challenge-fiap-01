@@ -26,7 +26,7 @@ public class UpdateUserTypeUseCase {
         this.validationUserTypeServiceList = validationUserTypeServiceList;
     }
 
-    public UserTypeResponse updateUserType(Long id, CreateUserTypeRequest userTypeRequest) {
+    public UserTypesEntity updateUserType(Long id, CreateUserTypeRequest userTypeRequest) {
         log.info("Entrou no use case de atualizacao do tipo de usuario.");
         log.info("Buscando tipo de usuario a ser atualizado.");
         UserTypesEntity userTypeToUpdate = userTypesGateway.findByUserTypeId(id).orElseThrow(() -> new UserTypeNotFoundException(id));
@@ -36,7 +36,7 @@ public class UpdateUserTypeUseCase {
         userTypeToUpdate.setUserTypeName(userTypeRequest.userTypeName().trim().toUpperCase());
         userTypeToUpdate.setLastUpdate(LocalDateTime.now());
         log.info("tipo de usuario populado.");
-        return toResponse(userTypesGateway.update(userTypeToUpdate));
+        return userTypesGateway.update(userTypeToUpdate);
     }
 
     private UserTypeResponse toResponse(UserTypesEntity userType) {

@@ -55,7 +55,7 @@ public class UserTypeController {
 
     public UserTypeResponse updateUser(Long id, CreateUserTypeRequest userTypeRequest) {
         log.info("Entrou no servico de atualizacao do tipo de usuario.");
-        return updateUserTypeUseCase.updateUserType(id, userTypeRequest);
+        return UserTypePresenter.toResponse(updateUserTypeUseCase.updateUserType(id, userTypeRequest));
     }
 
     public void deleteUserType(Long id) {

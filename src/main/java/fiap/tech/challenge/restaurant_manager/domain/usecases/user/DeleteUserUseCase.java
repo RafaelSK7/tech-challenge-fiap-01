@@ -1,5 +1,6 @@
 package fiap.tech.challenge.restaurant_manager.domain.usecases.user;
 
+import fiap.tech.challenge.restaurant_manager.application.gateway.users.UsersGateway;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -11,18 +12,18 @@ import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.reposit
 @Slf4j
 public class DeleteUserUseCase {
 
-	private UserRepository userRepository;
+	private UsersGateway usersGateway;
 
-	public DeleteUserUseCase(UserRepository userRepository) {
-		this.userRepository = userRepository;
+	public DeleteUserUseCase(UsersGateway usersGateway) {
+		this.usersGateway = usersGateway;
 	}
 
 	public void deleteUser(Long id) {
 		log.info("Entrou no use case de remocao do usuario");
 		log.info("Buscando usuario para remocao.");
-		UsersEntity userToDelete = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+		UsersEntity userToDelete = usersGateway.findById(id).orElseThrow(() -> new UserNotFoundException(id));
 		log.info("Usuario encontrado.");
-		userRepository.delete(userToDelete);
+		usersGateway.delete(userToDelete);
 		log.info("Usuario removido com sucesso.");
 	}
 

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import fiap.tech.challenge.restaurant_manager.application.DTOs.request.login.LoginRequest;
 import fiap.tech.challenge.restaurant_manager.application.DTOs.response.login.LoginResponse;
 import fiap.tech.challenge.restaurant_manager.infrastructure.resources.login.LoginResource;
-import fiap.tech.challenge.restaurant_manager.application.controllers.login.LoginService;
+import fiap.tech.challenge.restaurant_manager.application.controllers.login.LoginController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,7 +27,7 @@ public class LoginResourceTest {
     private LoginResource loginResource;
 
     @Mock
-    private LoginService loginService;
+    private LoginController loginService;
 
     private MockMvc mockMvc;
     private ObjectMapper objectMapper = new ObjectMapper();

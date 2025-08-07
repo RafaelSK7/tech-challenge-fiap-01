@@ -1,24 +1,23 @@
 package fiap.tech.challenge.restaurant_manager.application.controllers.login;
 
-import fiap.tech.challenge.restaurant_manager.application.controllers.users.UserService;
+import fiap.tech.challenge.restaurant_manager.application.DTOs.request.login.LoginRequest;
+import fiap.tech.challenge.restaurant_manager.application.DTOs.response.login.LoginResponse;
+import fiap.tech.challenge.restaurant_manager.application.controllers.users.UserController;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import fiap.tech.challenge.restaurant_manager.application.DTOs.request.login.LoginRequest;
-import fiap.tech.challenge.restaurant_manager.application.DTOs.response.login.LoginResponse;
-
 @Service
 @Slf4j
-public class LoginService {
+public class LoginController {
 
-	private final UserService userService;
+    private final UserController userController;
 
-	public LoginService(UserService userService) {
-		this.userService = userService;
-	}
+    public LoginController(UserController userController) {
+        this.userController = userController;
+    }
 
-	public LoginResponse findByLogin(LoginRequest loginRequest) {
-		log.info("Efetuando login.");
-		return userService.findByLoginAndPassword(loginRequest);
-	}
+    public LoginResponse findByLogin(LoginRequest loginRequest) {
+        log.info("Efetuando login.");
+        return userController.findByLoginAndPassword(loginRequest);
+    }
 }

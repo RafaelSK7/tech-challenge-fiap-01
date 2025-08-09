@@ -11,7 +11,7 @@ import jakarta.validation.constraints.NotNull;
 @Setter
 @AllArgsConstructor
 @EqualsAndHashCode
-
+@NoArgsConstructor
 public class MenuItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,21 +19,23 @@ public class MenuItem {
     private Long id;
 
     @Column(name = "nome")
-    @NotBlank(message = "Nome é obrigatório")
+    @NotBlank(message = "O nome é obrigatório.")
     private String name;
 
     @Column(name = "description")
-    @NotBlank(message = "Descricao é obrigatorio")
+    @NotBlank(message = "A descricao é obrigatoria.")
     private String description;
 
     @Column(name = "price")
-    @NotNull(message = "Preço é obrigatório")
+    @NotNull(message = "O preço é obrigatório.")
     private Double price;
 
     @Column(name = "localOnly")
+    @NotNull(message = "O indicador de consumo no local e obrigatorio.")
     private boolean localOnly;
 
     @Column(name = "photoPath")
+    @NotBlank(message = "A foto do prato e obrigatoria.")
     private String photoPath;
 
     @JoinColumn(name = "restaurants_id", referencedColumnName = "id")
@@ -49,7 +51,4 @@ public class MenuItem {
         this.restaurant = restaurant;
     }
 
-    public MenuItem() {
-        
-    }
 }

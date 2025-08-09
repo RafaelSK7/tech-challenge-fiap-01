@@ -14,7 +14,7 @@ public class EmptyUserTypeNameValidation implements ValidationUserTypeService {
     public void validate(CreateUserTypeRequest request) {
 
         log.info("Validando Nome do user type");
-        if ((request.userTypeName() == null) || (request.userTypeName().isEmpty())) {
+        if ((request.userTypeName() == null) || (request.userTypeName().trim().isEmpty())) {
             throw new InvalidUserTypeException("Nome do tipo de usuario invalido.");
         }
 

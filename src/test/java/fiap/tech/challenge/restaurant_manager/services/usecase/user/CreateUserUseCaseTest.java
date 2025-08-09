@@ -39,7 +39,10 @@ public class CreateUserUseCaseTest {
     @InjectMocks
     private CreateUserUseCase createUserUseCase;
 
-    
+
+    @Mock
+    private UserTypeService userTypeService;
+
 
     @BeforeEach
     void setUp() {
@@ -57,6 +60,7 @@ public class CreateUserUseCaseTest {
                 "USER",
                 getValidCreateAddressRequest(),
                 UserTypeUtils.getValidUserType().getUserTypeId()
+
         );
         doNothing().when(validateUserService).validate(any(CreateUserRequest.class));
 
@@ -92,6 +96,7 @@ public class CreateUserUseCaseTest {
                 "USER",
                 getValidCreateAddressRequest(),
                 UserTypeUtils.getValidUserType().getUserTypeId()
+
         );
         doThrow(new IllegalArgumentException("Validação falhou")).when(validateUserService).validate(any(CreateUserRequest.class));
 

@@ -1,9 +1,9 @@
 package fiap.tech.challenge.restaurant_manager.services.usecase.user;
 
 import fiap.tech.challenge.restaurant_manager.entites.User;
-import fiap.tech.challenge.restaurant_manager.entites.UserType;
 import fiap.tech.challenge.restaurant_manager.DTOs.request.users.CreateUserRequest;
 import fiap.tech.challenge.restaurant_manager.DTOs.response.users.UserResponse;
+import fiap.tech.challenge.restaurant_manager.entites.UserType;
 import fiap.tech.challenge.restaurant_manager.exceptions.custom.UserNotFoundException;
 import fiap.tech.challenge.restaurant_manager.repositories.UserRepository;
 import fiap.tech.challenge.restaurant_manager.services.userTypes.UserTypeService;
@@ -18,6 +18,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,6 +41,9 @@ public class UpdateUserUseCaseTest {
     @InjectMocks
     private UpdateUserUseCase updateUserUseCase;
 
+    @Mock
+    private UserTypeService userTypeService;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -57,6 +61,7 @@ public class UpdateUserUseCaseTest {
                 "novasenha",
                 AdressUtils.getValidCreateAddressRequest(),
                 UserTypeUtils.getValidUserType().getUserTypeId()
+
         );
 
         doNothing().when(validateUserService).validate(any(CreateUserRequest.class));
@@ -66,6 +71,7 @@ public class UpdateUserUseCaseTest {
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(existingUser));
         when(userRepository.save(existingUser)).thenReturn(existingUser);
+        when(userTypeService.findByIdEntity(request.userTypeId())).thenReturn(new UserType(1L, "CLIENT", LocalDateTime.now()));
 
         UserResponse response = updateUserUseCase.updateUser(userId, request);
 
@@ -92,5 +98,6 @@ public class UpdateUserUseCaseTest {
         UserNotFoundException exception = assertThrows(UserNotFoundException.class,
                 () -> updateUserUseCase.updateUser(userId, request));
         assertEquals(userId, exception.getMessage());
+
     }
 }

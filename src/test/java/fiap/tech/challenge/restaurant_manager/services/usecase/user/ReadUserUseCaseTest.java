@@ -83,6 +83,7 @@ public class ReadUserUseCaseTest {
         UserNotFoundException exception = assertThrows(UserNotFoundException.class,
                 () -> readUserUseCase.findById(userId));
         assertEquals(userId, exception.getMessage());
+
     }
 
     @Test
@@ -133,5 +134,6 @@ public class ReadUserUseCaseTest {
         UserNotFoundException exception = assertThrows(UserNotFoundException.class,
                 () -> readUserUseCase.findByIdEntity(userId));
         assertEquals(userId, exception.getMessage());
+
     }
 }

@@ -5,6 +5,7 @@ import fiap.tech.challenge.restaurant_manager.entites.User;
 import fiap.tech.challenge.restaurant_manager.DTOs.request.restaurants.CreateRestaurantRequest;
 import fiap.tech.challenge.restaurant_manager.DTOs.response.address.AddressResponse;
 import fiap.tech.challenge.restaurant_manager.DTOs.response.restaurants.RestaurantResponse;
+import fiap.tech.challenge.restaurant_manager.exceptions.custom.InvalidUserTypeForRestaurantsException;
 import fiap.tech.challenge.restaurant_manager.repositories.RestaurantRepository;
 import fiap.tech.challenge.restaurant_manager.services.users.UserService;
 import fiap.tech.challenge.restaurant_manager.validations.ValidateRestaurantService;
@@ -35,6 +36,10 @@ public class CreateRestaurantUseCase {
         this.createRestaurantValidations.forEach(v -> v.validate(restaurantRequest));
         log.info("Obtem o dono do restaurante.");
         User owner = userService.findByIdEntity(restaurantRequest.ownerId());
+
+        log.info("Valida o UserType");
+        if (owner.getUserType() == null || !owner.getUserType().getUserTypeName().equals("OWNER"))
+            throw new InvalidUserTypeForRestaurantsException();
 
         Restaurant newRestaurant = new Restaurant(restaurantRequest, owner);
         newRestaurant.setLastUpdate(LocalDateTime.now());

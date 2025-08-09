@@ -3,8 +3,7 @@ package fiap.tech.challenge.restaurant_manager.services.usecase.restaurant;
 import fiap.tech.challenge.restaurant_manager.entites.Restaurant;
 import fiap.tech.challenge.restaurant_manager.entites.enums.CuisineType;
 import fiap.tech.challenge.restaurant_manager.DTOs.request.restaurants.CreateRestaurantRequest;
-import fiap.tech.challenge.restaurant_manager.DTOs.response.restaurants.RestaurantResponse
-;
+import fiap.tech.challenge.restaurant_manager.DTOs.response.restaurants.RestaurantResponse;
 import fiap.tech.challenge.restaurant_manager.exceptions.custom.RestaurantNotFoundException;
 import fiap.tech.challenge.restaurant_manager.repositories.RestaurantRepository;
 import fiap.tech.challenge.restaurant_manager.services.users.UserService;
@@ -94,6 +93,7 @@ public class UpdateRestaurantUseCaseTest {
         RestaurantNotFoundException exception = assertThrows(RestaurantNotFoundException.class,
                 () -> updateRestaurantUseCase.updateRestaurant(restaurantId, request));
         assertEquals(restaurantId, exception.getMessage());
+
     }
 
 

@@ -1,10 +1,9 @@
 package fiap.tech.challenge.restaurant_manager.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import fiap.tech.challenge.restaurant_manager.controllers.login.LoginController;
 import fiap.tech.challenge.restaurant_manager.DTOs.request.login.LoginRequest;
 import fiap.tech.challenge.restaurant_manager.DTOs.response.login.LoginResponse;
+import fiap.tech.challenge.restaurant_manager.controllers.login.LoginController;
 import fiap.tech.challenge.restaurant_manager.services.login.LoginService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,7 +43,7 @@ public class LoginControllerTest {
                 "senha"
         );
 
-        loginResponse = new LoginResponse(1L, "usuario", "usuario", null );
+        loginResponse = new LoginResponse(1L, "usuario", "usuario", null);
     }
 
     @Test

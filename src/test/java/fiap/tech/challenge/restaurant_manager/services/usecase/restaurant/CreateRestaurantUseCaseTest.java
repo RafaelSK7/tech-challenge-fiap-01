@@ -1,7 +1,10 @@
 package fiap.tech.challenge.restaurant_manager.services.usecase.restaurant;
 
+import fiap.tech.challenge.restaurant_manager.DTOs.request.restaurants.CreateRestaurantRequest;
+import fiap.tech.challenge.restaurant_manager.DTOs.response.restaurants.RestaurantResponse;
 import fiap.tech.challenge.restaurant_manager.entites.Restaurant;
 import fiap.tech.challenge.restaurant_manager.entites.User;
+import fiap.tech.challenge.restaurant_manager.entites.UserType;
 import fiap.tech.challenge.restaurant_manager.entites.enums.CuisineType;
 import fiap.tech.challenge.restaurant_manager.DTOs.request.restaurants.CreateRestaurantRequest;
 import fiap.tech.challenge.restaurant_manager.DTOs.response.restaurants.RestaurantResponse;
@@ -16,6 +19,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -59,6 +63,7 @@ class CreateRestaurantUseCaseTest {
 
         User mockOwner = new User();
         mockOwner.setId(ownerId);
+        mockOwner.setUserType(new UserType(1L, "OWNER", LocalDateTime.now()));
 
         when(userService.findByIdEntity(ownerId)).thenReturn(mockOwner);
 
@@ -83,7 +88,6 @@ class CreateRestaurantUseCaseTest {
         assertEquals(request.name(), response.name());
         assertEquals(ownerId, response.ownerId());
     }
-
 
 
 }

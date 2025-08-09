@@ -67,7 +67,9 @@ public class ReadRestaurantUseCaseTest {
 
         RestaurantNotFoundException exception = assertThrows(RestaurantNotFoundException.class,
                 () -> readRestaurantUseCase.findById(restaurantId));
+
         assertEquals(restaurantId, exception.getMessage());
+
     }
 
     @Test

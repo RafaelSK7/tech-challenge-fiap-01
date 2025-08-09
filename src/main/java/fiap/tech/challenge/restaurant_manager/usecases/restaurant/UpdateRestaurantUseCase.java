@@ -5,6 +5,8 @@ import fiap.tech.challenge.restaurant_manager.entites.Restaurant;
 import fiap.tech.challenge.restaurant_manager.DTOs.request.restaurants.CreateRestaurantRequest;
 import fiap.tech.challenge.restaurant_manager.DTOs.response.address.AddressResponse;
 import fiap.tech.challenge.restaurant_manager.DTOs.response.restaurants.RestaurantResponse;
+import fiap.tech.challenge.restaurant_manager.entites.User;
+import fiap.tech.challenge.restaurant_manager.exceptions.custom.InvalidUserTypeForRestaurantsException;
 import fiap.tech.challenge.restaurant_manager.exceptions.custom.RestaurantNotFoundException;
 import fiap.tech.challenge.restaurant_manager.repositories.RestaurantRepository;
 import fiap.tech.challenge.restaurant_manager.services.users.UserService;
@@ -40,6 +42,12 @@ public class UpdateRestaurantUseCase {
 
         this.updateRestaurantValidations.forEach(v -> v.validate(request));
 
+        User owner = userService.findByIdEntity(request.ownerId());
+
+        log.info("Valida o UserType");
+        if (owner.getUserType() == null || !owner.getUserType().getUserTypeName().equals("OWNER"))
+            throw new InvalidUserTypeForRestaurantsException();
+
         log.info("Populando os campos do restaurante.");
         restaurantToUpdate.setName(request.name());
         restaurantToUpdate.setCuisineType(request.cuisineType().name());
@@ -49,7 +57,7 @@ public class UpdateRestaurantUseCase {
         restaurantToUpdate.setLastUpdate(LocalDateTime.now());
 
         log.info("Buscando o owner do restaurante.");
-        restaurantToUpdate.setOwner(userService.findByIdEntity(request.ownerId()));
+        restaurantToUpdate.setOwner(owner);
         log.info("Restaurante populado.");
         return toResponse(restaurantRepository.save(restaurantToUpdate));
     }

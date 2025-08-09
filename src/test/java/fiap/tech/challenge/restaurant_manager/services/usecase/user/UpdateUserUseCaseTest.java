@@ -10,6 +10,7 @@ import fiap.tech.challenge.restaurant_manager.services.userTypes.UserTypeService
 import fiap.tech.challenge.restaurant_manager.usecases.user.UpdateUserUseCase;
 import fiap.tech.challenge.restaurant_manager.validations.ValidateUserService;
 import fiap.tech.challenge.restaurant_manager.utils.AdressUtils;
+import fiap.tech.challenge.restaurant_manager.utils.UserTypeUtils;
 import fiap.tech.challenge.restaurant_manager.utils.UserUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,6 +35,9 @@ public class UpdateUserUseCaseTest {
     @Mock
     private ValidateUserService validateUserService;
 
+    @Mock
+    private UserTypeService userTypeService;
+
     @InjectMocks
     private UpdateUserUseCase updateUserUseCase;
 
@@ -56,7 +60,8 @@ public class UpdateUserUseCaseTest {
                 "novologin",
                 "novasenha",
                 AdressUtils.getValidCreateAddressRequest(),
-                1L
+                UserTypeUtils.getValidUserType().getUserTypeId()
+
         );
 
         doNothing().when(validateUserService).validate(any(CreateUserRequest.class));
@@ -92,5 +97,7 @@ public class UpdateUserUseCaseTest {
 
         UserNotFoundException exception = assertThrows(UserNotFoundException.class,
                 () -> updateUserUseCase.updateUser(userId, request));
+        assertEquals(userId, exception.getMessage());
+
     }
 }

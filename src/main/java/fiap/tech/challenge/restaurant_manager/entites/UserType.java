@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @Data
 public class UserType {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userTypeId;

@@ -1,12 +1,14 @@
 package fiap.tech.challenge.restaurant_manager.services.usecase.user;
 
 import fiap.tech.challenge.restaurant_manager.entites.User;
+import fiap.tech.challenge.restaurant_manager.entites.UserType;
 import fiap.tech.challenge.restaurant_manager.DTOs.request.users.CreateUserRequest;
 import fiap.tech.challenge.restaurant_manager.DTOs.response.users.UserResponse;
 import fiap.tech.challenge.restaurant_manager.repositories.UserRepository;
 import fiap.tech.challenge.restaurant_manager.services.userTypes.UserTypeService;
 import fiap.tech.challenge.restaurant_manager.usecases.user.CreateUserUseCase;
 import fiap.tech.challenge.restaurant_manager.validations.ValidateUserService;
+import fiap.tech.challenge.restaurant_manager.utils.UserTypeUtils;
 import fiap.tech.challenge.restaurant_manager.utils.UserUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,11 +33,16 @@ public class CreateUserUseCaseTest {
     @Mock
     private ValidateUserService validateUserService;
 
+    @Mock
+    private UserTypeService userTypeService;
+
     @InjectMocks
     private CreateUserUseCase createUserUseCase;
 
+
     @Mock
     private UserTypeService userTypeService;
+
 
     @BeforeEach
     void setUp() {
@@ -52,7 +59,8 @@ public class CreateUserUseCaseTest {
                 "usuario_login",
                 "USER",
                 getValidCreateAddressRequest(),
-                1L
+                UserTypeUtils.getValidUserType().getUserTypeId()
+
         );
         doNothing().when(validateUserService).validate(any(CreateUserRequest.class));
 
@@ -87,7 +95,8 @@ public class CreateUserUseCaseTest {
                 "usuario_login",
                 "USER",
                 getValidCreateAddressRequest(),
-                1L
+                UserTypeUtils.getValidUserType().getUserTypeId()
+
         );
         doThrow(new IllegalArgumentException("Validação falhou")).when(validateUserService).validate(any(CreateUserRequest.class));
 

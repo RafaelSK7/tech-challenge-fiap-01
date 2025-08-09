@@ -92,6 +92,8 @@ public class UpdateRestaurantUseCaseTest {
 
         RestaurantNotFoundException exception = assertThrows(RestaurantNotFoundException.class,
                 () -> updateRestaurantUseCase.updateRestaurant(restaurantId, request));
+        assertEquals(restaurantId, exception.getMessage());
+
     }
 
 

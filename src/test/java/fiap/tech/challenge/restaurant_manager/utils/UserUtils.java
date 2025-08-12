@@ -7,6 +7,7 @@ import fiap.tech.challenge.restaurant_manager.entites.UserType;
 
 import java.time.LocalDateTime;
 
+
 import static fiap.tech.challenge.restaurant_manager.utils.AdressUtils.getValidAddress;
 
 public class UserUtils {

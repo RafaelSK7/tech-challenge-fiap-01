@@ -51,6 +51,8 @@ public class DeleteUserUseCaseTest {
 
         UserNotFoundException exception = assertThrows(UserNotFoundException.class, () ->
                 deleteUserUseCase.deleteUser(userId));
+        assertEquals(userId, exception.getMessage());
+
     }
 
 }

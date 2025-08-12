@@ -35,8 +35,6 @@ public class UpdateUserUseCaseTest {
     @Mock
     private ValidateUserService validateUserService;
 
-    @Mock
-    private UserTypeService userTypeService;
 
     @InjectMocks
     private UpdateUserUseCase updateUserUseCase;

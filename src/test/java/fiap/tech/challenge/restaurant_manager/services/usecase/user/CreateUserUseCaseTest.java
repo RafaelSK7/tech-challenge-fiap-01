@@ -33,8 +33,6 @@ public class CreateUserUseCaseTest {
     @Mock
     private ValidateUserService validateUserService;
 
-    @Mock
-    private UserTypeService userTypeService;
 
     @InjectMocks
     private CreateUserUseCase createUserUseCase;

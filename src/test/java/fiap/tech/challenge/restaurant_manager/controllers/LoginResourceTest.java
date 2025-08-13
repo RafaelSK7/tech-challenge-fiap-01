@@ -1,10 +1,10 @@
 package fiap.tech.challenge.restaurant_manager.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fiap.tech.challenge.restaurant_manager.application.DTOs.request.login.LoginRequest;
-import fiap.tech.challenge.restaurant_manager.application.DTOs.response.login.LoginResponse;
-import fiap.tech.challenge.restaurant_manager.infrastructure.resources.login.LoginResource;
-import fiap.tech.challenge.restaurant_manager.application.controllers.login.LoginController;
+import fiap.tech.challenge.restaurant_manager.DTOs.request.login.LoginRequest;
+import fiap.tech.challenge.restaurant_manager.DTOs.response.login.LoginResponse;
+import fiap.tech.challenge.restaurant_manager.controllers.login.LoginController;
+import fiap.tech.challenge.restaurant_manager.services.login.LoginService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,13 +21,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
-public class LoginResourceTest {
+public class LoginControllerTest {
 
     @InjectMocks
-    private LoginResource loginResource;
+    private LoginController loginController;
 
     @Mock
-    private LoginController loginService;
+    private LoginService loginService;
 
     private MockMvc mockMvc;
     private ObjectMapper objectMapper = new ObjectMapper();
@@ -36,7 +36,7 @@ public class LoginResourceTest {
 
     @BeforeEach
     void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(loginResource).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(loginController).build();
 
         loginRequest = new LoginRequest(
                 "usuario",

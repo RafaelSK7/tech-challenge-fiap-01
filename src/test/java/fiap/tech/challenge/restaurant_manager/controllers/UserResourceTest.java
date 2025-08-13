@@ -1,10 +1,10 @@
 package fiap.tech.challenge.restaurant_manager.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fiap.tech.challenge.restaurant_manager.application.DTOs.request.users.CreateUserRequest;
-import fiap.tech.challenge.restaurant_manager.application.DTOs.response.users.UserResponse;
-import fiap.tech.challenge.restaurant_manager.infrastructure.resources.users.UserResource;
-import fiap.tech.challenge.restaurant_manager.application.controllers.users.UserService;
+import fiap.tech.challenge.restaurant_manager.DTOs.request.users.CreateUserRequest;
+import fiap.tech.challenge.restaurant_manager.DTOs.response.users.UserResponse;
+import fiap.tech.challenge.restaurant_manager.controllers.users.UserController;
+import fiap.tech.challenge.restaurant_manager.services.users.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,10 +26,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
-public class UserResourceTest {
+public class UserControllerTest {
 
     @InjectMocks
-    private UserResource userResource;
+    private UserController userController;
 
     @Mock
     private UserService userService;
@@ -43,7 +43,7 @@ public class UserResourceTest {
 
     @BeforeEach
     void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(userResource).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
         createUserRequest = new CreateUserRequest(
                 "Nome do Usuário",
                 "usuario@example.com",

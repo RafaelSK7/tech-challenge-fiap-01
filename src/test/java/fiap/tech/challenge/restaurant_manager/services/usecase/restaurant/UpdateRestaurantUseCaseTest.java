@@ -1,14 +1,14 @@
 package fiap.tech.challenge.restaurant_manager.services.usecase.restaurant;
 
-import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.RestaurantEntity;
-import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.enums.CuisineType;
-import fiap.tech.challenge.restaurant_manager.application.DTOs.request.restaurants.CreateRestaurantRequest;
-import fiap.tech.challenge.restaurant_manager.application.DTOs.response.restaurants.RestaurantResponse;
-import fiap.tech.challenge.restaurant_manager.application.exceptions.custom.RestaurantNotFoundException;
-import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.repositories.RestaurantRepository;
-import fiap.tech.challenge.restaurant_manager.application.controllers.users.UserService;
-import fiap.tech.challenge.restaurant_manager.domain.usecases.restaurant.UpdateRestaurantUseCase;
-import fiap.tech.challenge.restaurant_manager.application.validations.ValidateRestaurantService;
+import fiap.tech.challenge.restaurant_manager.entites.Restaurant;
+import fiap.tech.challenge.restaurant_manager.entites.enums.CuisineType;
+import fiap.tech.challenge.restaurant_manager.DTOs.request.restaurants.CreateRestaurantRequest;
+import fiap.tech.challenge.restaurant_manager.DTOs.response.restaurants.RestaurantResponse;
+import fiap.tech.challenge.restaurant_manager.exceptions.custom.RestaurantNotFoundException;
+import fiap.tech.challenge.restaurant_manager.repositories.RestaurantRepository;
+import fiap.tech.challenge.restaurant_manager.services.users.UserService;
+import fiap.tech.challenge.restaurant_manager.usecases.restaurant.UpdateRestaurantUseCase;
+import fiap.tech.challenge.restaurant_manager.validations.ValidateRestaurantService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -48,7 +48,7 @@ public class UpdateRestaurantUseCaseTest {
     @Test
     void testUpdateRestaurantSuccess() {
         Long restaurantId = 1L;
-        RestaurantEntity existingRestaurant = new RestaurantEntity();
+        Restaurant existingRestaurant = new Restaurant();
         existingRestaurant.setId(restaurantId);
         existingRestaurant.setName("Nome Antigo");
         existingRestaurant.setOwner(getValidUser());
@@ -92,6 +92,8 @@ public class UpdateRestaurantUseCaseTest {
 
         RestaurantNotFoundException exception = assertThrows(RestaurantNotFoundException.class,
                 () -> updateRestaurantUseCase.updateRestaurant(restaurantId, request));
+        assertEquals(restaurantId, exception.getMessage());
+
     }
 
 

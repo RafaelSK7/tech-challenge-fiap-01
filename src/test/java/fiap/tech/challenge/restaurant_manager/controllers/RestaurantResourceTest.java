@@ -1,10 +1,10 @@
 package fiap.tech.challenge.restaurant_manager.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fiap.tech.challenge.restaurant_manager.infrastructure.resources.restaurants.RestaurantResource;
-import fiap.tech.challenge.restaurant_manager.application.DTOs.request.restaurants.CreateRestaurantRequest;
-import fiap.tech.challenge.restaurant_manager.application.DTOs.response.restaurants.RestaurantResponse;
-import fiap.tech.challenge.restaurant_manager.application.controllers.restaurants.RestaurantController;
+import fiap.tech.challenge.restaurant_manager.DTOs.request.restaurants.CreateRestaurantRequest;
+import fiap.tech.challenge.restaurant_manager.DTOs.response.restaurants.RestaurantResponse;
+import fiap.tech.challenge.restaurant_manager.controllers.restaurants.RestaurantController;
+import fiap.tech.challenge.restaurant_manager.services.restaurants.RestaurantService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static fiap.tech.challenge.restaurant_manager.utils.RestaurantUtils.getValidCreateRestaurantRequest;
 import static fiap.tech.challenge.restaurant_manager.utils.RestaurantUtils.getValidRestaurantResponse;
+import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
@@ -25,16 +26,15 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.hamcrest.Matchers.is;
 
 @ExtendWith(MockitoExtension.class)
-public class RestaurantResourceTest {
+public class RestaurantControllerTest {
 
     @InjectMocks
-    private RestaurantResource restaurantResource;
+    private RestaurantController restaurantController;
 
     @Mock
-    private RestaurantController restaurantService;
+    private RestaurantService restaurantService;
 
     private MockMvc mockMvc;
     private ObjectMapper objectMapper = new ObjectMapper();
@@ -44,7 +44,7 @@ public class RestaurantResourceTest {
 
     @BeforeEach
     void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(restaurantResource)
+        mockMvc = MockMvcBuilders.standaloneSetup(restaurantController)
                 .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
                 .build();
 
@@ -71,7 +71,7 @@ public class RestaurantResourceTest {
                 .andExpect(jsonPath("$.address.zipCode", is(restaurantResponse.address().zipCode())))
                 .andExpect(jsonPath("$.address.country", is(restaurantResponse.address().country())));
     }
-    
+
 
     @Test
     void testFindRestaurantById() throws Exception {

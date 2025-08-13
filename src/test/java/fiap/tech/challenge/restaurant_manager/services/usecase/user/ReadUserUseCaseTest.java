@@ -1,13 +1,13 @@
 package fiap.tech.challenge.restaurant_manager.services.usecase.user;
 
-import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.UsersEntity;
-import fiap.tech.challenge.restaurant_manager.application.DTOs.request.login.LoginRequest;
-import fiap.tech.challenge.restaurant_manager.application.DTOs.response.login.LoginResponse;
-import fiap.tech.challenge.restaurant_manager.application.DTOs.response.users.UserResponse;
-import fiap.tech.challenge.restaurant_manager.application.exceptions.custom.InvalidLogonException;
-import fiap.tech.challenge.restaurant_manager.application.exceptions.custom.UserNotFoundException;
-import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.repositories.UserRepository;
-import fiap.tech.challenge.restaurant_manager.domain.usecases.user.ReadUserUseCase;
+import fiap.tech.challenge.restaurant_manager.entites.User;
+import fiap.tech.challenge.restaurant_manager.DTOs.request.login.LoginRequest;
+import fiap.tech.challenge.restaurant_manager.DTOs.response.login.LoginResponse;
+import fiap.tech.challenge.restaurant_manager.DTOs.response.users.UserResponse;
+import fiap.tech.challenge.restaurant_manager.exceptions.custom.InvalidLogonException;
+import fiap.tech.challenge.restaurant_manager.exceptions.custom.UserNotFoundException;
+import fiap.tech.challenge.restaurant_manager.repositories.UserRepository;
+import fiap.tech.challenge.restaurant_manager.usecases.user.ReadUserUseCase;
 import fiap.tech.challenge.restaurant_manager.utils.UserUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -42,9 +42,9 @@ public class ReadUserUseCaseTest {
     @Test
     void testFindAllUsersSuccess() {
         Pageable pageable = PageRequest.of(0, 10);
-        UsersEntity user = UserUtils.getValidUser();
-        List<UsersEntity> users = List.of(user);
-        Page<UsersEntity> userPage = new PageImpl<>(users, pageable, users.size());
+        User user = UserUtils.getValidUser();
+        List<User> users = List.of(user);
+        Page<User> userPage = new PageImpl<>(users, pageable, users.size());
 
         when(userRepository.findAll(pageable)).thenReturn(userPage);
 
@@ -63,7 +63,7 @@ public class ReadUserUseCaseTest {
     @Test
     void testFindUserByIdSuccess() {
         Long userId = 1L;
-        UsersEntity user = UserUtils.getValidUser();
+        User user = UserUtils.getValidUser();
         user.setId(userId);
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
@@ -82,12 +82,14 @@ public class ReadUserUseCaseTest {
 
         UserNotFoundException exception = assertThrows(UserNotFoundException.class,
                 () -> readUserUseCase.findById(userId));
+        assertEquals(userId, exception.getMessage());
+
     }
 
     @Test
     void testFindByLoginAndPasswordSuccess() {
         LoginRequest loginRequest = new LoginRequest("usuario_login", "senha123");
-        UsersEntity user = UserUtils.getValidUser();
+        User user = UserUtils.getValidUser();
         when(userRepository.findByLoginAndPassword(loginRequest.login(), loginRequest.password()))
                 .thenReturn(Optional.of(user));
 
@@ -113,12 +115,12 @@ public class ReadUserUseCaseTest {
     @Test
     void testFindByIdEntitySuccess() {
         Long userId = 1L;
-        UsersEntity user = UserUtils.getValidUser();
+        User user = UserUtils.getValidUser();
         user.setId(userId);
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
-        UsersEntity foundUser = readUserUseCase.findByIdEntity(userId);
+        User foundUser = readUserUseCase.findByIdEntity(userId);
         assertNotNull(foundUser);
         assertEquals(userId, foundUser.getId());
         assertEquals(user.getName(), foundUser.getName());
@@ -131,5 +133,7 @@ public class ReadUserUseCaseTest {
 
         UserNotFoundException exception = assertThrows(UserNotFoundException.class,
                 () -> readUserUseCase.findByIdEntity(userId));
+        assertEquals(userId, exception.getMessage());
+
     }
 }

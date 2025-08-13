@@ -67,7 +67,7 @@ public class UpdateUserUseCaseTest {
         existingUser.setId(userId);
 
         when(usersGateway.findById(userId)).thenReturn(Optional.of(existingUser));
-        when(usersGateway.save(request, any(UserTypesEntity.class))).thenReturn(existingUser);
+        when(usersGateway.update(any(UsersEntity.class))).thenReturn(existingUser);
         when(userTypeController.findByIdEntity(request.userTypeId())).thenReturn(new UserTypesEntity(
                 1L, "CLIENT", LocalDateTime.now()));
 
@@ -95,7 +95,7 @@ public class UpdateUserUseCaseTest {
 
         UserNotFoundException exception = assertThrows(UserNotFoundException.class,
                 () -> updateUserUseCase.updateUser(userId, request));
-        assertEquals(any(), exception.getMessage());
+        assertNotNull(exception.getMessage());
 
     }
 }

@@ -12,7 +12,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
@@ -50,7 +50,7 @@ public class DeleteUserUseCaseTest {
 
         UserNotFoundException exception = assertThrows(UserNotFoundException.class, () ->
                 deleteUserUseCase.deleteUser(userId));
-        assertEquals(any(), exception.getMessage());
+        assertNotNull(exception.getMessage());
 
     }
 

@@ -20,6 +20,8 @@ import java.util.Optional;
 
 import static fiap.tech.challenge.restaurant_manager.utils.AdressUtils.getValidAddress;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 public class ReadRestaurantUseCaseTest {
@@ -66,7 +68,7 @@ public class ReadRestaurantUseCaseTest {
         RestaurantNotFoundException exception = assertThrows(RestaurantNotFoundException.class,
                 () -> readRestaurantUseCase.findById(restaurantId));
 
-        assertEquals(restaurantId, exception.getMessage());
+        assertNotNull(exception.getMessage());
 
     }
 

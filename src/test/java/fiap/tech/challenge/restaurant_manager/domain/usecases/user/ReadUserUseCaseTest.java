@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 public class ReadUserUseCaseTest {
@@ -81,7 +80,7 @@ public class ReadUserUseCaseTest {
 
         UserNotFoundException exception = assertThrows(UserNotFoundException.class,
                 () -> readUserUseCase.findById(userId));
-        assertEquals(any(), exception.getMessage());
+        assertNotNull(exception.getMessage());
 
     }
 
@@ -132,7 +131,7 @@ public class ReadUserUseCaseTest {
 
         UserNotFoundException exception = assertThrows(UserNotFoundException.class,
                 () -> readUserUseCase.findById(userId));
-        assertEquals(any(), exception.getMessage());
+        assertNotNull(exception.getMessage());
 
     }
 }

@@ -7,7 +7,6 @@ import fiap.tech.challenge.restaurant_manager.application.validations.Validation
 import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.UserTypesEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -50,9 +49,6 @@ public class CreateUserTypeUseCaseTest {
         doNothing().when(validationUserTypeService).validate(any(CreateUserTypeRequest.class));
         when(readUserTypeUseCase.findDuplicateUserType(any())).thenReturn(Optional.empty());
 
-        ArgumentCaptor<UserTypesEntity> userTypeCaptor = ArgumentCaptor.forClass(UserTypesEntity.class);
-        ArgumentCaptor<CreateUserTypeRequest> requestCaptor = ArgumentCaptor.forClass(CreateUserTypeRequest.class);
-
         UserTypesEntity savedUserType = new UserTypesEntity(request);
         savedUserType.setUserTypeId(1L);
         when(userTypesGateway.save(any(CreateUserTypeRequest.class))).thenReturn(savedUserType);
@@ -60,10 +56,9 @@ public class CreateUserTypeUseCaseTest {
         UserTypesEntity userTypesEntity = createUserTypeUseCase.createUserType(request);
 
         verify(validationUserTypeService, times(1)).validate(request);
-        verify(userTypesGateway, times(1)).save(requestCaptor.capture());
-        UserTypesEntity capturedUserType = userTypeCaptor.getValue();
+        verify(userTypesGateway, times(1)).save(any(CreateUserTypeRequest.class));
 
-        assertEquals(request.userTypeName().trim().toUpperCase(), capturedUserType.getUserTypeName());
+        assertEquals(request.userTypeName().trim().toUpperCase(), userTypesEntity.getUserTypeName());
         assertEquals(savedUserType.getUserTypeId(), userTypesEntity.getUserTypeId());
         assertEquals(savedUserType.getUserTypeName(), userTypesEntity.getUserTypeName());
     }

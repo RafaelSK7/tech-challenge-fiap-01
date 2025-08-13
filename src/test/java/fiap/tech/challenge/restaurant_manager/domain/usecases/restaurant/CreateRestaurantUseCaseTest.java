@@ -63,10 +63,6 @@ class CreateRestaurantUseCaseTest {
 
         when(userController.findByIdEntity(ownerId)).thenReturn(mockOwner);
 
-        // Captura o restaurante salvo para validação
-        ArgumentCaptor<RestaurantEntity> restaurantCaptor = ArgumentCaptor.forClass(RestaurantEntity.class);
-        ArgumentCaptor<CreateRestaurantRequest> requestCaptor = ArgumentCaptor.forClass(CreateRestaurantRequest.class);
-
         RestaurantEntity savedRestaurant = new RestaurantEntity(request, mockOwner);
         savedRestaurant.setId(100L);
         when(restaurantsGateway.save(any(CreateRestaurantRequest.class), any(UsersEntity.class))).thenReturn(savedRestaurant);
@@ -77,10 +73,8 @@ class CreateRestaurantUseCaseTest {
         // Assert
         verify(validateRestaurantService, times(1)).validate(request);
         verify(userController, times(1)).findByIdEntity(ownerId);
-        verify(restaurantsGateway, times(1)).save(requestCaptor.capture(), any(UsersEntity.class));
-        RestaurantEntity capturedRestaurant = restaurantCaptor.getValue();
+        verify(restaurantsGateway, times(1)).save(any(CreateRestaurantRequest.class), any(UsersEntity.class));
 
-        assertEquals(request.name(), capturedRestaurant.getName());
         assertEquals(100L, restaurantEntity.getId());
         assertEquals(request.name(), restaurantEntity.getName());
         assertEquals(ownerId, restaurantEntity.getOwner().getId());

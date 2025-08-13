@@ -1,12 +1,10 @@
 package fiap.tech.challenge.restaurant_manager.domain.usecases.userType;
 
-import fiap.tech.challenge.restaurant_manager.entites.UserType;
-import fiap.tech.challenge.restaurant_manager.DTOs.request.userTypes.CreateUserTypeRequest;
-import fiap.tech.challenge.restaurant_manager.DTOs.response.userTypes.UserTypeResponse;
-import fiap.tech.challenge.restaurant_manager.exceptions.custom.UserTypeNotFoundException;
-import fiap.tech.challenge.restaurant_manager.repositories.UserTypeRepository;
-import fiap.tech.challenge.restaurant_manager.usecases.userType.UpdateUserTypeUseCase;
-import fiap.tech.challenge.restaurant_manager.validations.ValidationUserTypeService;
+import fiap.tech.challenge.restaurant_manager.application.DTOs.request.userTypes.CreateUserTypeRequest;
+import fiap.tech.challenge.restaurant_manager.application.exceptions.custom.UserTypeNotFoundException;
+import fiap.tech.challenge.restaurant_manager.application.gateway.userTypes.UserTypesGateway;
+import fiap.tech.challenge.restaurant_manager.application.validations.ValidationUserTypeService;
+import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.UserTypesEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -17,14 +15,15 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 public class UpdateUserTypeUseCaseTest {
 
     @Mock
-    private UserTypeRepository userTypeRepository;
+    private UserTypesGateway userTypesGateway;
 
     @Mock
     private ValidationUserTypeService validationUserTypeService;
@@ -36,7 +35,7 @@ public class UpdateUserTypeUseCaseTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
         updateUserTypeUseCase = new UpdateUserTypeUseCase(
-                userTypeRepository,
+                userTypesGateway,
                 List.of(validationUserTypeService)
         );
     }
@@ -45,26 +44,27 @@ public class UpdateUserTypeUseCaseTest {
     void testUpdateUserTypeSuccess() {
         Long id = 1L;
         CreateUserTypeRequest request = new CreateUserTypeRequest("GERENTE");
-        UserType existingUserType = new UserType();
+        UserTypesEntity existingUserType = new UserTypesEntity();
         existingUserType.setUserTypeId(id);
         existingUserType.setUserTypeName("ADMIN");
 
         doNothing().when(validationUserTypeService).validate(any(CreateUserTypeRequest.class));
-        when(userTypeRepository.findById(id)).thenReturn(Optional.of(existingUserType));
+        when(userTypesGateway.findByUserTypeId(id)).thenReturn(Optional.of(existingUserType));
 
-        UserType updatedUserType = new UserType();
+        UserTypesEntity updatedUserType = new UserTypesEntity();
         updatedUserType.setUserTypeId(id);
         updatedUserType.setUserTypeName("GERENTE");
         updatedUserType.setLastUpdate(LocalDateTime.now());
-        when(userTypeRepository.save(any(UserType.class))).thenReturn(updatedUserType);
+        when(userTypesGateway.update(any(UserTypesEntity.class))).thenReturn(updatedUserType);
 
-        UserTypeResponse response = updateUserTypeUseCase.updateUserType(id, request);
+        UserTypesEntity userTypesEntity = updateUserTypeUseCase.updateUserType(id, request);
 
         verify(validationUserTypeService, times(1)).validate(request);
-        verify(userTypeRepository, times(1)).findById(id);
-        verify(userTypeRepository, times(1)).save(any(UserType.class));
-        assertEquals(id, response.id());
-        assertEquals("GERENTE", response.userTypeName());
+        verify(userTypesGateway, times(1)).findByUserTypeId(id);
+        verify(userTypesGateway, times(1)).update(any(UserTypesEntity.class));
+
+        assertEquals(id, userTypesEntity.getUserTypeId());
+        assertEquals("GERENTE", userTypesEntity.getUserTypeName());
     }
 
     @Test
@@ -72,11 +72,11 @@ public class UpdateUserTypeUseCaseTest {
         Long id = 2L;
         CreateUserTypeRequest request = new CreateUserTypeRequest("GERENTE");
 
-        when(userTypeRepository.findById(id)).thenReturn(Optional.empty());
+        when(userTypesGateway.findByUserTypeId(id)).thenReturn(Optional.empty());
 
         assertThrows(UserTypeNotFoundException.class, () -> updateUserTypeUseCase.updateUserType(id, request));
-        verify(userTypeRepository, times(1)).findById(id);
-        verify(userTypeRepository, never()).save(any());
+        verify(userTypesGateway, times(1)).findByUserTypeId(id);
+        verify(userTypesGateway, never()).save(any());
     }
 
     @Test
@@ -85,22 +85,22 @@ public class UpdateUserTypeUseCaseTest {
         ValidationUserTypeService validation2 = mock(ValidationUserTypeService.class);
 
         UpdateUserTypeUseCase useCaseWithMultipleValidations = new UpdateUserTypeUseCase(
-                userTypeRepository,
+                userTypesGateway,
                 List.of(validation1, validation2)
         );
 
         Long id = 3L;
         CreateUserTypeRequest request = new CreateUserTypeRequest("SUPORTE");
-        UserType existingUserType = new UserType();
+        UserTypesEntity existingUserType = new UserTypesEntity();
         existingUserType.setUserTypeId(id);
         existingUserType.setUserTypeName("CLIENTE");
 
-        when(userTypeRepository.findById(id)).thenReturn(Optional.of(existingUserType));
-        UserType updatedUserType = new UserType();
+        when(userTypesGateway.findByUserTypeId(id)).thenReturn(Optional.of(existingUserType));
+        UserTypesEntity updatedUserType = new UserTypesEntity();
         updatedUserType.setUserTypeId(id);
         updatedUserType.setUserTypeName("SUPORTE");
         updatedUserType.setLastUpdate(LocalDateTime.now());
-        when(userTypeRepository.save(any(UserType.class))).thenReturn(updatedUserType);
+        when(userTypesGateway.save(any(CreateUserTypeRequest.class))).thenReturn(updatedUserType);
 
         useCaseWithMultipleValidations.updateUserType(id, request);
 
@@ -110,25 +110,25 @@ public class UpdateUserTypeUseCaseTest {
 
     @Test
     void testToResponsePrivateMethodCoverage() {
-        
+
         Long id = 4L;
         CreateUserTypeRequest request = new CreateUserTypeRequest("SUPORTE");
-        UserType existingUserType = new UserType();
+        UserTypesEntity existingUserType = new UserTypesEntity();
         existingUserType.setUserTypeId(id);
         existingUserType.setUserTypeName("CLIENTE");
 
         doNothing().when(validationUserTypeService).validate(any(CreateUserTypeRequest.class));
-        when(userTypeRepository.findById(id)).thenReturn(Optional.of(existingUserType));
+        when(userTypesGateway.findByUserTypeId(id)).thenReturn(Optional.of(existingUserType));
 
-        UserType updatedUserType = new UserType();
+        UserTypesEntity updatedUserType = new UserTypesEntity();
         updatedUserType.setUserTypeId(id);
         updatedUserType.setUserTypeName("SUPORTE");
         updatedUserType.setLastUpdate(LocalDateTime.now());
-        when(userTypeRepository.save(any(UserType.class))).thenReturn(updatedUserType);
+        when(userTypesGateway.update(any(UserTypesEntity.class))).thenReturn(updatedUserType);
 
-        UserTypeResponse response = updateUserTypeUseCase.updateUserType(id, request);
+        UserTypesEntity userTypesEntity = updateUserTypeUseCase.updateUserType(id, request);
 
-        assertEquals(id, response.id());
-        assertEquals("SUPORTE", response.userTypeName());
+        assertEquals(id, userTypesEntity.getUserTypeId());
+        assertEquals("SUPORTE", userTypesEntity.getUserTypeName());
     }
 }

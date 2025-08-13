@@ -91,7 +91,7 @@ class CreateMenuItemUseCaseTest {
         );
 
         doNothing().when(validationService).validate(request);
-        when(restaurantController.findById(restaurantId)).thenThrow(new RestaurantNotFoundException(anyLong()));
+        when(restaurantController.findByIdEntity(restaurantId)).thenThrow(new RestaurantNotFoundException(anyLong()));
 
         assertThrows(RestaurantNotFoundException.class, () -> createMenuItemUseCase.createMenuItem(request));
         verify(menuItemsGateway, never()).save(any(), any());

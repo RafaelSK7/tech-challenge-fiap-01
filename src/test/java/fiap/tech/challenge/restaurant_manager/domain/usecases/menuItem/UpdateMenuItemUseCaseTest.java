@@ -61,11 +61,11 @@ class UpdateMenuItemUseCaseTest {
         when(restaurantController.findByIdEntity(restaurantId)).thenReturn(restaurant);
         doNothing().when(validationService1).validate(request);
         doNothing().when(validationService2).validate(request);
-        when(menuItemsGateway.save(request, restaurant)).thenReturn(existingMenuItem);
+        when(menuItemsGateway.update(any(MenuItemEntity.class))).thenReturn(existingMenuItem);
 
         MenuItemEntity menuItemEntity = updateMenuItemUseCase.updateMenuItem(menuItemId, request);
         verify(menuItemsGateway).findById(menuItemId);
-        verify(restaurantController).findById(restaurantId);
+        verify(restaurantController).findByIdEntity(restaurantId);
         verify(validationService1).validate(request);
         verify(validationService2).validate(request);
         verify(existingMenuItem).setName(request.name());
@@ -74,7 +74,7 @@ class UpdateMenuItemUseCaseTest {
         verify(existingMenuItem).setLocalOnly(request.localOnly());
         verify(existingMenuItem).setPhotoPath(request.photoPath());
         verify(existingMenuItem).setRestaurant(restaurant);
-        verify(menuItemsGateway).save(request, restaurant);
+        verify(menuItemsGateway).update(existingMenuItem);
         assertNotNull(menuItemEntity);
     }
 
@@ -113,7 +113,7 @@ class UpdateMenuItemUseCaseTest {
         verify(menuItemsGateway).findById(menuItemId);
         verify(validationService1).validate(request);
         verify(validationService2).validate(request);
-        verify(restaurantController).findById(invalidRestaurantId);
+        verify(restaurantController).findByIdEntity(invalidRestaurantId);
         verify(menuItemsGateway, never()).save(any(), any());
     }
 

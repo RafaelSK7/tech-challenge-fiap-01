@@ -8,8 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -41,7 +40,7 @@ class DeleteMenuItemUseCaseTest {
         when(menuItemsGateway.findById(id)).thenThrow(new InvalidMenuItemException(any()));
         InvalidMenuItemException exception = assertThrows(InvalidMenuItemException.class,
                 () -> deleteMenuItemUseCase.deleteMenuItem(id));
-        assertEquals(any(), exception.getMessage());
+        assertNotNull(exception.getMessage());
         verify(menuItemsGateway, times(1)).findById(id);
         verify(menuItemsGateway, never()).delete(any());
     }

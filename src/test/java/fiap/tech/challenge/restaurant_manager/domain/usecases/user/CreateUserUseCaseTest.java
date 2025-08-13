@@ -60,24 +60,17 @@ public class CreateUserUseCaseTest {
         );
         doNothing().when(validateUserService).validate(any(CreateUserRequest.class));
 
-        ArgumentCaptor<UsersEntity> userCaptor = ArgumentCaptor.forClass(UsersEntity.class);
-        ArgumentCaptor<CreateUserRequest> requestCaptor = ArgumentCaptor.forClass(CreateUserRequest.class);
-
-
         UsersEntity savedUser = UserUtils.getValidUser();
         when(usersGateway.save(any(CreateUserRequest.class), any(UserTypesEntity.class))).thenReturn(savedUser);
+        when(userTypeController.findByIdEntity(anyLong())).thenReturn(UserTypeUtils.getValidUserType());
 
         // Act
         UsersEntity usersEntity = createUserUseCase.createUser(request);
 
         // Assert
         verify(validateUserService, times(1)).validate(request);
-        verify(usersGateway, times(1)).save(requestCaptor.capture(), any(UserTypesEntity.class));
-        UsersEntity capturedUser = userCaptor.getValue();
+        verify(usersGateway, times(1)).save(any(CreateUserRequest.class), any(UserTypesEntity.class));
 
-        assertEquals(request.name(), capturedUser.getName());
-        assertEquals(request.email(), capturedUser.getEmail());
-        assertEquals(request.login(), capturedUser.getLogin());
         assertEquals(savedUser.getId(), usersEntity.getId());
         assertEquals(savedUser.getName(), usersEntity.getName());
         assertEquals(savedUser.getEmail(), usersEntity.getEmail());

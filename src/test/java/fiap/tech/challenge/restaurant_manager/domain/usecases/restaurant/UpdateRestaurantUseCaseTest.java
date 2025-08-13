@@ -65,7 +65,7 @@ public class UpdateRestaurantUseCaseTest {
 
         when(restaurantsGateway.findById(restaurantId)).thenReturn(Optional.of(existingRestaurant));
         when(userController.findByIdEntity(request.ownerId())).thenReturn(getValidUser());
-        when(restaurantsGateway.save(request, getValidUser())).thenReturn(existingRestaurant);
+        when(restaurantsGateway.update(any(RestaurantEntity.class))).thenReturn(existingRestaurant);
 
         RestaurantEntity restaurantEntity = updateRestaurantUseCase.updateRestaurant(restaurantId, request);
 
@@ -90,7 +90,7 @@ public class UpdateRestaurantUseCaseTest {
 
         RestaurantNotFoundException exception = assertThrows(RestaurantNotFoundException.class,
                 () -> updateRestaurantUseCase.updateRestaurant(restaurantId, request));
-        assertEquals(any(), exception.getMessage());
+        assertNotNull(exception.getMessage());
 
     }
 

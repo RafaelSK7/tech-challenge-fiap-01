@@ -1,10 +1,10 @@
-package fiap.tech.challenge.restaurant_manager.controllers;
+package fiap.tech.challenge.restaurant_manager.infra.resources;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fiap.tech.challenge.restaurant_manager.DTOs.request.login.LoginRequest;
-import fiap.tech.challenge.restaurant_manager.DTOs.response.login.LoginResponse;
-import fiap.tech.challenge.restaurant_manager.controllers.login.LoginController;
-import fiap.tech.challenge.restaurant_manager.services.login.LoginService;
+import fiap.tech.challenge.restaurant_manager.application.DTOs.request.login.LoginRequest;
+import fiap.tech.challenge.restaurant_manager.application.DTOs.response.login.LoginResponse;
+import fiap.tech.challenge.restaurant_manager.application.controllers.login.LoginController;
+import fiap.tech.challenge.restaurant_manager.infrastructure.resources.login.LoginResource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,13 +21,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
-public class LoginControllerTest {
+public class LoginResourceTest {
 
     @InjectMocks
-    private LoginController loginController;
+    private LoginResource loginResource;
 
     @Mock
-    private LoginService loginService;
+    private LoginController loginController;
 
     private MockMvc mockMvc;
     private ObjectMapper objectMapper = new ObjectMapper();
@@ -36,7 +36,7 @@ public class LoginControllerTest {
 
     @BeforeEach
     void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(loginController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(loginResource).build();
 
         loginRequest = new LoginRequest(
                 "usuario",
@@ -48,7 +48,7 @@ public class LoginControllerTest {
 
     @Test
     void testLoginSuccess() throws Exception {
-        when(loginService.findByLogin(any(LoginRequest.class))).thenReturn(loginResponse);
+        when(loginController.findByLogin(any(LoginRequest.class))).thenReturn(loginResponse);
 
         mockMvc.perform(post("/login")
                         .contentType(MediaType.APPLICATION_JSON)

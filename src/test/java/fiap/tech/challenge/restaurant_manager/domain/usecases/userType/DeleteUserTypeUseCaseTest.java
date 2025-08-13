@@ -1,4 +1,4 @@
-package fiap.tech.challenge.restaurant_manager.services.usecase.userType;
+package fiap.tech.challenge.restaurant_manager.domain.usecases.userType;
 
 import fiap.tech.challenge.restaurant_manager.entites.UserType;
 import fiap.tech.challenge.restaurant_manager.exceptions.custom.UserTypeNotFoundException;

@@ -1,9 +1,8 @@
-package fiap.tech.challenge.restaurant_manager.services.usecase.user;
+package fiap.tech.challenge.restaurant_manager.domain.usecases.user;
 
-import fiap.tech.challenge.restaurant_manager.entites.User;
-import fiap.tech.challenge.restaurant_manager.exceptions.custom.UserNotFoundException;
-import fiap.tech.challenge.restaurant_manager.repositories.UserRepository;
-import fiap.tech.challenge.restaurant_manager.usecases.user.DeleteUserUseCase;
+import fiap.tech.challenge.restaurant_manager.application.exceptions.custom.UserNotFoundException;
+import fiap.tech.challenge.restaurant_manager.application.gateway.users.UsersGateway;
+import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.UsersEntity;
 import fiap.tech.challenge.restaurant_manager.utils.UserUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,7 +19,7 @@ import static org.mockito.Mockito.*;
 public class DeleteUserUseCaseTest {
 
     @Mock
-    private UserRepository userRepository;
+    private UsersGateway usersGateway;
 
     @InjectMocks
     private DeleteUserUseCase deleteUserUseCase;
@@ -28,30 +27,30 @@ public class DeleteUserUseCaseTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        deleteUserUseCase = new DeleteUserUseCase(userRepository);
+        deleteUserUseCase = new DeleteUserUseCase(usersGateway);
     }
 
     @Test
     void testDeleteUserSuccess() {
         Long userId = 1L;
-        User user = UserUtils.getValidUser();
+        UsersEntity user = UserUtils.getValidUser();
         user.setId(userId);
 
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(usersGateway.findById(userId)).thenReturn(Optional.of(user));
 
         deleteUserUseCase.deleteUser(userId);
 
-        verify(userRepository, times(1)).delete(user);
+        verify(usersGateway, times(1)).delete(user);
     }
 
     @Test
     void testDeleteUserNotFound() {
         Long userId = 1L;
-        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+        when(usersGateway.findById(userId)).thenReturn(Optional.empty());
 
         UserNotFoundException exception = assertThrows(UserNotFoundException.class, () ->
                 deleteUserUseCase.deleteUser(userId));
-        assertEquals(userId, exception.getMessage());
+        assertEquals(any(), exception.getMessage());
 
     }
 

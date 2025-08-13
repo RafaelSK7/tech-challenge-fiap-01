@@ -1,13 +1,10 @@
-package fiap.tech.challenge.restaurant_manager.services.usecase.userType;
+package fiap.tech.challenge.restaurant_manager.domain.usecases.userType;
 
-import fiap.tech.challenge.restaurant_manager.entites.UserType;
-import fiap.tech.challenge.restaurant_manager.DTOs.request.userTypes.CreateUserTypeRequest;
-import fiap.tech.challenge.restaurant_manager.DTOs.response.userTypes.UserTypeResponse;
-import fiap.tech.challenge.restaurant_manager.exceptions.custom.DuplicateUserTypeException;
-import fiap.tech.challenge.restaurant_manager.repositories.UserTypeRepository;
-import fiap.tech.challenge.restaurant_manager.usecases.userType.ReadUserTypeUseCase;
-import fiap.tech.challenge.restaurant_manager.usecases.userType.CreateUserTypeUseCase;
-import fiap.tech.challenge.restaurant_manager.validations.ValidationUserTypeService;
+import fiap.tech.challenge.restaurant_manager.application.DTOs.request.userTypes.CreateUserTypeRequest;
+import fiap.tech.challenge.restaurant_manager.application.exceptions.custom.DuplicateUserTypeException;
+import fiap.tech.challenge.restaurant_manager.application.gateway.userTypes.UserTypesGateway;
+import fiap.tech.challenge.restaurant_manager.application.validations.ValidationUserTypeService;
+import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.UserTypesEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -18,14 +15,15 @@ import org.mockito.MockitoAnnotations;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 public class CreateUserTypeUseCaseTest {
 
     @Mock
-    private UserTypeRepository userTypeRepository;
+    private UserTypesGateway userTypesGateway;
 
     @Mock
     private ValidationUserTypeService validationUserTypeService;
@@ -40,7 +38,7 @@ public class CreateUserTypeUseCaseTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
         createUserTypeUseCase = new CreateUserTypeUseCase(
-                userTypeRepository,
+                userTypesGateway,
                 List.of(validationUserTypeService),
                 readUserTypeUseCase
         );
@@ -52,32 +50,33 @@ public class CreateUserTypeUseCaseTest {
         doNothing().when(validationUserTypeService).validate(any(CreateUserTypeRequest.class));
         when(readUserTypeUseCase.findDuplicateUserType(any())).thenReturn(Optional.empty());
 
-        ArgumentCaptor<UserType> userTypeCaptor = ArgumentCaptor.forClass(UserType.class);
+        ArgumentCaptor<UserTypesEntity> userTypeCaptor = ArgumentCaptor.forClass(UserTypesEntity.class);
+        ArgumentCaptor<CreateUserTypeRequest> requestCaptor = ArgumentCaptor.forClass(CreateUserTypeRequest.class);
 
-        UserType savedUserType = new UserType(request);
+        UserTypesEntity savedUserType = new UserTypesEntity(request);
         savedUserType.setUserTypeId(1L);
-        when(userTypeRepository.save(any(UserType.class))).thenReturn(savedUserType);
+        when(userTypesGateway.save(any(CreateUserTypeRequest.class))).thenReturn(savedUserType);
 
-        UserTypeResponse response = createUserTypeUseCase.createUserType(request);
+        UserTypesEntity userTypesEntity = createUserTypeUseCase.createUserType(request);
 
         verify(validationUserTypeService, times(1)).validate(request);
-        verify(userTypeRepository, times(1)).save(userTypeCaptor.capture());
-        UserType capturedUserType = userTypeCaptor.getValue();
+        verify(userTypesGateway, times(1)).save(requestCaptor.capture());
+        UserTypesEntity capturedUserType = userTypeCaptor.getValue();
 
         assertEquals(request.userTypeName().trim().toUpperCase(), capturedUserType.getUserTypeName());
-        assertEquals(savedUserType.getUserTypeId(), response.id());
-        assertEquals(savedUserType.getUserTypeName(), response.userTypeName());
+        assertEquals(savedUserType.getUserTypeId(), userTypesEntity.getUserTypeId());
+        assertEquals(savedUserType.getUserTypeName(), userTypesEntity.getUserTypeName());
     }
 
     @Test
     void testCreateUserTypeDuplicate() {
         CreateUserTypeRequest request = new CreateUserTypeRequest("ADMIN");
         doNothing().when(validationUserTypeService).validate(any(CreateUserTypeRequest.class));
-        UserType existingUserType = new UserType(request);
+        UserTypesEntity existingUserType = new UserTypesEntity(request);
         when(readUserTypeUseCase.findDuplicateUserType(any())).thenReturn(Optional.of(existingUserType));
 
         assertThrows(DuplicateUserTypeException.class, () -> createUserTypeUseCase.createUserType(request));
-        verify(userTypeRepository, never()).save(any());
+        verify(userTypesGateway, never()).save(any());
     }
 
     @Test
@@ -86,16 +85,16 @@ public class CreateUserTypeUseCaseTest {
         ValidationUserTypeService validation2 = mock(ValidationUserTypeService.class);
 
         CreateUserTypeUseCase useCaseWithMultipleValidations = new CreateUserTypeUseCase(
-                userTypeRepository,
+                userTypesGateway,
                 List.of(validation1, validation2),
                 readUserTypeUseCase
         );
 
         CreateUserTypeRequest request = new CreateUserTypeRequest("ADMIN");
         when(readUserTypeUseCase.findDuplicateUserType(any())).thenReturn(Optional.empty());
-        UserType savedUserType = new UserType(request);
+        UserTypesEntity savedUserType = new UserTypesEntity(request);
         savedUserType.setUserTypeId(1L);
-        when(userTypeRepository.save(any(UserType.class))).thenReturn(savedUserType);
+        when(userTypesGateway.save(any(CreateUserTypeRequest.class))).thenReturn(savedUserType);
 
         useCaseWithMultipleValidations.createUserType(request);
 
@@ -105,18 +104,18 @@ public class CreateUserTypeUseCaseTest {
 
     @Test
     void testToResponsePrivateMethodCoverage() throws Exception {
-        
+
         CreateUserTypeRequest request = new CreateUserTypeRequest("ADMIN");
         doNothing().when(validationUserTypeService).validate(any(CreateUserTypeRequest.class));
         when(readUserTypeUseCase.findDuplicateUserType(any())).thenReturn(Optional.empty());
 
-        UserType savedUserType = new UserType(request);
+        UserTypesEntity savedUserType = new UserTypesEntity(request);
         savedUserType.setUserTypeId(99L);
-        when(userTypeRepository.save(any(UserType.class))).thenReturn(savedUserType);
+        when(userTypesGateway.save(any(CreateUserTypeRequest.class))).thenReturn(savedUserType);
 
-        UserTypeResponse response = createUserTypeUseCase.createUserType(request);
+        UserTypesEntity userTypesEntity = createUserTypeUseCase.createUserType(request);
 
-        assertEquals(99L, response.id());
-        assertEquals("ADMIN", response.userTypeName());
+        assertEquals(99L, userTypesEntity.getUserTypeId());
+        assertEquals("ADMIN", userTypesEntity.getUserTypeName());
     }
 }

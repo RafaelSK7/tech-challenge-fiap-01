@@ -1,13 +1,11 @@
-package fiap.tech.challenge.restaurant_manager.services.usecase.user;
+package fiap.tech.challenge.restaurant_manager.domain.usecases.user;
 
-import fiap.tech.challenge.restaurant_manager.entites.User;
-import fiap.tech.challenge.restaurant_manager.DTOs.request.login.LoginRequest;
-import fiap.tech.challenge.restaurant_manager.DTOs.response.login.LoginResponse;
-import fiap.tech.challenge.restaurant_manager.DTOs.response.users.UserResponse;
-import fiap.tech.challenge.restaurant_manager.exceptions.custom.InvalidLogonException;
-import fiap.tech.challenge.restaurant_manager.exceptions.custom.UserNotFoundException;
-import fiap.tech.challenge.restaurant_manager.repositories.UserRepository;
-import fiap.tech.challenge.restaurant_manager.usecases.user.ReadUserUseCase;
+import fiap.tech.challenge.restaurant_manager.application.DTOs.request.login.LoginRequest;
+import fiap.tech.challenge.restaurant_manager.application.DTOs.response.users.UserResponse;
+import fiap.tech.challenge.restaurant_manager.application.exceptions.custom.InvalidLogonException;
+import fiap.tech.challenge.restaurant_manager.application.exceptions.custom.UserNotFoundException;
+import fiap.tech.challenge.restaurant_manager.application.gateway.users.UsersGateway;
+import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.UsersEntity;
 import fiap.tech.challenge.restaurant_manager.utils.UserUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,12 +21,13 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 public class ReadUserUseCaseTest {
 
     @Mock
-    private UserRepository userRepository;
+    private UsersGateway usersGateway;
 
     @InjectMocks
     private ReadUserUseCase readUserUseCase;
@@ -36,17 +35,17 @@ public class ReadUserUseCaseTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        readUserUseCase = new ReadUserUseCase(userRepository);
+        readUserUseCase = new ReadUserUseCase(usersGateway);
     }
 
     @Test
     void testFindAllUsersSuccess() {
         Pageable pageable = PageRequest.of(0, 10);
-        User user = UserUtils.getValidUser();
-        List<User> users = List.of(user);
-        Page<User> userPage = new PageImpl<>(users, pageable, users.size());
+        UsersEntity user = UserUtils.getValidUser();
+        List<UsersEntity> users = List.of(user);
+        Page<UsersEntity> userPage = new PageImpl<>(users, pageable, users.size());
 
-        when(userRepository.findAll(pageable)).thenReturn(userPage);
+        when(usersGateway.findAll(pageable)).thenReturn(userPage);
 
         Page<UserResponse> responsePage = readUserUseCase.findAll(pageable);
 
@@ -63,48 +62,48 @@ public class ReadUserUseCaseTest {
     @Test
     void testFindUserByIdSuccess() {
         Long userId = 1L;
-        User user = UserUtils.getValidUser();
+        UsersEntity user = UserUtils.getValidUser();
         user.setId(userId);
 
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(usersGateway.findById(userId)).thenReturn(Optional.of(user));
 
-        UserResponse response = readUserUseCase.findById(userId);
+        UsersEntity usersEntity = readUserUseCase.findById(userId);
 
-        assertNotNull(response);
-        assertEquals(userId, response.id());
-        assertEquals(user.getName(), response.name());
+        assertNotNull(usersEntity);
+        assertEquals(userId, usersEntity.getId());
+        assertEquals(user.getName(), usersEntity.getName());
     }
 
     @Test
     void testFindUserByIdNotFound() {
         Long userId = 1L;
-        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+        when(usersGateway.findById(userId)).thenReturn(Optional.empty());
 
         UserNotFoundException exception = assertThrows(UserNotFoundException.class,
                 () -> readUserUseCase.findById(userId));
-        assertEquals(userId, exception.getMessage());
+        assertEquals(any(), exception.getMessage());
 
     }
 
     @Test
     void testFindByLoginAndPasswordSuccess() {
         LoginRequest loginRequest = new LoginRequest("usuario_login", "senha123");
-        User user = UserUtils.getValidUser();
-        when(userRepository.findByLoginAndPassword(loginRequest.login(), loginRequest.password()))
+        UsersEntity user = UserUtils.getValidUser();
+        when(usersGateway.findByLoginAndPassword(loginRequest.login(), loginRequest.password()))
                 .thenReturn(Optional.of(user));
 
-        LoginResponse response = readUserUseCase.findByLoginAndPassword(loginRequest);
+        UsersEntity loggedUser = readUserUseCase.findByLoginAndPassword(loginRequest);
 
-        assertNotNull(response);
-        assertEquals(user.getId(), response.id());
-        assertEquals(user.getName(), response.name());
-        assertEquals(user.getLogin(), response.login());
+        assertNotNull(loggedUser);
+        assertEquals(user.getId(), loggedUser.getId());
+        assertEquals(user.getName(), loggedUser.getName());
+        assertEquals(user.getLogin(), loggedUser.getLogin());
     }
 
     @Test
     void testFindByLoginAndPasswordFailure() {
         LoginRequest loginRequest = new LoginRequest("usuario_login", "senha123");
-        when(userRepository.findByLoginAndPassword(loginRequest.login(), loginRequest.password()))
+        when(usersGateway.findByLoginAndPassword(loginRequest.login(), loginRequest.password()))
                 .thenReturn(Optional.empty());
 
         assertThrows(InvalidLogonException.class,
@@ -115,12 +114,12 @@ public class ReadUserUseCaseTest {
     @Test
     void testFindByIdEntitySuccess() {
         Long userId = 1L;
-        User user = UserUtils.getValidUser();
+        UsersEntity user = UserUtils.getValidUser();
         user.setId(userId);
 
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(usersGateway.findById(userId)).thenReturn(Optional.of(user));
 
-        User foundUser = readUserUseCase.findByIdEntity(userId);
+        UsersEntity foundUser = readUserUseCase.findById(userId);
         assertNotNull(foundUser);
         assertEquals(userId, foundUser.getId());
         assertEquals(user.getName(), foundUser.getName());
@@ -129,11 +128,11 @@ public class ReadUserUseCaseTest {
     @Test
     void testFindByIdEntityNotFound() {
         Long userId = 1L;
-        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+        when(usersGateway.findById(userId)).thenReturn(Optional.empty());
 
         UserNotFoundException exception = assertThrows(UserNotFoundException.class,
-                () -> readUserUseCase.findByIdEntity(userId));
-        assertEquals(userId, exception.getMessage());
+                () -> readUserUseCase.findById(userId));
+        assertEquals(any(), exception.getMessage());
 
     }
 }

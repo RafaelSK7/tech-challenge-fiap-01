@@ -1,38 +1,35 @@
-package fiap.tech.challenge.restaurant_manager.services.usecase.menuItem;
+package fiap.tech.challenge.restaurant_manager.domain.usecases.menuItem;
 
-import fiap.tech.challenge.restaurant_manager.DTOs.request.menuItens.CreateMenuItemRequest;
-import fiap.tech.challenge.restaurant_manager.DTOs.response.menuItens.MenuItemResponse;
-import fiap.tech.challenge.restaurant_manager.entites.MenuItem;
-import fiap.tech.challenge.restaurant_manager.entites.Restaurant;
-import fiap.tech.challenge.restaurant_manager.exceptions.custom.RestaurantNotFoundException;
-import fiap.tech.challenge.restaurant_manager.repositories.MenuItemRepository;
-import fiap.tech.challenge.restaurant_manager.repositories.RestaurantRepository;
-import fiap.tech.challenge.restaurant_manager.usecases.menuItem.CreateMenuItemUseCase;
-import fiap.tech.challenge.restaurant_manager.validations.ValidateMenuItemService;
+import fiap.tech.challenge.restaurant_manager.application.DTOs.request.menuItens.CreateMenuItemRequest;
+import fiap.tech.challenge.restaurant_manager.application.controllers.restaurants.RestaurantController;
+import fiap.tech.challenge.restaurant_manager.application.exceptions.custom.RestaurantNotFoundException;
+import fiap.tech.challenge.restaurant_manager.application.gateway.menuItems.MenuItemsGateway;
+import fiap.tech.challenge.restaurant_manager.application.validations.ValidateMenuItemService;
+import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.MenuItemEntity;
+import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.RestaurantEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class CreateMenuItemUseCaseTest {
 
-    private MenuItemRepository menuItemRepository;
-    private RestaurantRepository restaurantRepository;
+    private MenuItemsGateway menuItemsGateway;
+    private RestaurantController restaurantController;
     private ValidateMenuItemService validationService;
     private CreateMenuItemUseCase createMenuItemUseCase;
 
     @BeforeEach
     void setUp() {
-        menuItemRepository = mock(MenuItemRepository.class);
-        restaurantRepository = mock(RestaurantRepository.class);
+        menuItemsGateway = mock(MenuItemsGateway.class);
+        restaurantController = mock(RestaurantController.class);
         validationService = mock(ValidateMenuItemService.class);
         createMenuItemUseCase = new CreateMenuItemUseCase(
-                menuItemRepository,
-                restaurantRepository,
+                menuItemsGateway,
+                restaurantController,
                 List.of(validationService)
         );
     }
@@ -49,10 +46,10 @@ class CreateMenuItemUseCaseTest {
                 restaurantId
         );
 
-        Restaurant restaurant = new Restaurant();
+        RestaurantEntity restaurant = new RestaurantEntity();
         restaurant.setId(restaurantId);
 
-        MenuItem savedMenuItem = new MenuItem(
+        MenuItemEntity savedMenuItem = new MenuItemEntity(
                 10L,
                 request.name(),
                 request.description(),
@@ -63,22 +60,22 @@ class CreateMenuItemUseCaseTest {
         );
 
         doNothing().when(validationService).validate(request);
-        when(restaurantRepository.findById(restaurantId)).thenReturn(Optional.of(restaurant));
-        when(menuItemRepository.save(any(MenuItem.class))).thenReturn(savedMenuItem);
+        when(restaurantController.findByIdEntity(restaurantId)).thenReturn(restaurant);
+        when(menuItemsGateway.save(any(CreateMenuItemRequest.class), any(RestaurantEntity.class))).thenReturn(savedMenuItem);
 
-        MenuItemResponse response = createMenuItemUseCase.createMenuItem(request);
+        MenuItemEntity menuItem = createMenuItemUseCase.createMenuItem(request);
 
         verify(validationService).validate(request);
-        verify(menuItemRepository).save(any(MenuItem.class));
+        verify(menuItemsGateway).save(any(CreateMenuItemRequest.class), any(RestaurantEntity.class));
 
-        assertNotNull(response);
-        assertEquals(10L, response.id());
-        assertEquals("Pizza", response.name());
-        assertEquals("Deliciosa pizza de calabresa", response.description());
-        assertEquals(39.90, response.price(), 0.001);
-        assertFalse(response.localOnly());
-        assertEquals("pizza.jpg", response.photoPath());
-        assertEquals(restaurantId, response.restaurantId());
+        assertNotNull(menuItem);
+        assertEquals(10L, menuItem.getId());
+        assertEquals("Pizza", menuItem.getName());
+        assertEquals("Deliciosa pizza de calabresa", menuItem.getDescription());
+        assertEquals(39.90, menuItem.getPrice(), 0.001);
+        assertFalse(menuItem.getLocalOnly());
+        assertEquals("pizza.jpg", menuItem.getPhotoPath());
+        assertEquals(restaurantId, menuItem.getRestaurant().getId());
     }
 
     @Test
@@ -94,10 +91,10 @@ class CreateMenuItemUseCaseTest {
         );
 
         doNothing().when(validationService).validate(request);
-        when(restaurantRepository.findById(restaurantId)).thenReturn(Optional.empty());
+        when(restaurantController.findById(restaurantId)).thenThrow(new RestaurantNotFoundException(anyLong()));
 
         assertThrows(RestaurantNotFoundException.class, () -> createMenuItemUseCase.createMenuItem(request));
-        verify(menuItemRepository, never()).save(any());
+        verify(menuItemsGateway, never()).save(any(), any());
     }
 
     @Test
@@ -106,8 +103,8 @@ class CreateMenuItemUseCaseTest {
         ValidateMenuItemService validation2 = mock(ValidateMenuItemService.class);
 
         CreateMenuItemUseCase useCaseWithMultipleValidations = new CreateMenuItemUseCase(
-                menuItemRepository,
-                restaurantRepository,
+                menuItemsGateway,
+                restaurantController,
                 List.of(validation1, validation2)
         );
 
@@ -121,10 +118,10 @@ class CreateMenuItemUseCaseTest {
                 restaurantId
         );
 
-        Restaurant restaurant = new Restaurant();
+        RestaurantEntity restaurant = new RestaurantEntity();
         restaurant.setId(restaurantId);
 
-        MenuItem savedMenuItem = new MenuItem(
+        MenuItemEntity savedMenuItem = new MenuItemEntity(
                 1L,
                 request.name(),
                 request.description(),
@@ -134,14 +131,14 @@ class CreateMenuItemUseCaseTest {
                 restaurant
         );
 
-        when(restaurantRepository.findById(restaurantId)).thenReturn(Optional.of(restaurant));
-        when(menuItemRepository.save(any())).thenReturn(savedMenuItem);
+        when(restaurantController.findByIdEntity(restaurantId)).thenReturn(restaurant);
+        when(menuItemsGateway.save(any(), any())).thenReturn(savedMenuItem);
 
-        MenuItemResponse response = useCaseWithMultipleValidations.createMenuItem(request);
+        MenuItemEntity menuItem = useCaseWithMultipleValidations.createMenuItem(request);
 
         verify(validation1).validate(request);
         verify(validation2).validate(request);
-        assertNotNull(response);
+        assertNotNull(menuItem);
     }
 
     @Test
@@ -158,6 +155,6 @@ class CreateMenuItemUseCaseTest {
         doThrow(new IllegalArgumentException("Campo inválido")).when(validationService).validate(request);
 
         assertThrows(IllegalArgumentException.class, () -> createMenuItemUseCase.createMenuItem(request));
-        verify(menuItemRepository, never()).save(any());
+        verify(menuItemsGateway, never()).save(any(), any());
     }
 }

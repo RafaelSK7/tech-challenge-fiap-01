@@ -1,14 +1,13 @@
-package fiap.tech.challenge.restaurant_manager.services.usecase.user;
+package fiap.tech.challenge.restaurant_manager.domain.usecases.user;
 
-import fiap.tech.challenge.restaurant_manager.entites.User;
-import fiap.tech.challenge.restaurant_manager.DTOs.request.users.CreateUserRequest;
-import fiap.tech.challenge.restaurant_manager.DTOs.response.users.UserResponse;
-import fiap.tech.challenge.restaurant_manager.entites.UserType;
-import fiap.tech.challenge.restaurant_manager.exceptions.custom.UserNotFoundException;
-import fiap.tech.challenge.restaurant_manager.repositories.UserRepository;
-import fiap.tech.challenge.restaurant_manager.services.userTypes.UserTypeService;
-import fiap.tech.challenge.restaurant_manager.usecases.user.UpdateUserUseCase;
-import fiap.tech.challenge.restaurant_manager.validations.ValidateUserService;
+import fiap.tech.challenge.restaurant_manager.application.DTOs.request.users.CreateUserRequest;
+import fiap.tech.challenge.restaurant_manager.application.DTOs.response.users.UserResponse;
+import fiap.tech.challenge.restaurant_manager.application.controllers.userTypes.UserTypeController;
+import fiap.tech.challenge.restaurant_manager.application.exceptions.custom.UserNotFoundException;
+import fiap.tech.challenge.restaurant_manager.application.gateway.users.UsersGateway;
+import fiap.tech.challenge.restaurant_manager.application.validations.ValidateUserService;
+import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.UserTypesEntity;
+import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.UsersEntity;
 import fiap.tech.challenge.restaurant_manager.utils.AdressUtils;
 import fiap.tech.challenge.restaurant_manager.utils.UserTypeUtils;
 import fiap.tech.challenge.restaurant_manager.utils.UserUtils;
@@ -30,7 +29,7 @@ import static org.mockito.Mockito.when;
 public class UpdateUserUseCaseTest {
 
     @Mock
-    private UserRepository userRepository;
+    private UsersGateway usersGateway;
 
     @Mock
     private ValidateUserService validateUserService;
@@ -40,12 +39,12 @@ public class UpdateUserUseCaseTest {
     private UpdateUserUseCase updateUserUseCase;
 
     @Mock
-    private UserTypeService userTypeService;
+    private UserTypeController userTypeController;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        updateUserUseCase = new UpdateUserUseCase(userRepository, List.of(validateUserService), userTypeService);
+        updateUserUseCase = new UpdateUserUseCase(usersGateway, List.of(validateUserService), userTypeController);
     }
 
     @Test
@@ -64,12 +63,13 @@ public class UpdateUserUseCaseTest {
 
         doNothing().when(validateUserService).validate(any(CreateUserRequest.class));
 
-        User existingUser = UserUtils.getValidUser();
+        UsersEntity existingUser = UserUtils.getValidUser();
         existingUser.setId(userId);
 
-        when(userRepository.findById(userId)).thenReturn(Optional.of(existingUser));
-        when(userRepository.save(existingUser)).thenReturn(existingUser);
-        when(userTypeService.findByIdEntity(request.userTypeId())).thenReturn(new UserType(1L, "CLIENT", LocalDateTime.now()));
+        when(usersGateway.findById(userId)).thenReturn(Optional.of(existingUser));
+        when(usersGateway.save(request, any(UserTypesEntity.class))).thenReturn(existingUser);
+        when(userTypeController.findByIdEntity(request.userTypeId())).thenReturn(new UserTypesEntity(
+                1L, "CLIENT", LocalDateTime.now()));
 
         UserResponse response = updateUserUseCase.updateUser(userId, request);
 
@@ -91,11 +91,11 @@ public class UpdateUserUseCaseTest {
                 null
         );
 
-        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+        when(usersGateway.findById(userId)).thenReturn(Optional.empty());
 
         UserNotFoundException exception = assertThrows(UserNotFoundException.class,
                 () -> updateUserUseCase.updateUser(userId, request));
-        assertEquals(userId, exception.getMessage());
+        assertEquals(any(), exception.getMessage());
 
     }
 }

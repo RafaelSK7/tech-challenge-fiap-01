@@ -1,12 +1,11 @@
-package fiap.tech.challenge.restaurant_manager.controllers;
+package fiap.tech.challenge.restaurant_manager.infra.resources;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fiap.tech.challenge.restaurant_manager.DTOs.request.userTypes.CreateUserTypeRequest;
-import fiap.tech.challenge.restaurant_manager.DTOs.response.userTypes.UserTypeResponse;
-import fiap.tech.challenge.restaurant_manager.controllers.userTypes.UserTypeController;
-import fiap.tech.challenge.restaurant_manager.services.userTypes.UserTypeService;
+import fiap.tech.challenge.restaurant_manager.application.DTOs.request.userTypes.CreateUserTypeRequest;
+import fiap.tech.challenge.restaurant_manager.application.DTOs.response.userTypes.UserTypeResponse;
+import fiap.tech.challenge.restaurant_manager.application.controllers.userTypes.UserTypeController;
+import fiap.tech.challenge.restaurant_manager.infrastructure.resources.userTypes.UserTypeResource;
 import fiap.tech.challenge.restaurant_manager.utils.UserTypeUtils;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,13 +30,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
-public class UserTypeControllerTest {
+public class UserTypeResourceTest {
 
     @InjectMocks
-    private UserTypeController userTypeController;
+    private UserTypeResource userTypeResource;
 
     @Mock
-    private UserTypeService userTypeService;
+    private UserTypeController userTypeController;
 
     private MockMvc mockMvc;
     private ObjectMapper objectMapper = new ObjectMapper();
@@ -47,7 +46,7 @@ public class UserTypeControllerTest {
 
     @BeforeEach
     void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(userTypeController)
+        mockMvc = MockMvcBuilders.standaloneSetup(userTypeResource)
                 .setCustomArgumentResolvers(new org.springframework.data.web.PageableHandlerMethodArgumentResolver())
                 .build();
         createUserTypeRequest = new CreateUserTypeRequest("ADMIN");
@@ -56,12 +55,12 @@ public class UserTypeControllerTest {
 
     @Test
     void testCreateUserType() throws Exception {
-        when(userTypeService.createUserType(any(CreateUserTypeRequest.class)))
+        when(userTypeController.createUserType(any(CreateUserTypeRequest.class)))
                 .thenReturn(userTypeResponse);
 
         mockMvc.perform(post("/userTypes")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(createUserTypeRequest)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(createUserTypeRequest)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", is(userTypeResponse.id().intValue())))
                 .andExpect(jsonPath("$.userTypeName", is(userTypeResponse.userTypeName())));
@@ -69,7 +68,7 @@ public class UserTypeControllerTest {
 
     @Test
     void testFindUserTypeById() throws Exception {
-        when(userTypeService.findById(eq(1L))).thenReturn(userTypeResponse);
+        when(userTypeController.findById(eq(1L))).thenReturn(userTypeResponse);
 
         mockMvc.perform(get("/userTypes/{id}", 1L))
                 .andExpect(status().isOk())
@@ -80,11 +79,11 @@ public class UserTypeControllerTest {
     @Test
     void testFindAllUserTypes() throws Exception {
         Page<UserTypeResponse> page = new PageImpl<>(List.of(userTypeResponse));
-        when(userTypeService.findAll(any(Pageable.class))).thenReturn(page);
+        when(userTypeController.findAll(any(Pageable.class))).thenReturn(page);
 
         mockMvc.perform(get("/userTypes")
-                .param("page", "0")
-                .param("size", "10"))
+                        .param("page", "0")
+                        .param("size", "10"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content[0].id", is(userTypeResponse.id().intValue())))
                 .andExpect(jsonPath("$.content[0].userTypeName", is(userTypeResponse.userTypeName())));
@@ -92,12 +91,12 @@ public class UserTypeControllerTest {
 
     @Test
     void testUpdateUserType() throws Exception {
-        when(userTypeService.updateUser(eq(1L), any(CreateUserTypeRequest.class)))
+        when(userTypeController.updateUser(eq(1L), any(CreateUserTypeRequest.class)))
                 .thenReturn(userTypeResponse);
 
         mockMvc.perform(put("/userTypes/{id}", 1L)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(createUserTypeRequest)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(createUserTypeRequest)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(userTypeResponse.id().intValue())))
                 .andExpect(jsonPath("$.userTypeName", is(userTypeResponse.userTypeName())));

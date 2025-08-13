@@ -1,10 +1,10 @@
-package fiap.tech.challenge.restaurant_manager.controllers;
+package fiap.tech.challenge.restaurant_manager.infra.resources;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fiap.tech.challenge.restaurant_manager.DTOs.request.users.CreateUserRequest;
-import fiap.tech.challenge.restaurant_manager.DTOs.response.users.UserResponse;
-import fiap.tech.challenge.restaurant_manager.controllers.users.UserController;
-import fiap.tech.challenge.restaurant_manager.services.users.UserService;
+import fiap.tech.challenge.restaurant_manager.application.DTOs.request.users.CreateUserRequest;
+import fiap.tech.challenge.restaurant_manager.application.DTOs.response.users.UserResponse;
+import fiap.tech.challenge.restaurant_manager.application.controllers.users.UserController;
+import fiap.tech.challenge.restaurant_manager.infrastructure.resources.users.UserResource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,13 +26,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
-public class UserControllerTest {
+public class UserResourceTest {
 
     @InjectMocks
-    private UserController userController;
+    private UserResource userResource;
 
     @Mock
-    private UserService userService;
+    private UserController userController;
 
     private MockMvc mockMvc;
 
@@ -43,7 +43,7 @@ public class UserControllerTest {
 
     @BeforeEach
     void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(userResource).build();
         createUserRequest = new CreateUserRequest(
                 "Nome do Usuário",
                 "usuario@example.com",
@@ -57,7 +57,7 @@ public class UserControllerTest {
 
     @Test
     void testCreateUser() throws Exception {
-        when(userService.createUser(any(CreateUserRequest.class)))
+        when(userController.createUser(any(CreateUserRequest.class)))
                 .thenReturn(userResponse);
 
         mockMvc.perform(post("/users")
@@ -72,7 +72,7 @@ public class UserControllerTest {
 
     @Test
     void testFindUserById() throws Exception {
-        when(userService.findById(eq(1L))).thenReturn(userResponse);
+        when(userController.findById(eq(1L))).thenReturn(userResponse);
 
         mockMvc.perform(get("/users/{id}", 1L))
                 .andExpect(status().isOk())
@@ -84,7 +84,7 @@ public class UserControllerTest {
 
     @Test
     void testUpdateUser() throws Exception {
-        when(userService.updateUser(eq(1L), any(CreateUserRequest.class)))
+        when(userController.updateUser(eq(1L), any(CreateUserRequest.class)))
                 .thenReturn(userResponse);
 
         mockMvc.perform(put("/users/{id}", 1L)
@@ -102,6 +102,6 @@ public class UserControllerTest {
         mockMvc.perform(delete("/users/{id}", 1L))
                 .andExpect(status().isNoContent());
 
-        verify(userService).deleteUser(1L);
+        verify(userController).deleteUser(1L);
     }
 }

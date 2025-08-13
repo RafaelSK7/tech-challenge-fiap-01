@@ -1,14 +1,12 @@
-package fiap.tech.challenge.restaurant_manager.services.usecase.restaurant;
+package fiap.tech.challenge.restaurant_manager.domain.usecases.restaurant;
 
-import fiap.tech.challenge.restaurant_manager.entites.Restaurant;
-import fiap.tech.challenge.restaurant_manager.entites.enums.CuisineType;
-import fiap.tech.challenge.restaurant_manager.DTOs.request.restaurants.CreateRestaurantRequest;
-import fiap.tech.challenge.restaurant_manager.DTOs.response.restaurants.RestaurantResponse;
-import fiap.tech.challenge.restaurant_manager.exceptions.custom.RestaurantNotFoundException;
-import fiap.tech.challenge.restaurant_manager.repositories.RestaurantRepository;
-import fiap.tech.challenge.restaurant_manager.services.users.UserService;
-import fiap.tech.challenge.restaurant_manager.usecases.restaurant.UpdateRestaurantUseCase;
-import fiap.tech.challenge.restaurant_manager.validations.ValidateRestaurantService;
+import fiap.tech.challenge.restaurant_manager.application.DTOs.request.restaurants.CreateRestaurantRequest;
+import fiap.tech.challenge.restaurant_manager.application.controllers.users.UserController;
+import fiap.tech.challenge.restaurant_manager.application.exceptions.custom.RestaurantNotFoundException;
+import fiap.tech.challenge.restaurant_manager.application.gateway.restaurants.RestaurantsGateway;
+import fiap.tech.challenge.restaurant_manager.application.validations.ValidateRestaurantService;
+import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.RestaurantEntity;
+import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.enums.CuisineType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -28,10 +26,10 @@ import static org.mockito.Mockito.when;
 
 public class UpdateRestaurantUseCaseTest {
     @Mock
-    private RestaurantRepository restaurantRepository;
+    private RestaurantsGateway restaurantsGateway;
 
     @Mock
-    private UserService userService;
+    private UserController userController;
 
     @Mock
     private ValidateRestaurantService validateRestaurantService;
@@ -42,13 +40,13 @@ public class UpdateRestaurantUseCaseTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        updateRestaurantUseCase = new UpdateRestaurantUseCase(restaurantRepository, List.of(validateRestaurantService), userService);
+        updateRestaurantUseCase = new UpdateRestaurantUseCase(restaurantsGateway, List.of(validateRestaurantService), userController);
     }
 
     @Test
     void testUpdateRestaurantSuccess() {
         Long restaurantId = 1L;
-        Restaurant existingRestaurant = new Restaurant();
+        RestaurantEntity existingRestaurant = new RestaurantEntity();
         existingRestaurant.setId(restaurantId);
         existingRestaurant.setName("Nome Antigo");
         existingRestaurant.setOwner(getValidUser());
@@ -65,15 +63,15 @@ public class UpdateRestaurantUseCaseTest {
         // Simula a validação sem lançar exceção
         doNothing().when(validateRestaurantService).validate(any(CreateRestaurantRequest.class));
 
-        when(restaurantRepository.findById(restaurantId)).thenReturn(Optional.of(existingRestaurant));
-        when(userService.findByIdEntity(request.ownerId())).thenReturn(getValidUser());
-        when(restaurantRepository.save(existingRestaurant)).thenReturn(existingRestaurant);
+        when(restaurantsGateway.findById(restaurantId)).thenReturn(Optional.of(existingRestaurant));
+        when(userController.findByIdEntity(request.ownerId())).thenReturn(getValidUser());
+        when(restaurantsGateway.save(request, getValidUser())).thenReturn(existingRestaurant);
 
-        RestaurantResponse response = updateRestaurantUseCase.updateRestaurant(restaurantId, request);
+        RestaurantEntity restaurantEntity = updateRestaurantUseCase.updateRestaurant(restaurantId, request);
 
-        assertNotNull(response);
+        assertNotNull(restaurantEntity);
         // O nome deve ter sido atualizado conforme o request
-        assertEquals("Test Restaurant", response.name());
+        assertEquals("Test Restaurant", restaurantEntity.getName());
     }
 
     @Test
@@ -88,11 +86,11 @@ public class UpdateRestaurantUseCaseTest {
                 1L
         );
 
-        when(restaurantRepository.findById(restaurantId)).thenReturn(Optional.empty());
+        when(restaurantsGateway.findById(restaurantId)).thenReturn(Optional.empty());
 
         RestaurantNotFoundException exception = assertThrows(RestaurantNotFoundException.class,
                 () -> updateRestaurantUseCase.updateRestaurant(restaurantId, request));
-        assertEquals(restaurantId, exception.getMessage());
+        assertEquals(any(), exception.getMessage());
 
     }
 

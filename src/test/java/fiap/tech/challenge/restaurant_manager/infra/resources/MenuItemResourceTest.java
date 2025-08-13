@@ -1,11 +1,11 @@
-package fiap.tech.challenge.restaurant_manager.controllers;
+package fiap.tech.challenge.restaurant_manager.infra.resources;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fiap.tech.challenge.restaurant_manager.DTOs.request.menuItens.CreateMenuItemRequest;
-import fiap.tech.challenge.restaurant_manager.DTOs.response.menuItens.MenuItemResponse;
-import fiap.tech.challenge.restaurant_manager.controllers.menuItens.MenuItemController;
-import fiap.tech.challenge.restaurant_manager.exceptions.custom.InvalidMenuItemException;
-import fiap.tech.challenge.restaurant_manager.services.menuItens.MenuItemService;
+import fiap.tech.challenge.restaurant_manager.application.DTOs.request.menuItens.CreateMenuItemRequest;
+import fiap.tech.challenge.restaurant_manager.application.DTOs.response.menuItens.MenuItemResponse;
+import fiap.tech.challenge.restaurant_manager.application.controllers.menuItens.MenuItemController;
+import fiap.tech.challenge.restaurant_manager.application.exceptions.custom.InvalidMenuItemException;
+import fiap.tech.challenge.restaurant_manager.infrastructure.resources.menuItens.MenuItemResource;
 import fiap.tech.challenge.restaurant_manager.utils.MenuItemUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,13 +31,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
-public class MenuItemControllerTest {
+public class MenuItemResourceTest {
 
     @InjectMocks
-    private MenuItemController menuItemController;
+    private MenuItemResource menuItemResource;
 
     @Mock
-    private MenuItemService menuItemService;
+    private MenuItemController menuItemController;
 
     private MockMvc mockMvc;
     private ObjectMapper objectMapper = new ObjectMapper();
@@ -47,7 +47,7 @@ public class MenuItemControllerTest {
 
     @BeforeEach
     void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(menuItemController)
+        mockMvc = MockMvcBuilders.standaloneSetup(menuItemResource)
                 .setCustomArgumentResolvers(new org.springframework.data.web.PageableHandlerMethodArgumentResolver())
                 .build();
         createMenuItemRequest = MenuItemUtils.getValidCreateMenuItemRequest();
@@ -56,12 +56,12 @@ public class MenuItemControllerTest {
 
     @Test
     void testCreateMenuItem() throws Exception {
-        when(menuItemService.createMenuItem(any(CreateMenuItemRequest.class)))
+        when(menuItemController.createMenuItem(any(CreateMenuItemRequest.class)))
                 .thenReturn(menuItemResponse);
 
         mockMvc.perform(post("/menu-items")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(createMenuItemRequest)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(createMenuItemRequest)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", is(menuItemResponse.id().intValue())))
                 .andExpect(jsonPath("$.name", is(menuItemResponse.name())));
@@ -69,18 +69,18 @@ public class MenuItemControllerTest {
 
     @Test
     void testCreateMenuItemValidationError() throws Exception {
-        when(menuItemService.createMenuItem(any(CreateMenuItemRequest.class)))
+        when(menuItemController.createMenuItem(any(CreateMenuItemRequest.class)))
                 .thenThrow(new InvalidMenuItemException());
 
         mockMvc.perform(post("/menu-items")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(createMenuItemRequest)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(createMenuItemRequest)))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
     void testFindMenuItemById() throws Exception {
-        when(menuItemService.findById(eq(1L))).thenReturn(menuItemResponse);
+        when(menuItemController.findById(eq(1L))).thenReturn(menuItemResponse);
 
         mockMvc.perform(get("/menu-items/{id}", 1L))
                 .andExpect(status().isOk())
@@ -90,7 +90,7 @@ public class MenuItemControllerTest {
 
     @Test
     void testFindMenuItemByIdNotFound() throws Exception {
-        when(menuItemService.findById(eq(99L))).thenThrow(new InvalidMenuItemException(99L));
+        when(menuItemController.findById(eq(99L))).thenThrow(new InvalidMenuItemException(99L));
 
         mockMvc.perform(get("/menu-items/{id}", 99L))
                 .andExpect(status().isNotFound());
@@ -99,11 +99,11 @@ public class MenuItemControllerTest {
     @Test
     void testFindAllMenuItems() throws Exception {
         Page<MenuItemResponse> page = new PageImpl<>(List.of(menuItemResponse));
-        when(menuItemService.findAll(any(Pageable.class))).thenReturn(page);
+        when(menuItemController.findAll(any(Pageable.class))).thenReturn(page);
 
         mockMvc.perform(get("/menu-items")
-                .param("page", "0")
-                .param("size", "10"))
+                        .param("page", "0")
+                        .param("size", "10"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content[0].id", is(menuItemResponse.id().intValue())))
                 .andExpect(jsonPath("$.content[0].name", is(menuItemResponse.name())));
@@ -111,12 +111,12 @@ public class MenuItemControllerTest {
 
     @Test
     void testUpdateMenuItem() throws Exception {
-        when(menuItemService.updateMenuItem(eq(1L), any(CreateMenuItemRequest.class)))
+        when(menuItemController.updateMenuItem(eq(1L), any(CreateMenuItemRequest.class)))
                 .thenReturn(menuItemResponse);
 
         mockMvc.perform(put("/menu-items/{id}", 1L)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(createMenuItemRequest)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(createMenuItemRequest)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(menuItemResponse.id().intValue())))
                 .andExpect(jsonPath("$.name", is(menuItemResponse.name())));
@@ -124,28 +124,28 @@ public class MenuItemControllerTest {
 
     @Test
     void testUpdateMenuItemNotFound() throws Exception {
-        when(menuItemService.updateMenuItem(eq(99L), any(CreateMenuItemRequest.class)))
+        when(menuItemController.updateMenuItem(eq(99L), any(CreateMenuItemRequest.class)))
                 .thenThrow(new InvalidMenuItemException(99L));
 
         mockMvc.perform(put("/menu-items/{id}", 99L)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(createMenuItemRequest)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(createMenuItemRequest)))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     void testDeleteMenuItem() throws Exception {
-        doNothing().when(menuItemService).deleteMenuItem(1L);
+        doNothing().when(menuItemController).deleteMenuItem(1L);
 
         mockMvc.perform(delete("/menu-items/{id}", 1L))
                 .andExpect(status().isNoContent());
 
-        verify(menuItemService).deleteMenuItem(1L);
+        verify(menuItemController).deleteMenuItem(1L);
     }
 
     @Test
     void testDeleteMenuItemNotFound() throws Exception {
-        doThrow(new InvalidMenuItemException(99L)).when(menuItemService).deleteMenuItem(99L);
+        doThrow(new InvalidMenuItemException(99L)).when(menuItemController).deleteMenuItem(99L);
 
         mockMvc.perform(delete("/menu-items/{id}", 99L))
                 .andExpect(status().isNotFound());

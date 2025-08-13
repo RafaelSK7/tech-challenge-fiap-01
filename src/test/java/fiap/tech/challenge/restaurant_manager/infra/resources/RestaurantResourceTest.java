@@ -1,10 +1,10 @@
-package fiap.tech.challenge.restaurant_manager.controllers;
+package fiap.tech.challenge.restaurant_manager.infra.resources;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fiap.tech.challenge.restaurant_manager.DTOs.request.restaurants.CreateRestaurantRequest;
-import fiap.tech.challenge.restaurant_manager.DTOs.response.restaurants.RestaurantResponse;
-import fiap.tech.challenge.restaurant_manager.controllers.restaurants.RestaurantController;
-import fiap.tech.challenge.restaurant_manager.services.restaurants.RestaurantService;
+import fiap.tech.challenge.restaurant_manager.application.DTOs.request.restaurants.CreateRestaurantRequest;
+import fiap.tech.challenge.restaurant_manager.application.DTOs.response.restaurants.RestaurantResponse;
+import fiap.tech.challenge.restaurant_manager.application.controllers.restaurants.RestaurantController;
+import fiap.tech.challenge.restaurant_manager.infrastructure.resources.restaurants.RestaurantResource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,13 +28,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
-public class RestaurantControllerTest {
+public class RestaurantResourceTest {
 
     @InjectMocks
-    private RestaurantController restaurantController;
+    private RestaurantResource restaurantResource;
 
     @Mock
-    private RestaurantService restaurantService;
+    private RestaurantController restaurantController;
 
     private MockMvc mockMvc;
     private ObjectMapper objectMapper = new ObjectMapper();
@@ -44,7 +44,7 @@ public class RestaurantControllerTest {
 
     @BeforeEach
     void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(restaurantController)
+        mockMvc = MockMvcBuilders.standaloneSetup(restaurantResource)
                 .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
                 .build();
 
@@ -54,7 +54,7 @@ public class RestaurantControllerTest {
 
     @Test
     void testCreateRestaurant() throws Exception {
-        when(restaurantService.createRestaurant(any(CreateRestaurantRequest.class)))
+        when(restaurantController.createRestaurant(any(CreateRestaurantRequest.class)))
                 .thenReturn(restaurantResponse);
 
         mockMvc.perform(post("/restaurants")
@@ -75,7 +75,7 @@ public class RestaurantControllerTest {
 
     @Test
     void testFindRestaurantById() throws Exception {
-        when(restaurantService.findById(eq(1L))).thenReturn(restaurantResponse);
+        when(restaurantController.findById(eq(1L))).thenReturn(restaurantResponse);
 
         mockMvc.perform(get("/restaurants/{id}", 1L))
                 .andExpect(status().isOk())
@@ -92,7 +92,7 @@ public class RestaurantControllerTest {
 
     @Test
     void testUpdateRestaurant() throws Exception {
-        when(restaurantService.updateRestaurant(eq(1L), any(CreateRestaurantRequest.class)))
+        when(restaurantController.updateRestaurant(eq(1L), any(CreateRestaurantRequest.class)))
                 .thenReturn(restaurantResponse);
 
         mockMvc.perform(put("/restaurants/{id}", 1L)
@@ -112,7 +112,7 @@ public class RestaurantControllerTest {
 
     @Test
     void testDeleteRestaurant() throws Exception {
-        doNothing().when(restaurantService).deleteRestaurant(1L);
+        doNothing().when(restaurantController).deleteRestaurant(1L);
 
         mockMvc.perform(delete("/restaurants/{id}", 1L))
                 .andExpect(status().isNoContent());

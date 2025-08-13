@@ -1,41 +1,40 @@
-package fiap.tech.challenge.restaurant_manager.services.usecase.menuItem;
+package fiap.tech.challenge.restaurant_manager.domain.usecases.menuItem;
 
-import fiap.tech.challenge.restaurant_manager.DTOs.request.menuItens.CreateMenuItemRequest;
-import fiap.tech.challenge.restaurant_manager.DTOs.response.menuItens.MenuItemResponse;
-import fiap.tech.challenge.restaurant_manager.entites.MenuItem;
-import fiap.tech.challenge.restaurant_manager.entites.Restaurant;
-import fiap.tech.challenge.restaurant_manager.exceptions.custom.InvalidMenuItemException;
-import fiap.tech.challenge.restaurant_manager.exceptions.custom.RestaurantNotFoundException;
-import fiap.tech.challenge.restaurant_manager.repositories.MenuItemRepository;
-import fiap.tech.challenge.restaurant_manager.repositories.RestaurantRepository;
-import fiap.tech.challenge.restaurant_manager.usecases.menuItem.UpdateMenuItemUseCase;
-import fiap.tech.challenge.restaurant_manager.validations.ValidateMenuItemService;
+import fiap.tech.challenge.restaurant_manager.application.DTOs.request.menuItens.CreateMenuItemRequest;
+import fiap.tech.challenge.restaurant_manager.application.controllers.restaurants.RestaurantController;
+import fiap.tech.challenge.restaurant_manager.application.exceptions.custom.InvalidMenuItemException;
+import fiap.tech.challenge.restaurant_manager.application.exceptions.custom.RestaurantNotFoundException;
+import fiap.tech.challenge.restaurant_manager.application.gateway.menuItems.MenuItemsGateway;
+import fiap.tech.challenge.restaurant_manager.application.validations.ValidateMenuItemService;
+import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.MenuItemEntity;
+import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.RestaurantEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 class UpdateMenuItemUseCaseTest {
 
-    private MenuItemRepository menuItemRepository;
-    private RestaurantRepository restaurantRepository;
+    private MenuItemsGateway menuItemsGateway;
+    private RestaurantController restaurantController;
     private ValidateMenuItemService validationService1;
     private ValidateMenuItemService validationService2;
     private UpdateMenuItemUseCase updateMenuItemUseCase;
 
     @BeforeEach
     void setUp() {
-        menuItemRepository = mock(MenuItemRepository.class);
-        restaurantRepository = mock(RestaurantRepository.class);
+        menuItemsGateway = mock(MenuItemsGateway.class);
+        restaurantController = mock(RestaurantController.class);
         validationService1 = mock(ValidateMenuItemService.class);
         validationService2 = mock(ValidateMenuItemService.class);
         updateMenuItemUseCase = new UpdateMenuItemUseCase(
-                menuItemRepository,
-                restaurantRepository,
+                menuItemsGateway,
+                restaurantController,
                 List.of(validationService1, validationService2)
         );
     }
@@ -54,19 +53,19 @@ class UpdateMenuItemUseCaseTest {
                 restaurantId
         );
 
-        Restaurant restaurant = new Restaurant();
+        RestaurantEntity restaurant = new RestaurantEntity();
         restaurant.setId(restaurantId);
 
-        MenuItem existingMenuItem = mock(MenuItem.class);
-        when(menuItemRepository.findById(menuItemId)).thenReturn(Optional.of(existingMenuItem));
-        when(restaurantRepository.findById(restaurantId)).thenReturn(Optional.of(restaurant));
+        MenuItemEntity existingMenuItem = mock(MenuItemEntity.class);
+        when(menuItemsGateway.findById(menuItemId)).thenReturn(Optional.of(existingMenuItem));
+        when(restaurantController.findByIdEntity(restaurantId)).thenReturn(restaurant);
         doNothing().when(validationService1).validate(request);
         doNothing().when(validationService2).validate(request);
-        when(menuItemRepository.save(existingMenuItem)).thenReturn(existingMenuItem);
+        when(menuItemsGateway.save(request, restaurant)).thenReturn(existingMenuItem);
 
-        MenuItemResponse response = updateMenuItemUseCase.updateMenuItem(menuItemId, request);
-        verify(menuItemRepository).findById(menuItemId);
-        verify(restaurantRepository).findById(restaurantId);
+        MenuItemEntity menuItemEntity = updateMenuItemUseCase.updateMenuItem(menuItemId, request);
+        verify(menuItemsGateway).findById(menuItemId);
+        verify(restaurantController).findById(restaurantId);
         verify(validationService1).validate(request);
         verify(validationService2).validate(request);
         verify(existingMenuItem).setName(request.name());
@@ -75,19 +74,19 @@ class UpdateMenuItemUseCaseTest {
         verify(existingMenuItem).setLocalOnly(request.localOnly());
         verify(existingMenuItem).setPhotoPath(request.photoPath());
         verify(existingMenuItem).setRestaurant(restaurant);
-        verify(menuItemRepository).save(existingMenuItem);
-        assertNotNull(response);
+        verify(menuItemsGateway).save(request, restaurant);
+        assertNotNull(menuItemEntity);
     }
 
     @Test
     void testUpdateMenuItemThrowsInvalidMenuItemExceptionWhenNotFound() {
         Long menuItemId = 999L;
         CreateMenuItemRequest request = mock(CreateMenuItemRequest.class);
-        when(menuItemRepository.findById(menuItemId)).thenReturn(Optional.empty());
+        when(menuItemsGateway.findById(menuItemId)).thenReturn(Optional.empty());
         assertThrows(InvalidMenuItemException.class,
                 () -> updateMenuItemUseCase.updateMenuItem(menuItemId, request));
-        verify(menuItemRepository).findById(menuItemId);
-        verifyNoMoreInteractions(restaurantRepository, validationService1, validationService2, menuItemRepository);
+        verify(menuItemsGateway).findById(menuItemId);
+        verifyNoMoreInteractions(restaurantController, validationService1, validationService2, menuItemsGateway);
     }
 
     @Test
@@ -104,18 +103,18 @@ class UpdateMenuItemUseCaseTest {
                 invalidRestaurantId
         );
 
-        MenuItem existingMenuItem = mock(MenuItem.class);
-        when(menuItemRepository.findById(menuItemId)).thenReturn(Optional.of(existingMenuItem));
+        MenuItemEntity existingMenuItem = mock(MenuItemEntity.class);
+        when(menuItemsGateway.findById(menuItemId)).thenReturn(Optional.of(existingMenuItem));
         doNothing().when(validationService1).validate(request);
         doNothing().when(validationService2).validate(request);
-        when(restaurantRepository.findById(invalidRestaurantId)).thenReturn(Optional.empty());
+        when(restaurantController.findByIdEntity(invalidRestaurantId)).thenThrow(new RestaurantNotFoundException(any()));
         assertThrows(RestaurantNotFoundException.class,
                 () -> updateMenuItemUseCase.updateMenuItem(menuItemId, request));
-        verify(menuItemRepository).findById(menuItemId);
+        verify(menuItemsGateway).findById(menuItemId);
         verify(validationService1).validate(request);
         verify(validationService2).validate(request);
-        verify(restaurantRepository).findById(invalidRestaurantId);
-        verify(menuItemRepository, never()).save(any());
+        verify(restaurantController).findById(invalidRestaurantId);
+        verify(menuItemsGateway, never()).save(any(), any());
     }
 
     @Test
@@ -132,16 +131,16 @@ class UpdateMenuItemUseCaseTest {
                 restaurantId
         );
 
-        MenuItem existingMenuItem = mock(MenuItem.class);
-        Restaurant restaurant = mock(Restaurant.class);
-        when(menuItemRepository.findById(menuItemId)).thenReturn(Optional.of(existingMenuItem));
-        when(restaurantRepository.findById(restaurantId)).thenReturn(Optional.of(restaurant));
+        MenuItemEntity existingMenuItem = mock(MenuItemEntity.class);
+        RestaurantEntity restaurant = mock(RestaurantEntity.class);
+        when(menuItemsGateway.findById(menuItemId)).thenReturn(Optional.of(existingMenuItem));
+        when(restaurantController.findByIdEntity(restaurantId)).thenReturn(restaurant);
 
         ValidateMenuItemService v1 = mock(ValidateMenuItemService.class);
         ValidateMenuItemService v2 = mock(ValidateMenuItemService.class);
         updateMenuItemUseCase = new UpdateMenuItemUseCase(
-                menuItemRepository,
-                restaurantRepository,
+                menuItemsGateway,
+                restaurantController,
                 List.of(v1, v2)
         );
 

@@ -125,6 +125,13 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <excludes>
+                        <exclude>**/application/validations/**</exclude>
+                        <exclude>**/application/utils/*</exclude>
+                        <exclude>**/application/exceptions/**</exclude>
+                    </excludes>
+                </configuration>
             </plugin>
         </plugins>
     </build>

@@ -1,8 +1,8 @@
 package fiap.tech.challenge.restaurant_manager.utils;
 
-import fiap.tech.challenge.restaurant_manager.entites.Address;
-import fiap.tech.challenge.restaurant_manager.DTOs.request.address.CreateAddressRequest;
-import fiap.tech.challenge.restaurant_manager.DTOs.response.address.AddressResponse;
+import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.AddressEntity;
+import fiap.tech.challenge.restaurant_manager.application.DTOs.request.address.CreateAddressRequest;
+import fiap.tech.challenge.restaurant_manager.application.DTOs.response.address.AddressResponse;
 
 public class AdressUtils {
 
@@ -18,8 +18,8 @@ public class AdressUtils {
         );
     }
 
-    public static Address getValidAddress() {
-        return new Address(
+    public static AddressEntity getValidAddress() {
+        return new AddressEntity(
                 1L,
                 "Rua Exemplo",   // street
                 "123",           // number

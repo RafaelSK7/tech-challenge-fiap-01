@@ -1,14 +1,14 @@
 package fiap.tech.challenge.restaurant_manager.utils;
 
-import fiap.tech.challenge.restaurant_manager.entites.MenuItem;
-import fiap.tech.challenge.restaurant_manager.entites.Restaurant;
-import fiap.tech.challenge.restaurant_manager.DTOs.request.menuItens.CreateMenuItemRequest;
-import fiap.tech.challenge.restaurant_manager.DTOs.response.menuItens.MenuItemResponse;
+import fiap.tech.challenge.restaurant_manager.application.DTOs.request.menuItens.CreateMenuItemRequest;
+import fiap.tech.challenge.restaurant_manager.application.DTOs.response.menuItens.MenuItemResponse;
+import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.MenuItemEntity;
+import fiap.tech.challenge.restaurant_manager.infrastructure.persistence.entites.RestaurantEntity;
 
 public class MenuItemUtils {
 
-    public static MenuItem getValidMenuItem() {
-        MenuItem menuItem = new MenuItem();
+    public static MenuItemEntity getValidMenuItem() {
+        MenuItemEntity menuItem = new MenuItemEntity();
         menuItem.setId(1L);
         menuItem.setName("Hambúrguer");
         menuItem.setDescription("Delicioso hambúrguer artesanal");
@@ -16,8 +16,8 @@ public class MenuItemUtils {
         menuItem.setLocalOnly(true);
         menuItem.setPhotoPath("https://example.com/hamburguer.jpg");
 
-        
-        Restaurant restaurant = new Restaurant();
+
+        RestaurantEntity restaurant = new RestaurantEntity();
         restaurant.setId(1L);
         menuItem.setRestaurant(restaurant);
 
@@ -36,13 +36,13 @@ public class MenuItemUtils {
     }
 
     public static MenuItemResponse getValidMenuItemResponse() {
-        MenuItem menuItem = getValidMenuItem();
+        MenuItemEntity menuItem = getValidMenuItem();
         return new MenuItemResponse(
                 menuItem.getId(),
                 menuItem.getName(),
                 menuItem.getDescription(),
                 menuItem.getPrice(),
-                menuItem.isLocalOnly(),
+                menuItem.getLocalOnly(),
                 menuItem.getPhotoPath(),
                 menuItem.getRestaurant().getId()
         );

@@ -13,7 +13,7 @@ RUN mvn dependency:go-offline -B
 RUN mvn clean package -DskipTests
 
 # Etapa 2: Imagem final minimalista
-FROM eclipse-temurin:17-jdk-alpine as runtime
+FROM eclipse-temurin:17-jdk-alpine AS runtime
 
 # Cria um usuário não-root
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
